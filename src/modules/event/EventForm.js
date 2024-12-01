@@ -2,6 +2,8 @@ import React from 'react';
 import GenericForm from '../components/form/Form';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
+import { useLocation } from 'react-router-dom';
+import { modes } from '../../constants/formConstants';
 
 const layoutFields = [
   {
@@ -181,21 +183,18 @@ const layoutFields = [
 ];
 
 const EventForm = () => {
-  const handleSubmit = async (formData) => {
-    console.log('Form submitted:', formData);
-    const data = await httpService.post(routeLink.events, {
-      body: {
-        ...formData,
-      },
-    });
-  };
+  const { state } = useLocation();
+  const { mode = modes.create, event } = state || {};
 
   return (
     <GenericForm
-      //   mode="edit"
-      apiPath="https://api.example.com/user/123"
+      mode={mode}
+      apiPath={
+        mode === modes.create
+          ? routeLink.events
+          : `${routeLink.events}/${event?._id}`
+      }
       layout={layoutFields}
-      onSubmit={handleSubmit}
       styles={{
         container: {
           width: '100%',

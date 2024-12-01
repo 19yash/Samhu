@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import View from '../components/View';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { modes } from '../../constants/formConstants';
 
 const Event = () => {
   const [events, setEvents] = useState([]);
@@ -44,7 +45,11 @@ const Event = () => {
         <Button
           variant="outlined"
           onClick={() => {
-            navigate('add-event');
+            navigate('add-event', {
+              state: {
+                mode: modes.create,
+              },
+            });
           }}
         >
           Add Event

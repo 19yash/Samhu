@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import privateRoutes from '../routes/PrivateRoutes';
+import { AppContentStyle } from './AppContent.style';
 
 const resolveRoute = (route, idx) => {
   return (
@@ -33,12 +34,14 @@ const AppContent = ({ children }) => {
   });
   console.log('🚀 ~ visibleRoutes ~ visibleRoutes:', visibleRoutes);
   return (
-    <Routes>
-      {visibleRoutes.map((route, idx) => {
-        return resolveRoute(route, idx);
-      })}
-      <Route path="*" element={<Navigate to={'/dashboard'} replace />} />
-    </Routes>
+    <AppContentStyle>
+      <Routes>
+        {visibleRoutes.map((route, idx) => {
+          return resolveRoute(route, idx);
+        })}
+        <Route path="*" element={<Navigate to={'/dashboard'} replace />} />
+      </Routes>
+    </AppContentStyle>
   );
 };
 

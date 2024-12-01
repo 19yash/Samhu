@@ -39,7 +39,7 @@ const navItems = [
 
 function AppSideBar() {
   return (
-    <div className="App">
+    <div className="App" style={{ backgroundColor: '#fff' }}>
       <Sidenav navItems={navItems} brandName="MyApp" />
       {/* Other components like main content */}
     </div>

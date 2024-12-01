@@ -3,18 +3,66 @@ import GenericForm from '../../components/form/Form';
 
 const fields = [
   {
-    label: 'Sports',
-    type: 'text',
-    field: 'sport',
-    required: true,
-    size: 'medium',
-  },
-  {
-    label: 'Category',
-    type: 'chip',
-    field: 'category',
-    required: true,
-    size: 'medium',
+    label: 'Tounament Details',
+    fields: [
+      {
+        label: 'Tornament Name',
+        type: 'text',
+        field: 'name',
+        required: true,
+        size: 'medium',
+      },
+      {
+        label: 'Sports',
+        type: 'autocomplete',
+        field: 'sport',
+        options: [
+          {
+            label: 'Cricket',
+            value: 'Cricket',
+          },
+          {
+            label: 'Football',
+            value: 'Football',
+          },
+          {
+            label: 'Archery',
+            value: 'Archery',
+          },
+        ],
+        required: true,
+        size: 'medium',
+      },
+      {
+        label: 'Category',
+        type: 'autocomplete',
+        field: 'category',
+        options: [
+          {
+            label: 'U-19',
+            value: 'Womens U-19',
+          },
+          {
+            label: 'U-21',
+            value: 'Womens U-19',
+          },
+          {
+            label: 'Womens U-19',
+            value: 'Womens U-19',
+          },
+        ],
+        required: true,
+        size: 'medium',
+      },
+
+      {
+        label: 'Registration Fees',
+        type: 'number',
+        field: 'fees',
+        required: true,
+        size: 'medium',
+      },
+    ],
   },
 ];
 

@@ -11,8 +11,6 @@ export const DefaultLayoutStyle = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 16px;
   flex: 1;
-  overflow-x: auto;
   background-color: #f5f2f2;
 `;

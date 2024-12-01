@@ -8,7 +8,7 @@ import SidenavGroup from './SidenavGroup';
 const SidenavItem = ({ item, level }) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = (event) => {
     if (item.path) {
       navigate(item.path);
     }
@@ -19,11 +19,12 @@ const SidenavItem = ({ item, level }) => {
       {item.children ? (
         <SidenavGroup item={item} level={level} />
       ) : (
-        <CNavItem
-          onClick={handleClick}
-          style={{ paddingLeft: `${level * 20}px` }}
-        >
-          <CNavLink>
+        <CNavItem style={{ paddingLeft: `${level * 20}px` }}>
+          <CNavLink
+            onClick={(event) => {
+              handleClick(event);
+            }}
+          >
             <CIcon icon={item.icon} customClassName="nav-icon" />
             {item.name}
           </CNavLink>

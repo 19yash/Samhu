@@ -1,17 +1,11 @@
-const stackRoutes = [
+import EventForm from '../EventForm';
+
+const EventRoutes = [
   {
-    name: 'Events',
-    path: '/events',
-    component: '',
-  },
-  {
-    name: '',
+    name: 'AddEvent',
+    path: '/events/add-event',
+    element: <EventForm />,
   },
 ];
 
-const modalRoutes = [];
-
-export default {
-  stack: stackRoutes,
-  modal: modalRoutes,
-};
+export default EventRoutes;

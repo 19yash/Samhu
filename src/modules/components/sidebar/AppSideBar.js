@@ -5,12 +5,12 @@ const navItems = [
   {
     name: 'Dashboard',
     icon: cilSpeedometer,
-    path: '/dashboard',
+    path: '/app/dashboard',
   },
   {
     name: 'Events',
     icon: cilSettings,
-    path: '/events',
+    path: '/app/events',
     // children: [
     //   {
     //     name: 'Users',

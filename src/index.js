@@ -4,14 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/auth/AuthProvider';
+import { CustomThemeProvider } from './theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      {' '}
-      {/* Wrap App with AuthProvider */}
-      <App />
+      <CustomThemeProvider>
+        {' '}
+        {/* Wrap App with AuthProvider */}
+        <App />
+      </CustomThemeProvider>
     </AuthProvider>
   </React.StrictMode>
 );

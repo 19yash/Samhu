@@ -10,7 +10,7 @@ const resolveRoute = (route, idx) => {
         path={route.path}
         exact={route.exact}
         name={route.name}
-        element={<route.element />}
+        element={route.element}
       >
         {route.children &&
           route.children.map((childRoute, idx) => {
@@ -31,14 +31,14 @@ const AppContent = ({ children }) => {
     }
     return visible;
   });
+  console.log('🚀 ~ visibleRoutes ~ visibleRoutes:', visibleRoutes);
   return (
-    <div>Hello content</div>
-    // <Routes>
-    //   {visibleRoutes.map((route, idx) => {
-    //     return resolveRoute(route, idx);
-    //   })}
-    //   <Route path="*" element={<Navigate to={'/dashboard'} replace />} />
-    // </Routes>
+    <Routes>
+      {visibleRoutes.map((route, idx) => {
+        return resolveRoute(route, idx);
+      })}
+      <Route path="*" element={<Navigate to={'/dashboard'} replace />} />
+    </Routes>
   );
 };
 

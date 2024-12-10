@@ -1,4 +1,5 @@
 import CategoryForm from '../../sports/screens/CategoryForm';
+import EventDetails from '../EventDetails';
 import EventForm from '../EventForm';
 
 const EventRoutes = [
@@ -7,6 +8,11 @@ const EventRoutes = [
     path: '/events/category',
     element: <CategoryForm />,
     // element: <EventForm />,
+  },
+  {
+    name: 'Event Details',
+    path: '/events/event-details',
+    element: <EventDetails />,
   },
   {
     name: 'AddEvent',

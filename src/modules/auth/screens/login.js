@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/login.style';
-import FullLogo from '../../../assets/brand/FullLogo.PNG';
 import { useNavigate } from 'react-router-dom';
 import httpService from '../../../services/httpService';
 import { ApiPaths } from '../../../constants/apiPaths';
 import { AuthContext } from '../../../context/auth/AuthContext';
+import images from '../../../images';
 
 const LoginForm = () => {
   const {
@@ -42,7 +42,12 @@ const LoginForm = () => {
     <div style={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
         <div style={styles.imageContainer}>
-          <img src={FullLogo} alt={'logo'} width={'200px'} height={'80px'} />
+          <img
+            src={images.fullBrandLogo}
+            alt={'logo'}
+            width={'200px'}
+            height={'80px'}
+          />
         </div>
         <h2 style={styles.title}>Login</h2>
 

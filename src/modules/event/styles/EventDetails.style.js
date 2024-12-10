@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 import theme from '../../../theme/Theme';
 
-export const CardStyle = styled.div`
-min-width:"350px",
+export const EventContainer = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: column;
   border-radius: 8px;
-  gap: '12px';
-  flex: 1;
 `;
 
 export const Img = styled.img`
@@ -17,15 +14,12 @@ export const Img = styled.img`
 `;
 
 export const ImageContainer = styled.div`
-  position: absolute;
-  top: 4px;
-  right: 10px;
-  height: 40px;
-  widht: 40px;
-  border-radius: 50%;
-  padding: 10px;
+  width: 70%;
+`;
+
+export const EventDetails = styled.div`
+  width: 30%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   background-color: ${theme.palette.primary.main};
 `;

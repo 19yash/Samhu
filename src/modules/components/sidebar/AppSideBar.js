@@ -35,11 +35,16 @@ const navItems = [
     //   },
     // ],
   },
+  {
+    name: 'Sports',
+    icon: cilPuzzle,
+    path: '/app/sports',
+  },
 ];
 
 function AppSideBar() {
   return (
-    <div className="App" style={{ backgroundColor: '#fff' }}>
+    <div className="App" style={{ backgroundColor: '#ffdbbb' }}>
       <Sidenav navItems={navItems} brandName="MyApp" />
       {/* Other components like main content */}
     </div>

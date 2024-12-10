@@ -1,4 +1,5 @@
 import Event from '../../event/Event';
+import Sports from '../../sports/screens/Sports';
 import Dashboard from '../Dashboard';
 
 const DasboardRoutes = [
@@ -11,6 +12,11 @@ const DasboardRoutes = [
     name: 'Dashboard',
     path: '/dashboard',
     element: <Dashboard />,
+  },
+  {
+    name: 'Sports',
+    path: '/sports',
+    element: <Sports />,
   },
 ];
 

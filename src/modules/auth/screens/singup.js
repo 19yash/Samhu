@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/singup.style';
-import FullLogo from '../../../assets/brand/FullLogo.PNG';
 import { ApiPaths } from '../../../constants/apiPaths';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/auth/AuthContext';
 import httpService from '../../../services/httpService';
+import images from '../../../images';
 
 const SignUpForm = () => {
   const {
@@ -42,7 +42,7 @@ const SignUpForm = () => {
     <div style={styles.container}>
       {/* Dummy Logo - This will always stay visible */}
       <div style={styles.logoContainer}>
-        <img src={FullLogo} alt="Logo" style={styles.logo} />
+        <img src={images.fullBrandLogo} alt="Logo" style={styles.logo} />
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>

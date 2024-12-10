@@ -7,6 +7,8 @@ import {
 } from '@coreui/react';
 import '@coreui/coreui/dist/css/coreui.min.css';
 import SidenavItem from './SidenavItem';
+import images from '../../../images';
+import { Img } from './AppSideBar.style';
 
 const Sidenav = ({ navItems, brandName = 'MyApp' }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -16,13 +18,22 @@ const Sidenav = ({ navItems, brandName = 'MyApp' }) => {
   };
 
   return (
-    <CSidebar visible={isOpen} onVisibleChange={(val) => setIsOpen(val)}>
+    <CSidebar
+      visible={isOpen}
+      style={{ backgroundColor: '#ffdbbb', color: '#fff' }}
+      onVisibleChange={(val) => setIsOpen(val)}
+    >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        {brandName}
+        {<Img src={images.fullBrandLogo} />}
       </CSidebarBrand>
       <CSidebarNav>
         {navItems.map((item, index) => (
-          <SidenavItem key={index} item={item} level={0} />
+          <SidenavItem
+            style={{ color: '#fff' }}
+            key={index}
+            item={item}
+            level={0}
+          />
         ))}
       </CSidebarNav>
       <CSidebarToggler

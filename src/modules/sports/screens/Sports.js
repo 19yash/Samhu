@@ -1,0 +1,83 @@
+import React from 'react';
+import Table from '../../components/table/Table';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { modes } from '../../../constants/formConstants';
+import routeLink from '../../../constants/routeLink';
+
+const Sports = () => {
+  const navigate = useNavigate();
+  const data = [
+    {
+      name: 'Football',
+      categories: 5,
+      activeEvents: 14,
+      _id: 1,
+    },
+    {
+      name: 'Cricket',
+      categories: 5,
+      activeEvents: 14,
+      _id: 2,
+    },
+    {
+      name: 'Basketball',
+      categories: 5,
+      activeEvents: 14,
+      _id: 3,
+    },
+    {
+      name: 'Kabadi',
+      categories: 5,
+      activeEvents: 14,
+      _id: 4,
+    },
+  ];
+  const columns = [
+    {
+      header: 'Sports Name',
+      render: (row) => {
+        console.log('🚀 ~ Sports ~ row:', row);
+        return `${row.name}`;
+      },
+    },
+    {
+      header: 'Number Of Categories',
+      field: 'categories',
+    },
+    {
+      header: 'Active Sports',
+      field: 'activeEvents',
+    },
+  ];
+
+  return (
+    <>
+      <Button
+        variant="outlined"
+        onClick={() => {
+          navigate('add-sports', {
+            state: {
+              mode: modes.create,
+            },
+          });
+        }}
+      >
+        Add Sports
+      </Button>
+      <Table
+        api={routeLink.sport}
+        //   filter
+        onPress={(row) => {
+          navigate(`categories`, {
+            sportsId: row._id,
+          });
+        }}
+        columns={columns}
+        data={data}
+      />
+    </>
+  );
+};
+
+export default Sports;

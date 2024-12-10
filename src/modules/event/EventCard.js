@@ -10,6 +10,10 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import { configs } from 'eslint-plugin-prettier';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { ImageContainer, Img } from './styles/EventCard.style';
+import images from '../../images';
+import { modes } from '../../constants/formConstants';
 
 // {
 //     title,
@@ -42,7 +46,7 @@ const EventCard2 = ({ event = {} }) => {
   } = event;
 
   const Date = moment(date).format("'DD MMMM, YYYY'");
-
+  const navigate = useNavigate();
   return (
     <Card
       sx={{
@@ -50,7 +54,13 @@ const EventCard2 = ({ event = {} }) => {
         borderRadius: theme.shape.borderRadius,
         boxShadow: theme.shadows[2],
         overflow: 'hidden',
+        position: 'relative',
       }}
+      onClick={() =>
+        navigate('event-details', {
+          state: { event },
+        })
+      }
     >
       {/* Image */}
       <CardMedia
@@ -137,6 +147,17 @@ const EventCard2 = ({ event = {} }) => {
           Book Now
         </Button>
       </CardContent>{' '}
+      <ImageContainer>
+        <Img
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate('add-event', {
+              state: { event, mode: modes.create },
+            });
+          }}
+          src={images.editLight}
+        />
+      </ImageContainer>
     </Card>
   );
 };

@@ -1,12 +1,13 @@
 const theme = {
   palette: {
     primary: {
-      main: '#ff5722', // Primary color
+      main: '#FF914D', // Primary color
     },
     secondary: {
-      main: '#03a9f4', // Secondary color
+      main: '#54595F', // Secondary color
     },
     background: {
+      grey: '#7A7A7A',
       paper: '#ffffff', // Card background
       default: '#f4f4f4', // App background
     },

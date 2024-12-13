@@ -43,12 +43,7 @@ const navItems = [
 ];
 
 function AppSideBar() {
-  return (
-    <div className="App" style={{ backgroundColor: '#ffdbbb' }}>
-      <Sidenav navItems={navItems} brandName="MyApp" />
-      {/* Other components like main content */}
-    </div>
-  );
+  return <Sidenav navItems={navItems} brandName="Samuh" />;
 }
 
 export default AppSideBar;

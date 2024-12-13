@@ -15,8 +15,10 @@ export const useAuth = () => {
     try {
       const user = await UserService.login(credentials);
       setAuth({ user });
+      return { message: 'success' };
     } catch (error) {
       showError(error);
+      return { message: 'error' };
     }
   };
 

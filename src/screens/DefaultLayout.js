@@ -7,7 +7,6 @@ import { Navigate } from 'react-router-dom';
 
 export const DefaultLayout = (props) => {
   // later pick from context
-  console.log('DEfault ###');
   const isAuthenticated = true;
   if (!isAuthenticated) {
     console.log('returning');

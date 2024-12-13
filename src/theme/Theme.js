@@ -7,12 +7,15 @@ const theme = {
       main: '#54595F', // Secondary color
     },
     background: {
+      greyPrimary: '#f5f2f2',
+      secoundary: '#fff',
+      // greySecondary:
       grey: '#7A7A7A',
       paper: '#ffffff', // Card background
       default: '#f4f4f4', // App background
     },
     text: {
-      primary: '#333333', // Default text color
+      primary: '#2B3743', // Default text color
       secondary: '#888888', // Secondary text color
     },
     success: {

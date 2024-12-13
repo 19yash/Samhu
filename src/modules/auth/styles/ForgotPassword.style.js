@@ -20,6 +20,10 @@ export const styles = {
     alignItems: 'center',
   },
   form: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '10px',
     backgroundColor: themeColors.secondary,
     padding: '2rem',
     borderRadius: '8px',
@@ -29,12 +33,18 @@ export const styles = {
     transition: 'all 0.3s ease', // Smooth transitions for resizing
   },
   title: {
-    textAlign: 'center',
-    marginBottom: '1.5rem',
+    width: '100%',
+    textAlign: 'start',
+    marginTop: '1.5rem',
+
     color: themeColors.accent,
-    fontSize: '1.5rem', // Responsive font size
+    fontSize: '1rem', // Responsive font size
   },
   formGroup: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
     marginBottom: '1rem',
   },
   label: {

@@ -1,8 +1,64 @@
-import React from 'react';
-import Header from '../modules/components/Header';
+import React, { useState, useEffect, useRef } from 'react';
+import images from '../images';
+import { Action, AppHeaderStyle, DropDown, Img, Row } from './AppHeader.style';
+import { useAuth } from '../modules/auth/hooks/useAuth';
 
 const AppHeader = () => {
-  return <Header title="AppContent" secondaryTitle={'AppHeader'} />;
+  const [showDropDown, setShowDropDown] = useState(false);
+  const dropdownRef = useRef(null); // Ref to track dropdown
+  const { user } = useAuth();
+
+  const actions = [
+    {
+      label: 'Logout',
+      icon: images.logout,
+      onClick: () => {
+        console.log('Logout clicked');
+        // Add your logout logic here
+      },
+    },
+  ];
+
+  // Handle clicks outside the dropdown
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropDown(false);
+      }
+    };
+
+    if (showDropDown) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [showDropDown]);
+
+  return (
+    <AppHeaderStyle>
+      <div></div>
+      <Row>
+        <Img src={images.user} style={{ width: '30px', height: '30px' }} />
+        {user?.user_name}
+        <Img
+          src={images.arrowDown}
+          style={{ width: '20x', height: '20px' }}
+          onClick={() => setShowDropDown(!showDropDown)}
+        />
+      </Row>
+      {showDropDown && (
+        <DropDown ref={dropdownRef}>
+          {actions.map((action) => (
+            <Action key={action.label} onClick={action.onClick}>
+              <Img src={action.icon} /> {action.label}
+            </Action>
+          ))}
+        </DropDown>
+      )}
+    </AppHeaderStyle>
+  );
 };
 
 export default AppHeader;

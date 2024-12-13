@@ -1,9 +1,9 @@
 import React from 'react';
 import Table from '../../components/table/Table';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
-import { modes } from '../../../constants/formConstants';
 import routeLink from '../../../constants/routeLink';
+import Button from '../../components/button/Button';
+import images from '../../../images';
 
 const Sports = () => {
   const navigate = useNavigate();
@@ -52,31 +52,20 @@ const Sports = () => {
   ];
 
   return (
-    <>
-      <Button
-        variant="outlined"
-        onClick={() => {
-          navigate('add-sports', {
-            state: {
-              mode: modes.create,
-            },
-          });
-        }}
-      >
-        Add Sports
-      </Button>
-      <Table
-        api={routeLink.sport}
-        //   filter
-        onPress={(row) => {
-          navigate(`categories`, {
-            sportsId: row._id,
-          });
-        }}
-        columns={columns}
-        data={data}
-      />
-    </>
+    <Table
+      headerActions={[
+        <Button text="Add New Sport" icon={images.plus} iconPosition="start" />,
+      ]}
+      api={routeLink.sport}
+      //   filter
+      onPress={(row) => {
+        navigate(`categories`, {
+          sportsId: row._id,
+        });
+      }}
+      columns={columns}
+      data={data}
+    />
   );
 };
 

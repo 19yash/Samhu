@@ -4,7 +4,7 @@ import HttpAuth from './httpService';
 export default class AuthService {
   // Function to handle user login
   static async login(credentials) {
-    const response = await HttpAuth.post('/v1/auth/login', credentials);
+    const response = await HttpAuth.post('/login', credentials);
     return response?.data;
   }
 

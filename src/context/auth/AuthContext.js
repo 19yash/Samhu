@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 // Define the initial state
-export const initialState = {
+export const initialState = JSON.parse(localStorage.getItem('auth')) || {
   user: null,
   loading: true,
   isAuthenticated: false,

@@ -2,10 +2,8 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/login.style';
 import { useNavigate } from 'react-router-dom';
-import httpService from '../../../services/httpService';
-import { ApiPaths } from '../../../constants/apiPaths';
-import { AuthContext } from '../../../context/auth/AuthContext';
 import images from '../../../images';
+import { useAuth } from '../hooks/useAuth';
 
 const LoginForm = () => {
   const {
@@ -14,18 +12,13 @@ const LoginForm = () => {
     formState: { errors },
     setError,
   } = useForm();
-  const { setLoading, setAuth, state } = useContext(AuthContext);
-  const { user, loading } = state;
+  const navigate = useNavigate();
+  const { login, user } = useAuth();
   const onSubmit = async (data) => {
-    console.log('Email:', data.email, 'Password:', data.password);
-    setLoading(true);
+    console.log('🚀 ~ onSubmit ~ data:', data);
     try {
-      const response = await httpService.post(ApiPaths.login, data);
-      if (response.user) {
-        setAuth(response.user);
-      } else {
-        throw new Error('Invalid login response');
-      }
+      login(data);
+      navigate('/app/dashboard');
     } catch (error) {
       console.error('Error logging in:', error);
       setError('identifier', {
@@ -33,24 +26,19 @@ const LoginForm = () => {
         message: 'Invalid credentials',
       });
     } finally {
-      setLoading(false);
     }
   };
-  const navigate = useNavigate();
-  // if (loading)
+  if (user) {
+    console.log('🚀 ~ LoginForm ~ user:', user);
+    navigate('/app/dashboard');
+    return;
+  }
   return (
     <div style={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
         <div style={styles.imageContainer}>
-          <img
-            src={images.fullBrandLogo}
-            alt={'logo'}
-            width={'200px'}
-            height={'80px'}
-          />
+          <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
         </div>
-        <h2 style={styles.title}>Login</h2>
-
         <div style={styles.formGroup}>
           <label htmlFor="email" style={styles.label}>
             Email

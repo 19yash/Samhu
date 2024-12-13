@@ -198,7 +198,13 @@ const SignUpForm = () => {
           </button>
         </div>
         <div style={styles.fieldGroup}>
-          <button type="submit" style={styles.button} onClick={'/login'}>
+          <button
+            type="submit"
+            style={styles.button}
+            onClick={() => {
+              navigate('/login');
+            }}
+          >
             Log In
           </button>
         </div>

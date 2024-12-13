@@ -14,10 +14,16 @@ export const AuthProvider = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const setAuth = (payload) => {
+    console.log('payload', payload);
+    localStorage.setItem(
+      'auth',
+      JSON.stringify({ ...payload, isAuthenticated: true })
+    );
     dispatch({ type: SET_AUTH, payload });
   };
 
   const clearAuth = () => {
+    localStorage.removeItem('auth');
     dispatch({ type: CLEAR_AUTH });
   };
 
@@ -29,24 +35,6 @@ export const AuthProvider = (props) => {
     dispatch({ type: SESSION_TIME_OUT });
   };
 
-  // Effect to run once on component mount
-  //   useEffect(() => {
-  //     const loadAuthState = async () => {
-  //       try {
-  //         const user = await UserService.verifyToken();
-  //         if (user) {
-  //                 } else {
-  //           clearAuth();
-  //         }
-  //       } catch (error) {
-  //         // Handle error (e.g., token might be invalid or expired)
-  //         clearAuth();
-  //       }
-  //     };
-  //     loadAuthState();
-  //   }, []);
-
-  // The value provided to the context consumers
   const authContextValue = {
     state,
     dispatch,

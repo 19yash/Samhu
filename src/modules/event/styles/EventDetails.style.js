@@ -11,15 +11,15 @@ export const Img = styled.img`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  ${({ style }) => style && style};
 `;
 
 export const ImageContainer = styled.div`
   width: 70%;
 `;
 
-export const EventDetails = styled.div`
+export const EventDetailsStyles = styled.div`
   width: 30%;
   display: flex;
   flex-direction: column;
-  background-color: ${theme.palette.primary.main};
 `;

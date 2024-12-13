@@ -27,6 +27,7 @@ import { modes } from '../../constants/formConstants';
 //     registration_start_time,
 //     registration_end_time,
 //     price,
+//   rewards,
 
 // }
 const EventCard2 = ({ event = {} }) => {

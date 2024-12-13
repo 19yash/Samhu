@@ -3,7 +3,8 @@ import axios from 'axios';
 
 // Configure the base URL
 const axiosInstance = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}`, // Replace with your base API URL
+  baseURL: 'https://404a-43-204-148-133.ngrok-free.app/api/v1', // Replace with your base API URL
+  // baseURL: `${process.env.REACT_APP_BASE_URL}`, // Replace with your base API URL
   timeout: 30000, // Optional: Set a timeout for requests
 });
 

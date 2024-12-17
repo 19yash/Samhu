@@ -112,7 +112,7 @@ const SignUpForm = () => {
               <input
                 type="text"
                 id="organization"
-                {...register('organization', {
+                {...register('organization_name', {
                   required: 'Organization name is required',
                 })}
                 style={styles.input}
@@ -130,7 +130,7 @@ const SignUpForm = () => {
               <input
                 type="tel"
                 id="phone"
-                {...register('phone', {
+                {...register('phone_number', {
                   required: 'Phone number is required',
                   pattern: {
                     value: /^[0-9]{10}$/,
@@ -146,9 +146,53 @@ const SignUpForm = () => {
             </div>
           </div>
         )}
+        {/* age */}
+        {!isHost && (
+          <div style={styles.row}>
+            <div style={styles.fieldGroup}>
+              <label htmlFor="address" style={styles.label}>
+                Age
+              </label>
+              <input
+                type="text"
+                id="age"
+                {...register('age', { required: 'Age is required' })}
+                style={styles.input}
+                placeholder="Enter Your Age"
+              />
+              {errors.address && (
+                <p style={styles.errorMessage}>{errors.address.message}</p>
+              )}
+            </div>
+            <div style={styles.fieldGroup}>
+              <label htmlFor="address" style={styles.label}>
+                Height
+              </label>
+              <input
+                type="text"
+                id="height"
+                {...register('height')}
+                style={styles.input}
+                placeholder="Enter Your height"
+              />
+            </div>
+            {/* <div style={styles.fieldGroup}>
+              <label htmlFor="address" style={styles.label}>
+                Weight
+              </label>
+              <input
+                type="text"
+                id="weight"
+                {...register('weight')}
+                style={styles.input}
+                placeholder="Enter Your Weight"
+              />
+            </div> */}
+          </div>
+        )}
 
         {/* Address (for Host only) */}
-        {isHost && (
+        {
           <div style={styles.fieldGroup}>
             <label htmlFor="address" style={styles.label}>
               Address
@@ -164,7 +208,7 @@ const SignUpForm = () => {
               <p style={styles.errorMessage}>{errors.address.message}</p>
             )}
           </div>
-        )}
+        }
 
         {/* Password */}
         <div style={styles.fieldGroup}>

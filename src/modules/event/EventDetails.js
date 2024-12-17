@@ -7,27 +7,55 @@ import {
   EventDetailsStyles,
   ImageContainer,
   Img,
+  Heading,
+  Information,
+  BasicInfo,
+  Info,
 } from './styles/EventDetails.style';
 import moment from 'moment/moment';
 import View from '../components/View';
+import Button from '../components/button/Button';
 const EventDetails = () => {
   const { state } = useLocation();
-  const {
-    event = {
-      start_time: '',
-      end_time: '',
-      title: '',
-      date: '',
-      venue_name: '',
-      venue_address: '',
-      host_id: '',
-      organized_by: '',
-      registration_start_time: '',
-      registration_end_time: '',
-      price: '',
+  // const {
+  //   event = {
+  //     start_time: '19:00',
+  //     end_time: '21:00',
+  //     title: 'Football Tournament',
+  //     date: '26th December ',
+  //     venue_name: 'Indoor Stadium',
+  //     venue_address:
+  //       'Veer Savarkar Indoor Stadium, Race Course Rd, Race Course, Sadar Rajkot, Gujarat 360007 India',
+  //     host_id: '',
+  //     organized_by: 'Sports Club',
+  //     registration_start_time: '20th December ',
+  //     registration_end_time: '21st December',
+  //     price: '1000',
+  //   },
+  // } = state || {};
+  const event = {
+    sports: {
+      name: 'Football',
     },
-  } = state || {};
-
+    category: {
+      name: 'U-19 Females',
+    },
+    start_time: '19:00',
+    end_time: '21:00',
+    title: 'Football Tournament',
+    date: '2024-12-26',
+    venue_name: 'Indoor Stadium',
+    venue_address:
+      'Veer Savarkar Indoor Stadium, Race Course Rd, Race Course, Sadar Rajkot, Gujarat 360007 India',
+    host_id: '',
+    organized_by: 'Sports Club',
+    registration_start_time: '2024-12-20',
+    registration_end_time: '2024-12-21',
+    price: '1000',
+    rewards: 'Winnners Team Will get a Price Money of 1 lack rupees',
+    description: `Are you ready to showcase your Basketball skills and compete for glory?Join us for the 2024 Basketball Tournament, where teams from across the region will battle it out for the championship title.Whether you’re a seasoned player or just love the game, this is your chance to be part of an unforgettable Basketball experience!`,
+  };
+  console.log('events', event);
   return (
     <View style={{ gap: '12px' }}>
       <EventContainer>
@@ -35,31 +63,62 @@ const EventDetails = () => {
           <Img src={images.game} style={{ width: '100%', height: '100%' }} />
         </ImageContainer>
         <EventDetailsStyles>
-          <div>
+          {/* <div> */}
+          <Button text={'Participate Now'} />
+          <Information>Registration has been closed Now !!</Information>
+          <Information>Results has been Anounced !!</Information>
+          <BasicInfo>
             <h2>{event.title}</h2>
             <div>
-              <Img src={images.calender} />
-              {moment(event.date).format("'DD MMMM, YYYY'")}
+              {'Sports'}: {event?.sports?.name}
             </div>
             <div>
+              {'Category'}: {event?.category?.name}
+            </div>
+            <Info>
+              <Img src={images.calender} />
+              {moment(event.date).format('DD MMMM, YYYY')}
+            </Info>
+            <Info>
               <Img src={images.clock} />
               {event.start_time} - {event.end_time}
-            </div>
+            </Info>
+            <div>Price: ₹ {event.price}</div>
+          </BasicInfo>
+          <div>
+            <h2>Venue</h2>
+            <p>
+              {event.venue_name} , {event.venue_address}
+            </p>
+          </div>
+          <div>
+            <h2>{'Registration Date'}</h2>
             <div>
-              <h2>Venue</h2>
-              <p>
-                {event.venue_name} , {event.venue_address}
-              </p>
-            </div>
-            <div>
-              <h2>Organized By</h2>
-              <p>{event.organized_by}</p>
+              <Img src={images.calender} />
+              {moment(event.registration_start_time).format('DD MMMM, YYYY')} -
+              {moment(event.registration_end_time).format('DD MMMM, YYYY')}
             </div>
           </div>
+          <div>
+            <h2>Organized By</h2>
+            <p>{event.organized_by}</p>
+          </div>
+          {/* <div>
+            <h2>Description</h2>
+            <p>{event.description}</p>
+          </div> */}
+          <div>
+            <h2>Rewards</h2>
+            <p>{event.rewards}</p>
+          </div>
+          {/* </div> */}
         </EventDetailsStyles>
       </EventContainer>
       {event.description && <p>{event.description}</p>}
-      <ParticaipantsTable></ParticaipantsTable>
+      <>
+        <Heading>Participants</Heading>
+        <ParticaipantsTable></ParticaipantsTable>
+      </>
     </View>
   );
 };

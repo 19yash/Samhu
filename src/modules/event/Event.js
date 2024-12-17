@@ -39,6 +39,16 @@ const Event = () => {
   if (loading) {
     return <LoadingScreen></LoadingScreen>;
   }
+
+  const event1 = {
+    title: 'Football Tournament',
+    subtitle: 'Football',
+    image: 'https://via.placeholder.com/400x225',
+    date: '29 November, 2024',
+    price: '99',
+    venue: 'Sportyzo Sports Academy, Gurugram',
+    organizer: 'All India Football Federation (AIFF)',
+  };
   return (
     <View>
       <EventHeader>
@@ -60,24 +70,8 @@ const Event = () => {
           events.map((event) => {
             return <EventCard event={event} />;
           })} */}
-        <EventCard
-          title="Football Tournament"
-          subtitle="Football"
-          image="https://via.placeholder.com/400x225"
-          date="29 November, 2024"
-          price={99}
-          venue="Sportyzo Sports Academy, Gurugram"
-          organizer="All India Football Federation (AIFF)"
-        />
-        <EventCard
-          title="Football Tournament"
-          subtitle="Football"
-          image="https://via.placeholder.com/400x225"
-          date="29 November, 2024"
-          price={99}
-          venue="Sportyzo Sports Academy, Gurugram"
-          organizer="All India Football Federation (AIFF)"
-        />
+        <EventCard event={event1} />
+        <EventCard event={event1} />
       </EventContainer>
     </View>
   );

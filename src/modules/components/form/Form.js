@@ -18,7 +18,14 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import httpService from '../../../services/httpService';
 
-const GenericForm = ({ mode, apiPath, layout, styles }) => {
+const GenericForm = ({
+  mode,
+  apiPath,
+  layout,
+  styles,
+  showCancelButton = true,
+  saveButtonText = 'Save',
+}) => {
   const [formData, setFormData] = useState({});
   const [fileData, setFileData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -389,24 +396,32 @@ const GenericForm = ({ mode, apiPath, layout, styles }) => {
         ))}
       </Grid>
       <Box mt={3} display="flex" justifyContent="flex-end" gap={2}>
-        <Button
-          variant="outlined"
-          startIcon={<Close />}
-          onClick={() => {
+        {/* <Button text={} onClick={() => {
             setFormData({});
             navigate(-1);
-          }}
-        >
-          Cancel
-        </Button>
+          }} /> */}
+        {showCancelButton && (
+          <Button
+            variant="outlined"
+            startIcon={<Close />}
+            onClick={() => {
+              setFormData({});
+              navigate(-1);
+            }}
+          >
+            Cancel
+          </Button>
+        )}
         <Button
           variant="contained"
           color="primary"
           startIcon={<Save />}
           type="submit"
         >
-          Save
+          {saveButtonText}
         </Button>
+
+        <Button></Button>
       </Box>
     </Box>
   );

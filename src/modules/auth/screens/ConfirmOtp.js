@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/ForgotPassword.style';
 import { useNavigate } from 'react-router-dom';
 import images from '../../../images';
+import httpService from '../../../services/httpService';
+import routeLink from '../../../constants/routeLink';
+import Button from '../../components/button/Button';
+import { toast } from 'react-toastify';
 
 const ConfirmOtp = () => {
   const {
@@ -11,25 +15,40 @@ const ConfirmOtp = () => {
     formState: { errors },
     setError,
   } = useForm();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     console.log('🚀 ~ onSubmit ~ data:', data);
-    // try {
-    //   login(data);
-    //   navigate('/app/dashboard');
-    // } catch (error) {
-    //   console.error('Error logging in:', error);
-    //   setError('identifier', {
-    //     type: 'manual',
-    //     message: 'Invalid credentials',
-    //   });
-    // } finally {
-    // }
+    try {
+      setLoading(true);
+      const response = await httpService.post(routeLink.confirmOtp, {
+        otp: data.opt,
+      });
+      console.log('🚀 ~ onSubmit ~ response:', response);
+      if (!response?.error) {
+        navigate('/reset-password', {
+          state: {
+            token: response?.token,
+          },
+        });
+        toast.success('OTP Confirmed Successfully');
+        setLoading('false');
+      } else if (response?.error) {
+        throw new Error(response?.error);
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setError('identifier', {
+        type: 'manual',
+        message: 'Invalid OTP',
+      });
+      setLoading('false');
+    }
   };
 
   return (
     <div style={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
+      <form style={styles.form}>
         <div style={styles.imageContainer}>
           <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
         </div>
@@ -48,13 +67,15 @@ const ConfirmOtp = () => {
             style={styles.input}
             placeholder="OTP"
           />
-          {errors.email && (
-            <p style={styles.errorMessage}>{errors.email.message}</p>
+          {errors.otp && (
+            <p style={styles.errorMessage}>{errors.otp.message}</p>
           )}
         </div>
-        <button type="submit" style={styles.button}>
-          Confirm OTP
-        </button>
+        <Button
+          text="Confirm OTP"
+          loading={loading}
+          onClick={handleSubmit(onSubmit)}
+        />
       </form>
     </div>
   );

@@ -28,11 +28,6 @@ const LoginForm = () => {
     } finally {
     }
   };
-  if (user) {
-    console.log('🚀 ~ LoginForm ~ user:', user);
-    navigate('/app/dashboard');
-    return;
-  }
   return (
     <div style={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>

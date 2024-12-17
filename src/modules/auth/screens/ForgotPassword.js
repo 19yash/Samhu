@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/ForgotPassword.style';
 import { useNavigate } from 'react-router-dom';
 import images from '../../../images';
+import httpService from '../../../services/httpService';
+import routeLink from '../../../constants/routeLink';
+import { toast } from 'react-toastify';
+import Button from '../../components/button/Button';
 
 const ForgotPassword = () => {
   const {
@@ -12,24 +16,36 @@ const ForgotPassword = () => {
     setError,
   } = useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async (data) => {
     console.log('🚀 ~ onSubmit ~ data:', data);
-    // try {
-    //   login(data);
-    //   navigate('/app/dashboard');
-    // } catch (error) {
-    //   console.error('Error logging in:', error);
-    //   setError('identifier', {
-    //     type: 'manual',
-    //     message: 'Invalid credentials',
-    //   });
-    // } finally {
-    // }
+    setLoading(true);
+    try {
+      const response = await httpService.post(routeLink.forgotPassword, {
+        email: data.email,
+      });
+      console.log('🚀 ~ onSubmit ~ response:', response);
+      if (response.message === 'OTP sent to your email') {
+        toast.success('Email Send Successfully');
+        navigate('/confirm-otp', { state: { email: data.email } });
+      } else {
+        toast.error(response.message);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setError('identifier', {
+        type: 'manual',
+        message: 'Invalid credentials',
+      });
+      setLoading(false);
+    }
   };
 
   return (
     <div style={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
+      <form style={styles.form}>
         <div style={styles.imageContainer}>
           <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
         </div>
@@ -58,9 +74,11 @@ const ForgotPassword = () => {
           )}
         </div>
 
-        <button type="submit" style={styles.button}>
-          Send Password Reset Email
-        </button>
+        <Button
+          text="submit"
+          loading={loading}
+          onClick={handleSubmit(onSubmit)}
+        />
       </form>
     </div>
   );

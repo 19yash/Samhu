@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button as MuiButton } from '@mui/material';
+import { Button as MuiButton, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
 import theme from '../../../theme/Theme';
 import { Icon } from './buttonStyle';
@@ -10,9 +10,6 @@ const buttonStyles = {
     backgroundColor: theme.palette.primary.main,
     color: '#fff',
     border: '1px solid #fff',
-    // '&:hover': {
-    //   backgroundColor: '#0056b3',
-    // },
   },
   backgroundWithOutBorder: {
     backgroundColor: theme.palette.primary.main,
@@ -25,8 +22,9 @@ const buttonStyles = {
 };
 
 // Styled button based on props
-const StyledButton = styled(MuiButton)(({ buttonType }) => ({
+const StyledButton = styled(MuiButton)(({ buttonType, style }) => ({
   ...buttonStyles[buttonType],
+  ...style,
 }));
 
 const Button = ({
@@ -34,15 +32,31 @@ const Button = ({
   icon,
   iconPosition = 'start',
   buttonType = 'backgroundWithOutBorder',
+  style,
+  loading = false,
   ...props
 }) => {
   return (
-    <StyledButton variant="contained" buttonType={buttonType} {...props}>
-      {icon && iconPosition === 'start' && (
-        <Icon src={icon} alt="button icon" />
+    <StyledButton
+      variant="contained"
+      buttonType={buttonType}
+      style={style}
+      disabled={loading} // Disable button when loading is true
+      {...props}
+    >
+      {loading ? (
+        <CircularProgress size={24} color="inherit" />
+      ) : (
+        <>
+          {icon && iconPosition === 'start' && (
+            <Icon src={icon} alt="button icon" />
+          )}
+          {text}
+          {icon && iconPosition === 'end' && (
+            <Icon src={icon} alt="button icon" />
+          )}
+        </>
       )}
-      {text}
-      {icon && iconPosition === 'end' && <Icon src={icon} alt="button icon" />}
     </StyledButton>
   );
 };

@@ -6,14 +6,14 @@ import {
   Typography,
   Box,
   useTheme,
-  Button,
+  // Button,
 } from '@mui/material';
 import moment from 'moment';
-import { configs } from 'eslint-plugin-prettier';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ImageContainer, Img } from './styles/EventCard.style';
 import images from '../../images';
 import { modes } from '../../constants/formConstants';
+import Button from '../components/button/Button';
 
 // {
 //     title,
@@ -46,7 +46,7 @@ const EventCard2 = ({ event = {} }) => {
     price,
   } = event;
 
-  const Date = moment(date).format("'DD MMMM, YYYY'");
+  const Date = moment(date).format('DD MMMM, YYYY');
   const navigate = useNavigate();
   return (
     <Card
@@ -56,6 +56,11 @@ const EventCard2 = ({ event = {} }) => {
         boxShadow: theme.shadows[2],
         overflow: 'hidden',
         position: 'relative',
+        '&:hover': {
+          transform: 'scale(1.05)', // Slight scale-up effect
+          boxShadow: `0px 8px 20px ${theme.palette.primary.main}`, // Deeper shadow on hover
+          cursor: 'pointer',
+        },
       }}
       onClick={() =>
         navigate('event-details', {
@@ -67,7 +72,7 @@ const EventCard2 = ({ event = {} }) => {
       <CardMedia
         component="img"
         height="140"
-        image="https://via.placeholder.com/400x200"
+        image="https://smuh.in/wp-content/uploads/2024/08/Game3-766x1024.jpg"
         alt="Event Image"
       />
       {/* Content */}
@@ -76,7 +81,7 @@ const EventCard2 = ({ event = {} }) => {
         <Typography
           variant="subtitle2"
           color={theme.palette.text.secondary}
-          sx={{ textTransform: 'uppercase', fontWeight: 600 }}
+          sx={{ textTransform: 'uppercase', fontWeight: 600, fontSize: '10px' }}
         >
           Football
         </Typography>
@@ -88,7 +93,12 @@ const EventCard2 = ({ event = {} }) => {
           {title}
         </Typography>
         {/* Date and Price */}
-        <Box display="flex" justifyContent="space-between" marginBottom={2}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          marginBottom={2}
+        >
           <Box>
             <Typography
               variant="subtitle2"
@@ -106,12 +116,12 @@ const EventCard2 = ({ event = {} }) => {
               Price:
             </Typography>
             <Typography variant="body2" color={theme.palette.success.main}>
-              {price ? price : '90'}
+              ₹{price ? price : '90'}
             </Typography>
           </Box>
         </Box>
         {/* Venue and Organizer */}
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box>
             <Typography
               variant="subtitle2"
@@ -125,7 +135,7 @@ const EventCard2 = ({ event = {} }) => {
                 : 'Sportyzo Sports Academy, Gurugram'}
             </Typography>
           </Box>
-          <Box>
+          <Box textAlign="right">
             <Typography
               variant="subtitle2"
               color={theme.palette.text.secondary}
@@ -137,17 +147,18 @@ const EventCard2 = ({ event = {} }) => {
               {venue_address
                 ? `${venue_name}, ${venue_address}`
                 : 'All India Football Federation (AIFF)'}
-            </Typography>{' '}
-          </Box>{' '}
-        </Box>{' '}
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ marginTop: theme.spacing(2) }}
-        >
-          Book Now
-        </Button>
-      </CardContent>{' '}
+            </Typography>
+          </Box>
+        </Box>
+        <Box marginTop={'1rem'}>
+          <Button
+            text={'Participate'}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
+        </Box>
+      </CardContent>
       <ImageContainer>
         <Img
           onClick={(e) => {

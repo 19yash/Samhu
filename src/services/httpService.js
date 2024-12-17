@@ -23,6 +23,7 @@ const httpService = {
       const response = await axiosInstance.post(endpoint, body, config);
       return response.data;
     } catch (error) {
+      console.log('🚀 ~ post: ~ error:', error);
       handleError(error);
     }
   },
@@ -48,14 +49,15 @@ const httpService = {
 
 // Error handling function
 const handleError = (error) => {
-  if (error.response) {
-    console.error('Error Response:', error.response.data);
-  } else if (error.request) {
-    console.error('No Response:', error.request);
-  } else {
-    console.error('Error', error.message);
-  }
-  throw error;
+  console.log('🚀 ~ handleError ~ error:', error);
+  // if (error.response) {
+  //   console.error('Error Response:', error.response.data);
+  // } else if (error.request) {
+  //   console.error('No Response:', error.request);
+  // } else {
+  //   console.error('Error', error.message);
+  // }
+  return error;
 };
 
 export default httpService;

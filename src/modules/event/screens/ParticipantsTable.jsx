@@ -42,10 +42,10 @@ const ParticaipantsTable = () => {
     {
       render: () => {
         return (
-          <>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
             <Img src={images.edit} />
             <Img src={images.trash} />
-          </>
+          </div>
         );
       },
     },

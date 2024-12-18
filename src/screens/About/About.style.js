@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import theme from '../../theme/Theme';
 export const heroSection = {
   backgroundImage:
@@ -21,6 +22,10 @@ export const Section = {
     alignItems: 'center',
     gap: '20px',
     padding: '2rem',
+  },
+  introImage: {
+    width: '400px',
+    borderRadius: '16px',
   },
   circleLayerOne: {
     position: 'absolute',
@@ -74,14 +79,18 @@ export const Section = {
     fontWeight: '700',
     color: theme.palette.primary.main,
   },
+
   content: {
+    icon: {
+      height: '30px',
+      width: '30px',
+    },
     container: {
       display: 'flex',
       flexWrap: 'wrap',
-      width: '80%',
+      gap: '20px',
       justifyContent: 'space-between',
       alignItems: 'stretch' /* Ensures children take the full height */,
-      gap: '20px',
       padding: '20px',
     },
     card: {
@@ -89,11 +98,10 @@ export const Section = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
         gap: '26px',
-        border: '1px solid black',
+        border: '1px solid rgb(235,235,235)',
         padding: '2rem',
-        flex: '1',
+        maxWidth: '350px',
       },
       icon: {
         width: '60px',
@@ -113,3 +121,36 @@ export const Section = {
     },
   },
 };
+
+export const IntroCardContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  // align-items: stretch;
+`;
+export const IntroBackGround = styled.div`
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(https://smuh.in/wp-content/uploads/2024/04/pattern-1.png);
+`;
+export const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  position: absolute;
+  left: -25px;
+  top: 30px;
+  width: 50px;
+  height: 50px;
+  line-height: 75px;
+  text-align: center;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 30px;
+  background-color: #ff914d;
+`;

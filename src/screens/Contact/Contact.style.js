@@ -28,6 +28,7 @@ export const contactSection = {
   padding: '20px',
   display: 'flex',
   gap: '20px',
+  justifyContent: 'space-around',
 };
 
 export const SectionContainer = styled.div`
@@ -41,13 +42,19 @@ export const Card = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem 1.2rem;
   display: flex;
+  // justify-content: center;
+  max-width: 350px;
   align-items: center;
-  gap: 15px;
+  gap: 30px;
 `;
 
 export const IconWrapper = styled.div`
   font-size: 1.8rem;
   color: #f68534;
+`;
+export const Icon = styled.img`
+  width: 40px;
+  height: 40px;
 `;
 
 export const CardContent = styled.div`

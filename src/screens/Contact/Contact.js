@@ -7,11 +7,13 @@ import {
   contactSection,
   heading,
   heroSection,
+  Icon,
   IconWrapper,
   SectionContainer,
   subHeading,
 } from './Contact.style';
 import GenericForm from '../../modules/components/form/Form';
+import images from '../../images';
 
 const layoutFields = [
   {
@@ -79,7 +81,9 @@ const ContactUs = () => {
           <div style={heading}>Information</div>
           <SectionContainer>
             <Card>
-              <IconWrapper>{/* <FaMapMarkerAlt /> */}</IconWrapper>
+              <IconWrapper>
+                <Icon src={images.address} />
+              </IconWrapper>
               <CardContent>
                 <h3>ADDRESS</h3>
                 <p>648, Gali Kailash Pandit Wali, Chattar Garh Patti, Sirsa.</p>
@@ -87,7 +91,7 @@ const ContactUs = () => {
             </Card>
 
             <Card>
-              <IconWrapper>{/* <FaEnvelope /> */}</IconWrapper>
+              <Icon src={images.mail} />
               <CardContent>
                 <h3>MAIL TO US</h3>
                 <p>support@smuh.in</p>
@@ -95,7 +99,7 @@ const ContactUs = () => {
             </Card>
 
             <Card>
-              <IconWrapper>{/* <FaPhone /> */}</IconWrapper>
+              <Icon src={images.call} />
               <CardContent>
                 <h3>CONTACT VIA CALL</h3>
                 <p>9671875065</p>

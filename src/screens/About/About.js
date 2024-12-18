@@ -1,8 +1,16 @@
 import React from 'react';
 import NavBar from '../NavBar';
-import { heroSection, Section } from './About.style';
+import {
+  heroSection,
+  IconContainer,
+  IntoCardContainer,
+  IntroBackGround,
+  IntroCardContainer,
+  Section,
+} from './About.style';
 import Footer from '../Footer';
 import images from '../../images';
+import { section } from '../Event/Event.style';
 
 const objective = [
   {
@@ -30,7 +38,7 @@ const Introduction = [
     title: 'Introduction',
     description:
       'Our startup aims to bridge the gap between sports players and organizers by providing an online platform for them to connect and fulfil their requirements. This policy outlines the guidelines for usage, responsibilities, and compliance to ensure a safe and efficient environment for all users.',
-    icon: '',
+    icon: images.users,
   },
   {
     title: 'Definitions',
@@ -38,27 +46,31 @@ const Introduction = [
                   - User: Any individual or organization using the platform.
                   - Player: An individual seeking sports opportunities.
                   - Organizer: An entity offering sports opportunities.`,
-    icon: '',
+    icon: images.trophyWhite,
   },
   {
     title: 'Simple User Registration and Verification',
     description: `- provided Simple user Registration for sports and reflect it on their dashboard
                   -simple registration and Verification process for event host / organizers`,
+    icon: images.message,
   },
   {
     title: 'Privacy and Data Protection',
     description: `- User data will be collected and processed in accordance with privacy laws.
 - Personal information will not be shared with third parties without consent.`,
+    icon: images.security,
   },
   {
     title: 'Payments and Transactions',
     description:
       '- All financial transactions must be conducted through the platform’s secure payment gateway.',
+    icon: images.moneyBag,
   },
   {
     title: 'Support service',
     description:
       'For any questions or concerns regarding issues smuh team is available for 24*7 for their users.',
+    icon: images.support,
   },
 ];
 const About = () => {
@@ -71,26 +83,56 @@ const About = () => {
       <div style={{ ...Section.container, backgroundColor: '#fff' }}>
         <div style={Section.subHeading}>Introduction</div>
         <div style={Section.heading}>About SMUH Tech Pvt. Ltd.</div>
-        <div style={Section.content.container}>
-          {Introduction.map((item, index) => {
-            console.log('🚀 ~ {objective.map ~ item:', item);
-            return (
-              <div
-                style={{
-                  ...Section.content.card.container,
-                  backgroundColor: '#fff',
-                }}
-              >
-                <img
-                  src={item.image}
-                  alt="icon"
-                  style={Section.content.card.icon}
-                />
-                <div style={Section.content.card.Headinng}>{item.title}</div>
-                <div style={Section.content.card.text}>{item.description}</div>
-              </div>
-            );
-          })}
+        <div
+          style={{
+            ...Section.content.container,
+            width: '100%',
+            flexWrap: 'nowrap',
+          }}
+        >
+          <IntroBackGround>
+            <img
+              style={Section.introImage}
+              src="https://smuh.in/wp-content/uploads/2024/08/steptodown.com583227-1024x735.jpg"
+              alt=""
+            />
+          </IntroBackGround>
+          <IntroCardContainer>
+            {Introduction.map((item, index) => {
+              console.log('🚀 ~ {objective.map ~ item:', item);
+              return (
+                <div
+                  style={{
+                    ...Section.content.card.container,
+                    backgroundColor: '#fff',
+                    position: 'relative',
+                  }}
+                >
+                  <IconContainer>
+                    <img
+                      src={item.icon}
+                      alt="icon"
+                      style={Section.content.icon}
+                    />
+                  </IconContainer>
+                  <div
+                    style={{
+                      ...Section.content.card.Headinng,
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {item.title}
+                  </div>
+                  <div
+                    style={{ ...Section.content.card.text, fontSize: '14px' }}
+                  >
+                    {item.description}
+                  </div>
+                </div>
+              );
+            })}
+          </IntroCardContainer>
         </div>
       </div>
       {/* Objective */}

@@ -18,6 +18,7 @@ const transparentLogo = `/assets/transparentLogo.webp`;
 const rightArrow = '/assets/rightArrow.svg';
 const mail = '/assets/mail.svg';
 const trophy = '/assets/trophy.svg';
+const trophyWhite = '/assets/trophyWhite.svg';
 const connection = '/assets/connection.svg';
 const handshake = '/assets/handshake.svg';
 const microphone = '/assets/microphone.svg';
@@ -25,6 +26,13 @@ const training = '/assets/training.svg';
 const booking = '/assets/booking.webp';
 const interfaceIcon = '/assets/interface.webp';
 const smoothProcess = '/assets/smothProcess.webp';
+const message = '/assets/messages.svg';
+const support = '/assets/support.svg';
+const moneyBag = '/assets/moneyBag.svg';
+const security = '/assets/security.svg';
+const users = '/assets/users.svg';
+const call = '/assets/call.svg';
+const address = '/assets/address.svg';
 const images = {
   trash: trash,
   edit: edit,
@@ -47,12 +55,20 @@ const images = {
   mail: mail,
   connection: connection,
   trophy: trophy,
+  trophyWhite: trophyWhite,
   handshake: handshake,
   microphone: microphone,
   training: training,
   booking: booking,
   interface: interfaceIcon,
   smoothProcess: smoothProcess,
+  message: message,
+  support: support,
+  moneyBag: moneyBag,
+  security: security,
+  users: users,
+  call: call,
+  address: address,
 };
 
 export default images;

@@ -23,12 +23,14 @@ const Table = ({
 
   // If API is passed, fetch data from API
   useEffect(() => {
+    console.log('called');
     if (api) {
       const fetchData = async () => {
         try {
           const response = await httpService.get(api, {
             filter,
           });
+          console.log('🚀 ~ fetchData ~ response:', response);
           if (response?.data && response.data.length) {
             const result = response.data;
             setTableData(result);

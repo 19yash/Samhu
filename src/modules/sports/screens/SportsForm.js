@@ -1,66 +1,19 @@
 import React from 'react';
 import GenericForm from '../../components/form/Form';
+import routeLink from '../../../constants/routeLink';
+import { modes } from '../../../constants/formConstants';
+import Modal from '../../components/modal';
 
 const fields = [
   {
-    label: 'Tounament Details',
+    label: 'Add Sport',
     fields: [
       {
-        label: 'Tornament Name',
+        label: 'Name',
         type: 'text',
-        field: 'name',
+        field: 'sports_name',
         required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Sports',
-        type: 'autocomplete',
-        field: 'sport',
-        options: [
-          {
-            label: 'Cricket',
-            value: 'Cricket',
-          },
-          {
-            label: 'Football',
-            value: 'Football',
-          },
-          {
-            label: 'Archery',
-            value: 'Archery',
-          },
-        ],
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Category',
-        type: 'autocomplete',
-        field: 'category',
-        options: [
-          {
-            label: 'U-19',
-            value: 'Womens U-19',
-          },
-          {
-            label: 'U-21',
-            value: 'Womens U-19',
-          },
-          {
-            label: 'Womens U-19',
-            value: 'Womens U-19',
-          },
-        ],
-        required: true,
-        size: 'medium',
-      },
-
-      {
-        label: 'Registration Fees',
-        type: 'number',
-        field: 'fees',
-        required: true,
-        size: 'medium',
+        size: 'large',
       },
     ],
   },
@@ -71,20 +24,22 @@ const SportsForm = () => {
     console.log('Form submitted:', formData);
   };
   return (
-    <GenericForm
-      //   mode="edit"
-      apiPath="https://api.example.com/user/123"
-      fields={fields}
-      onSubmit={handleSubmit}
-      styles={{
-        container: {
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-        },
-      }}
-    />
+    <Modal>
+      <GenericForm
+        mode={modes.create}
+        apiPath={routeLink.sports}
+        layout={fields}
+        onSubmit={handleSubmit}
+        styles={{
+          container: {
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+          },
+        }}
+      />
+    </Modal>
   );
 };
 

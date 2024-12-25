@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/singup.style';
-import { ApiPaths } from '../../../constants/apiPaths';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../../context/auth/AuthContext';
 import httpService from '../../../services/httpService';
 import images from '../../../images';
+import routeLink from '../../../constants/routeLink';
+import { toast } from 'react-toastify';
+import Button from '../../components/button/Button';
 
 const SignUpForm = () => {
   const {
@@ -14,8 +15,8 @@ const SignUpForm = () => {
     formState: { errors },
     setError,
   } = useForm();
-  const { setLoading, setAuth, state } = useContext(AuthContext);
-  const [isHost, setIsHost] = useState(false);
+  const [isHost, setIsHost] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,12 +24,16 @@ const SignUpForm = () => {
     setIsHost(e.target.value === 'host');
   };
   const onSubmit = async (data) => {
-    console.log('Email:', data.email, 'Password:', data.password);
     setLoading(true);
     try {
-      const response = await httpService.post(ApiPaths.singup, data);
+      const response = await httpService.post(routeLink.signup, data);
+      if (response?.message === 'success') {
+        toast.success('User cretaed successfully');
+        setLoading(false);
+        navigate('/login');
+      }
       setLoading(false);
-      navigate('/login');
+      return { message: 'success' };
     } catch (error) {
       console.error('Error logging in:', error);
       setError('identifier', {
@@ -38,6 +43,7 @@ const SignUpForm = () => {
       setLoading(false);
     }
   };
+
   return (
     <div style={styles.container}>
       {/* Dummy Logo - This will always stay visible */}
@@ -45,7 +51,7 @@ const SignUpForm = () => {
         <img src={images.fullBrandLogo} alt="Logo" style={styles.logo} />
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
+      <form style={styles.form}>
         <h2 style={styles.title}>Sign Up</h2>
 
         {/* Role Toggle */}
@@ -56,8 +62,8 @@ const SignUpForm = () => {
             onChange={handleRoleChange}
             style={styles.input}
           >
-            <option value="participant">Participant</option>
             <option value="host">Host</option>
+            <option value="participant">Participant</option>
           </select>
         </div>
 
@@ -112,7 +118,7 @@ const SignUpForm = () => {
               <input
                 type="text"
                 id="organization"
-                {...register('organization_name', {
+                {...register('organisation_name', {
                   required: 'Organization name is required',
                 })}
                 style={styles.input}
@@ -150,7 +156,7 @@ const SignUpForm = () => {
         {!isHost && (
           <div style={styles.row}>
             <div style={styles.fieldGroup}>
-              <label htmlFor="address" style={styles.label}>
+              <label htmlFor="age" style={styles.label}>
                 Age
               </label>
               <input
@@ -160,12 +166,12 @@ const SignUpForm = () => {
                 style={styles.input}
                 placeholder="Enter Your Age"
               />
-              {errors.address && (
-                <p style={styles.errorMessage}>{errors.address.message}</p>
+              {errors.age && (
+                <p style={styles.errorMessage}>{errors.age.message}</p>
               )}
             </div>
             <div style={styles.fieldGroup}>
-              <label htmlFor="address" style={styles.label}>
+              <label htmlFor="height" style={styles.label}>
                 Height
               </label>
               <input
@@ -236,21 +242,22 @@ const SignUpForm = () => {
         </div>
 
         {/* Submit Button */}
-        <div style={styles.fieldGroup}>
-          <button type="submit" style={styles.button}>
-            Sign Up
-          </button>
+        <div style={{ display: 'flex', width: '100%' }}>
+          <Button
+            text={'Submit'}
+            loading={loading}
+            onClick={handleSubmit(onSubmit)}
+            style={{ flex: 1 }}
+          />
         </div>
-        <div style={styles.fieldGroup}>
-          <button
-            type="submit"
-            style={styles.button}
+        <div style={{ display: 'flex', width: '100%' }}>
+          <Button
+            text={'Log In'}
             onClick={() => {
               navigate('/login');
             }}
-          >
-            Log In
-          </button>
+            style={{ flex: 1 }}
+          />
         </div>
       </form>
     </div>

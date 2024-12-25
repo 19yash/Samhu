@@ -51,7 +51,7 @@ export const styles = {
     display: 'block',
     marginBottom: '.5rem',
     color: themeColors.accent,
-    fontSize: '16px',
+    fontSize: '14px',
   },
   input: {
     width: '100%',

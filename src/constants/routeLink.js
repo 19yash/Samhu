@@ -1,8 +1,8 @@
 const routeLink = {
   login: '/login',
-  signup: '/login',
+  signup: '/signup',
   events: '/event',
-  sport: '/sport',
+  sports: '/sports',
   forgotPassword: '/forgot-password',
   confirmOtp: '/validate-otp',
   resetPassword: 'reset-password',

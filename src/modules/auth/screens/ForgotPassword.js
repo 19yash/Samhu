@@ -28,7 +28,7 @@ const ForgotPassword = () => {
       console.log('🚀 ~ onSubmit ~ response:', response);
       if (response.message === 'OTP sent to your email') {
         toast.success('Email Send Successfully');
-        navigate('/confirm-otp', { state: { email: data.email } });
+        navigate(`/confirm-otp/${data?.email}`);
       } else {
         toast.error(response.message);
       }

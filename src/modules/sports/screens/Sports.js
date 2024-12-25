@@ -54,9 +54,16 @@ const Sports = () => {
   return (
     <Table
       headerActions={[
-        <Button text="Add New Sport" icon={images.plus} iconPosition="start" />,
+        <Button
+          text="Add New Sport"
+          onClick={() => {
+            navigate('add-sports');
+          }}
+          icon={images.plus}
+          iconPosition="start"
+        />,
       ]}
-      api={routeLink.sport}
+      api={routeLink.sports}
       //   filter
       onPress={(row) => {
         navigate(`categories`, {

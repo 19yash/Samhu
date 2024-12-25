@@ -70,7 +70,11 @@ export const Home = () => {
         <div style={Section.heading}>Our Numbers</div>
         <div style={Testimonoials.container}>
           <div style={{ ...Testimonoials.item, ...Testimonoials.border }}>
-            <img src={images.handshake} alt="" style={Testimonoials.icon} />
+            <img
+              src={images.handshakeThick}
+              alt=""
+              style={Testimonoials.icon}
+            />
             <div style={Testimonoials.number}>100+</div>
             <div style={Testimonoials.text}>Users</div>
           </div>

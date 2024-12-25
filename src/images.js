@@ -21,6 +21,7 @@ const trophy = '/assets/trophy.svg';
 const trophyWhite = '/assets/trophyWhite.svg';
 const connection = '/assets/connection.svg';
 const handshake = '/assets/handshake.svg';
+const handshakeThick = '/assets/handshakeThick.svg';
 const microphone = '/assets/microphone.svg';
 const training = '/assets/training.svg';
 const booking = '/assets/booking.webp';
@@ -57,6 +58,7 @@ const images = {
   trophy: trophy,
   trophyWhite: trophyWhite,
   handshake: handshake,
+  handshakeThick: handshakeThick,
   microphone: microphone,
   training: training,
   booking: booking,

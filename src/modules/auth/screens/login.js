@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/login.style';
 import { useNavigate } from 'react-router-dom';
 import images from '../../../images';
 import { useAuth } from '../hooks/useAuth';
+import { toast } from 'react-toastify';
+import Button from '../../components/button/Button';
 
 const LoginForm = () => {
   const {
@@ -13,24 +15,31 @@ const LoginForm = () => {
     setError,
   } = useForm();
   const navigate = useNavigate();
-  const { login, user } = useAuth();
+  const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
+    setLoading(true);
     console.log('🚀 ~ onSubmit ~ data:', data);
     try {
-      login(data);
-      navigate('/app/dashboard');
+      const response = await login(data);
+      console.log('🚀 ~ onSubmit ~ response:', response);
+      if (response.message === 'success') {
+        navigate('/app/dashboard');
+        toast.success('Login Successfully');
+      }
+      setLoading(false);
     } catch (error) {
       console.error('Error logging in:', error);
       setError('identifier', {
         type: 'manual',
         message: 'Invalid credentials',
       });
-    } finally {
+      setLoading(false);
     }
   };
   return (
     <div style={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
+      <form style={styles.form}>
         <div style={styles.imageContainer}>
           <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
         </div>
@@ -79,21 +88,36 @@ const LoginForm = () => {
             <p style={styles.errorMessage}>{errors.password.message}</p>
           )}
         </div>
-        <div style={styles.formGroup}>
-          <button type="submit" style={styles.button}>
-            Login
-          </button>
-        </div>
-
-        <button
-          type=""
-          style={styles.button}
+        <div
+          style={styles.formGroup}
           onClick={() => {
-            navigate('/singup');
+            navigate('/forgot-password');
           }}
         >
-          Create New Account
-        </button>
+          <a href="#" style={styles.linkStyle}>
+            Forgot Password
+          </a>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            width: '100%',
+          }}
+        >
+          <Button
+            text="Login"
+            onClick={handleSubmit(onSubmit)}
+            loading={loading}
+          />
+          <Button
+            text="Create New Account"
+            onClick={() => {
+              navigate('/singup');
+            }}
+          />
+        </div>
       </form>
     </div>
   );

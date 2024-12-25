@@ -6,15 +6,17 @@ import { useAuth } from '../modules/auth/hooks/useAuth';
 const AppHeader = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const dropdownRef = useRef(null); // Ref to track dropdown
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const actions = [
     {
       label: 'Logout',
       icon: images.logout,
-      onClick: () => {
+      onClick: (e) => {
         console.log('Logout clicked');
         // Add your logout logic here
+        logout();
+        e.stopPropagation(); // Correct method name
       },
     },
   ];

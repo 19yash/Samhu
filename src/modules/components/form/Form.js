@@ -60,17 +60,24 @@ const GenericForm = ({
   };
 
   const onSubmit = async (formData) => {
+    console.log('🚀 ~ onSubmit ~ formData:', formData);
+    console.log('🚀 ~ onSubmit ~ apiPath:', apiPath);
     try {
       if (mode === 'create') {
-        await httpService.post(apiPath, {
+        const response = await httpService.post(apiPath, {
           body: formData,
         });
+        if (response && response?.message !== 'error') {
+          toast.success('Successfull');
+        }
       } else {
-        await httpService.put(apiPath, {
+        const response = await httpService.put(apiPath, {
           body: formData,
         });
+        if (response && response?.message !== 'error') {
+          toast.success('Successfull');
+        }
       }
-      toast.success('Successfull');
     } catch (err) {
       console.log(err);
       toast.error('Something Went wrong');
@@ -421,7 +428,7 @@ const GenericForm = ({
           {saveButtonText}
         </Button>
 
-        <Button></Button>
+        {/* <Button></Button> */}
       </Box>
     </Box>
   );

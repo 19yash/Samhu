@@ -1,56 +1,43 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
+import './modal.css'; // CSS for modal styling
 
-const Modal = ({ isVisible, hasBackdrop = true, style, children }) => {
+const Modal = ({ children }) => {
   const navigate = useNavigate();
-  const modalRef = useRef(null);
 
-  const onModalHide = (e) => {
-    if (e.target === modalRef.current) {
-      navigate(-1);
+  // Close modal when clicking outside the modal content
+  const handleOutsideClick = (event) => {
+    if (event.target.classList.contains('modal-overlay')) {
+      navigate(-1); // Navigate back
     }
   };
 
   useEffect(() => {
-    if (!isVisible) {
-      onModalHide();
-    }
-  }, [isVisible]);
+    // Close modal when pressing the Escape key
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        navigate(-1); // Navigate back
+      }
+    };
 
-  if (!isVisible) return null;
+    document.addEventListener('keydown', handleKeyDown);
 
-  return (
-    <div style={{ position: 'relative', zIndex: 1000 }}>
-      {hasBackdrop && (
-        <div
-          onClick={onModalHide}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          }}
-        />
-      )}
-      <div
-        ref={modalRef}
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          backgroundColor: 'white',
-          padding: '1rem',
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-          ...style,
-        }}
-      >
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [navigate]);
+
+  return ReactDOM.createPortal(
+    <div className="modal-overlay" onClick={handleOutsideClick}>
+      <div className="modal-content">
         {children}
+        <button className="modal-close" onClick={() => navigate(-1)}>
+          &times;
+        </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

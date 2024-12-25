@@ -69,6 +69,11 @@ export const styles = {
     marginTop: '0.5rem',
   },
 
+  linkStyle: {
+    color: themeColors.primary,
+    fontSize: '14px',
+  },
+
   // Media query for responsiveness
   '@media (max-width: 768px)': {
     form: {

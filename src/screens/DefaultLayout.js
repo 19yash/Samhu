@@ -4,13 +4,14 @@ import { Content, DefaultLayoutStyle } from './DefaultLayout.style';
 import AppContent from './AppContent';
 import AppHeader from './AppHeader';
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '../modules/auth/hooks/useAuth';
 
 export const DefaultLayout = (props) => {
-  // later pick from context
-  const isAuthenticated = true;
-  if (!isAuthenticated) {
+  const { user } = useAuth();
+  console.log('🚀 ~ DefaultLayout ~ user:', user);
+  if (!user) {
     console.log('returning');
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
   return (
     <DefaultLayoutStyle>

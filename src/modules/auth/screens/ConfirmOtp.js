@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/ForgotPassword.style';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import images from '../../../images';
 import httpService from '../../../services/httpService';
 import routeLink from '../../../constants/routeLink';
@@ -15,6 +15,8 @@ const ConfirmOtp = () => {
     formState: { errors },
     setError,
   } = useForm();
+  const { email } = useParams();
+  console.log('🚀 ~ ConfirmOtp ~ email:', email);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onSubmit = async (data) => {
@@ -22,20 +24,20 @@ const ConfirmOtp = () => {
     try {
       setLoading(true);
       const response = await httpService.post(routeLink.confirmOtp, {
-        otp: data.opt,
+        otp: data.otp,
+        email: email,
       });
       console.log('🚀 ~ onSubmit ~ response:', response);
-      if (!response?.error) {
-        navigate('/reset-password', {
-          state: {
-            token: response?.token,
-          },
-        });
-        toast.success('OTP Confirmed Successfully');
-        setLoading('false');
-      } else if (response?.error) {
-        throw new Error(response?.error);
+      if (response && response?.message !== 'error') {
+        console.log();
+        toast.success(
+          'OTP Confirmed Successfully Please check your email for password reset link'
+        );
+        navigate('/login');
+        setLoading(false);
       }
+      console.log('Setting loading to false');
+      setLoading(false);
     } catch (error) {
       console.error('Error logging in:', error);
       setError('identifier', {

@@ -1,5 +1,6 @@
 // src/services/httpService.js
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 // Configure the base URL
 const axiosInstance = axios.create({
@@ -50,6 +51,11 @@ const httpService = {
 // Error handling function
 const handleError = (error) => {
   console.log('🚀 ~ handleError ~ error:', error);
+  if (error.code === 'ERR_NETWORK') {
+    toast.error('Please check your internet connection');
+  } else {
+    toast.error(error?.response?.data?.error);
+  }
   // if (error.response) {
   //   console.error('Error Response:', error.response.data);
   // } else if (error.request) {
@@ -57,7 +63,8 @@ const handleError = (error) => {
   // } else {
   //   console.error('Error', error.message);
   // }
-  return error;
+  // toast;
+  return { message: 'error' };
 };
 
 export default httpService;

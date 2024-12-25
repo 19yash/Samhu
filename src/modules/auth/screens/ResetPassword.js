@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styles } from '../styles/ForgotPassword.style';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -16,15 +16,17 @@ const ResetPassword = () => {
     setError,
   } = useForm();
   const { state } = useLocation();
-  const token = state?.token;
+  console.log('🚀 ~ ResetPassword ~ state:', state);
+  const token = state?.token || {};
+  console.log('🚀 ~ ResetPassword ~ token:', token);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  if (!token) {
-    toast.error('Something Went Wrong Please Try Again Later');
-    navigate('/forgot-password');
-  }
   const onSubmit = async (data) => {
     console.log('🚀 ~ onSubmit ~ data:', data);
+    if (data.new_password !== data.confirm_password) {
+      toast.error("Password doesn't match");
+      return;
+    }
     try {
       setLoading(true);
       const response = await httpService.post(routeLink.resetPassword, {
@@ -32,6 +34,10 @@ const ResetPassword = () => {
         token: token,
       });
       console.log('🚀 ~ onSubmit ~ response:', response);
+      if (response.message === 'success') {
+        toast.success('Password Changed Successfully');
+        navigate('/login');
+      }
       setLoading('false');
     } catch (error) {
       console.error('Error logging in:', error);
@@ -43,40 +49,68 @@ const ResetPassword = () => {
     } finally {
     }
   };
-
-  <div style={styles.container}>
-    <form style={styles.form}>
-      <div style={styles.imageContainer}>
-        <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
-      </div>
-      <div style={styles.title}>Enter New Password</div>
-      <div style={styles.formGroup}>
-        <input
-          type="number"
-          id="otp"
-          {...register('otp', {
-            required: 'password is required',
-            pattern: {
-              value:
-                /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])[A-Za-z\d\S]+$/,
-              message:
-                'Password must contain at least one letter, one uppercase letter, and one special character',
-            },
-          })}
-          style={styles.input}
-          placeholder="New Password"
+  // useEffect(() => {
+  //   if (!token) {
+  //     toast.error('Something Went Wrong Please Try Again Later');
+  //     navigate('/forgot-password');
+  //   }
+  // });
+  return (
+    <div style={styles.container}>
+      <form style={styles.form}>
+        <div style={styles.imageContainer}>
+          <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
+        </div>
+        <div style={styles.formGroup}>
+          <div style={styles.label}>New Password</div>
+          <input
+            type="password"
+            id="new_password"
+            {...register('new_password', {
+              required: 'Password is required',
+              pattern: {
+                value:
+                  /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])[A-Za-z\d\S]+$/,
+                message:
+                  'Password must contain at least one letter, one uppercase letter, and one special character',
+              },
+            })}
+            style={styles.input}
+            placeholder="New Password"
+          />
+          {errors.new_password && (
+            <p style={styles.errorMessage}>{errors.new_password.message}</p>
+          )}
+        </div>
+        <div style={styles.formGroup}>
+          <div style={styles.label}>Confirm Password</div>
+          <input
+            type="password"
+            id="confirm_password"
+            {...register('confirm_password', {
+              required: 'Password is required',
+              pattern: {
+                value:
+                  /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])[A-Za-z\d\S]+$/,
+                message:
+                  'Password must contain at least one letter, one uppercase letter, and one special character',
+              },
+            })}
+            style={styles.input}
+            placeholder="Confirm Password"
+          />
+          {errors.confirm_password && (
+            <p style={styles.errorMessage}>{errors.confirm_password.message}</p>
+          )}
+        </div>
+        <Button
+          text="Reset Password"
+          loading={loading}
+          onClick={handleSubmit(onSubmit)}
         />
-        {errors.password && (
-          <p style={styles.errorMessage}>{errors.password.message}</p>
-        )}
-      </div>
-      <Button
-        text="Confirm OTP"
-        loading={loading}
-        onClick={handleSubmit(onSubmit)}
-      />
-    </form>
-  </div>;
+      </form>
+    </div>
+  );
 };
 
 export default ResetPassword;

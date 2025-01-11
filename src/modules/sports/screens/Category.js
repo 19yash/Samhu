@@ -3,6 +3,7 @@ import routeLink from '../../../constants/routeLink';
 import { Img } from '../../event/styles/EventCard.style';
 import { useLocation, useNavigate } from 'react-router-dom';
 import images from '../../../images';
+import Button from '../../components/button/Button';
 
 const Category = () => {
   const { state } = useLocation();
@@ -25,7 +26,7 @@ const Category = () => {
   const data = [
     {
       name: 'U19',
-      participants: '2',
+      // participants: '2',
       min_age: 'NA',
       max_age: '19',
       weight: 'NA',
@@ -33,7 +34,7 @@ const Category = () => {
     },
     {
       name: 'U22',
-      participants: '2',
+      // participants: '2',
       min_age: 'NA',
       max_age: '22',
       weight: 'NA',
@@ -41,7 +42,7 @@ const Category = () => {
     },
     {
       name: 'U22',
-      participants: '2',
+      // participants: '2',
       min_age: 'NA',
       max_age: '22',
       weight: 'NA',
@@ -53,10 +54,10 @@ const Category = () => {
       header: 'Name',
       field: 'name',
     },
-    {
-      header: 'Participants',
-      field: 'participants',
-    },
+    // {
+    //   header: 'Participants',
+    //   field: 'participants',
+    // },
     {
       header: 'Min Age',
       field: 'min_age',
@@ -79,9 +80,19 @@ const Category = () => {
   ];
   return (
     <Table
-      api={routeLink.category}
+      headerActions={[
+        <Button
+          text="Add New Category"
+          onClick={() => {
+            navigate('add-category');
+          }}
+          icon={images.plus}
+          iconPosition="start"
+        />,
+      ]}
       filter={JSON.stringify({ sport: sportsId })}
       columns={columns}
+      // api={routeLink.category}
       data={data}
     />
   );

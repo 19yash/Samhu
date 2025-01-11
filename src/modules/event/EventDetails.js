@@ -1,5 +1,5 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import ParticaipantsTable from './screens/ParticipantsTable';
 import images from '../../images';
 import {
@@ -15,25 +15,11 @@ import {
 import moment from 'moment/moment';
 import View from '../components/View';
 import Button from '../components/button/Button';
+import httpService from '../../services/httpService';
+import routeLink from '../../constants/routeLink';
 const EventDetails = () => {
-  const { state } = useLocation();
-  // const {
-  //   event = {
-  //     start_time: '19:00',
-  //     end_time: '21:00',
-  //     title: 'Football Tournament',
-  //     date: '26th December ',
-  //     venue_name: 'Indoor Stadium',
-  //     venue_address:
-  //       'Veer Savarkar Indoor Stadium, Race Course Rd, Race Course, Sadar Rajkot, Gujarat 360007 India',
-  //     host_id: '',
-  //     organized_by: 'Sports Club',
-  //     registration_start_time: '20th December ',
-  //     registration_end_time: '21st December',
-  //     price: '1000',
-  //   },
-  // } = state || {};
-  const event = {
+  const { eventId } = useParams();
+  const [event, setEvent] = useState({
     sports: {
       name: 'Football',
     },
@@ -54,7 +40,40 @@ const EventDetails = () => {
     price: '1000',
     rewards: 'Winnners Team Will get a Price Money of 1 lack rupees',
     description: `Are you ready to showcase your Basketball skills and compete for glory?Join us for the 2024 Basketball Tournament, where teams from across the region will battle it out for the championship title.Whether you’re a seasoned player or just love the game, this is your chance to be part of an unforgettable Basketball experience!`,
+  });
+  const navigate = useNavigate();
+  const fetchEvent = async () => {
+    try {
+      const response = await httpService.get(
+        `${routeLink.events} +/${eventId}`
+      );
+      if (response?.data) {
+        setEvent(response.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
+  useEffect(() => {
+    fetchEvent();
+  }, [eventId]);
+  // const {
+  //   event = {
+  //     start_time: '19:00',
+  //     end_time: '21:00',
+  //     title: 'Football Tournament',
+  //     date: '26th December ',
+  //     venue_name: 'Indoor Stadium',
+  //     venue_address:
+  //       'Veer Savarkar Indoor Stadium, Race Course Rd, Race Course, Sadar Rajkot, Gujarat 360007 India',
+  //     host_id: '',
+  //     organized_by: 'Sports Club',
+  //     registration_start_time: '20th December ',
+  //     registration_end_time: '21st December',
+  //     price: '1000',
+  //   },
+  // } = state || {};
+
   console.log('events', event);
   return (
     <View style={{ gap: '12px' }}>
@@ -64,7 +83,12 @@ const EventDetails = () => {
         </ImageContainer>
         <EventDetailsStyles>
           {/* <div> */}
-          <Button text={'Participate Now'} />
+          <Button
+            text={'Participate Now'}
+            onClick={() => {
+              navigate('participate');
+            }}
+          />
           <Information>Registration has been closed Now !!</Information>
           <Information>Results has been Anounced !!</Information>
           <BasicInfo>

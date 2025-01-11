@@ -18,6 +18,7 @@ const Table = ({
   filter,
   styles = {},
   headerActions = [],
+  onPress,
 }) => {
   const [tableData, setTableData] = useState([]);
 
@@ -96,7 +97,7 @@ const Table = ({
           <TableBody>
             {tableData.length > 0 ? (
               tableData.map((row, rowIndex) => (
-                <TableRow key={rowIndex}>
+                <TableRow key={rowIndex} onClick={onPress}>
                   {columns.map((col, colIndex) => {
                     const cellData = col?.render
                       ? col.render(row)

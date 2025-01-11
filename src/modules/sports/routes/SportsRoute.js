@@ -14,6 +14,11 @@ const SportsRoute = [
     element: <Category />,
   },
   {
+    name: 'Add Category',
+    path: '/sports/categories/add-category',
+    element: <CategoryForm />,
+  },
+  {
     name: 'Edit Category',
     path: '/sports/categories/edit',
     element: <CategoryForm />,

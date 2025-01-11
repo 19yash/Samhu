@@ -41,6 +41,7 @@ const Event = () => {
   }
 
   const event1 = {
+    _id: '67815197-23a4-8008-9877-8939e0bb5663',
     title: 'Football Tournament',
     subtitle: 'Football',
     image: 'https://via.placeholder.com/400x225',
@@ -70,8 +71,18 @@ const Event = () => {
           events.map((event) => {
             return <EventCard event={event} />;
           })} */}
-        <EventCard event={event1} />
-        <EventCard event={event1} />
+        <EventCard
+          event={event1}
+          onPress={() => {
+            navigate(`event-details/${event1._id}`, {});
+          }}
+        />
+        <EventCard
+          event={event1}
+          onPress={() => {
+            navigate(`event-details/${event1._id}`, {});
+          }}
+        />
       </EventContainer>
     </View>
   );

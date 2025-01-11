@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   TextField,
-  Button,
   RadioGroup,
   FormControlLabel,
   Radio,
@@ -11,22 +10,30 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import { Save, Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import httpService from '../../../services/httpService';
+import { formStyles } from './style';
+import Button from '../button/Button';
 
 const GenericForm = ({
   mode,
   apiPath,
   layout,
   styles,
+  onCancel,
+  cancelButtonText = 'cancel',
   showCancelButton = true,
   saveButtonText = 'Save',
+  defaultValues = {},
+  beforeSubmit,
+  buttonContainerStyles = {},
+  computations = [],
 }) => {
-  const [formData, setFormData] = useState({});
+  const [formLayout, setFormLayout] = useState(layout);
+  const [formData, setFormData] = useState({ ...defaultValues });
   const [fileData, setFileData] = useState({});
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -50,18 +57,87 @@ const GenericForm = ({
       setLoading(false);
     }
   };
+  const updateNestedObject = (obj, field, value) => {
+    const keys = field.split('.');
+    const newObj = { ...obj }; // Create a shallow copy of the object
+    let currentObj = newObj;
 
-  const handleInputChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+    keys.forEach((key, index) => {
+      if (index === keys.length - 1) {
+        // Last key, set the value
+        currentObj[key] = value;
+      } else {
+        // Intermediate key, ensure immutability and existence
+        if (!currentObj[key] || typeof currentObj[key] !== 'object') {
+          currentObj[key] = {};
+        } else {
+          currentObj[key] = { ...currentObj[key] };
+        }
+        currentObj = currentObj[key];
+      }
+    });
+
+    return newObj;
   };
 
+  const handleInputChange = async (field, value) => {
+    console.log('handleInputChange called', field, value, formData);
+
+    // Update the nested field in formData
+    const newFormData = updateNestedObject(formData, field, value);
+
+    if (computations.length) {
+      for (const computation of computations) {
+        // Check if the field triggers this computation
+        if (computation.fields.includes(field)) {
+          const shouldCompute =
+            !computation.condition || computation.condition(newFormData);
+
+          if (shouldCompute) {
+            try {
+              // Call the compute function with the updated form data
+              await computation.compute({
+                formData: newFormData,
+                setFormData,
+                formLayout,
+                setFormLayout,
+              });
+            } catch (error) {
+              console.error(
+                `Error during computation for field ${field}:`,
+                error
+              );
+            }
+          }
+        }
+      }
+    }
+
+    // Update the state with the new formData
+    setFormData(newFormData);
+  };
+  const getNestedValue = (obj, path = '') => {
+    return path.split('.').reduce((acc, key) => (acc ? acc[key] : ''), obj);
+  };
   const handleFileChange = (field, file) => {
     setFileData({ ...fileData, [field]: file });
   };
 
   const onSubmit = async (formData) => {
-    console.log('🚀 ~ onSubmit ~ formData:', formData);
-    console.log('🚀 ~ onSubmit ~ apiPath:', apiPath);
+    if (beforeSubmit) {
+      try {
+        const processedFormData = beforeSubmit({ ...formData });
+        if (processedFormData && typeof processedFormData === 'object') {
+          formData = processedFormData; // Update formData only if valid
+        } else {
+          throw new Error('Invalid data returned from beforeSubmit.');
+        }
+      } catch (error) {
+        console.error('Error in beforeSubmit:', error);
+        toast.error('Failed to process form data. Please check your inputs.');
+        return; // Exit early if beforeSubmit fails
+      }
+    }
     try {
       if (mode === 'create') {
         const response = await httpService.post(apiPath, {
@@ -76,11 +152,13 @@ const GenericForm = ({
         });
         if (response && response?.message !== 'error') {
           toast.success('Successfull');
+        } else {
+          toast.error('An error occurred during the operation.');
         }
       }
     } catch (err) {
       console.log(err);
-      toast.error('Something Went wrong');
+      toast.error('Something Went wrong . Please try again Later.');
     }
   };
 
@@ -88,7 +166,7 @@ const GenericForm = ({
     e.preventDefault();
 
     const requiredErrors = {};
-    layout?.forEach((section) => {
+    formLayout?.forEach((section) => {
       section?.fields?.forEach((field) => {
         if (field.required && !formData[field.field]) {
           requiredErrors[field.field] = `${field.label} is required`;
@@ -103,9 +181,9 @@ const GenericForm = ({
   };
 
   const fetchAutocompleteOptions = async (field) => {
-    const { api, filter, suggestionField, keyField } = field;
+    const { api, filter, suggestionField, keyField, field: fieldName } = field;
     try {
-      console.log('geting options');
+      if (autocompleteOptions[fieldName]?.length) return; // Skip if options are already loaded
       const response = await httpService.get(api, { params: filter });
       const options = response.data.map((item) => ({
         label: item[suggestionField],
@@ -113,22 +191,12 @@ const GenericForm = ({
       }));
       setAutocompleteOptions((prev) => ({
         ...prev,
-        [field.field]: options,
+        [fieldName]: options,
       }));
     } catch (error) {
       console.error('Error fetching autocomplete options:', error);
     }
   };
-
-  useEffect(() => {
-    layout.forEach((section) => {
-      section.fields.forEach((field) => {
-        if (field.type === 'autocomplete' && field.api) {
-          fetchAutocompleteOptions(field);
-        }
-      });
-    });
-  }, [layout]);
 
   const renderField = (field) => {
     const {
@@ -164,30 +232,12 @@ const GenericForm = ({
               type={type}
               // label={label}
               placeholder={label}
-              value={formData[fieldName] || ''}
+              value={getNestedValue(formData, fieldName) || ''}
               required={required}
               onChange={(e) => handleInputChange(fieldName, e.target.value)}
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  color: '#000',
-                  fontFamily: 'Inter, Arial, sans-serif',
-                  backgroundColor: '#fff',
-                  borderRadius: '12px',
-                  fontSize: '12px',
-                  padding: '2px',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#2e2e2e',
-                    borderWidth: '1px',
-                    borderRadius: '12px',
-                  },
-                },
-                '& .MuiInputLabel-outlined': {
-                  color: '#2e2e2e',
-                  fontWeight: 'bold',
-                },
-              }}
+              sx={formStyles.input}
             />
           </Grid>
         );
@@ -199,30 +249,12 @@ const GenericForm = ({
               type={type}
               // label={label}
               placeholder={label}
-              value={formData[fieldName] || ''}
+              value={getNestedValue(formData, fieldName) || ''}
               required={required}
               onChange={(e) => handleInputChange(fieldName, e.target.value)}
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  color: '#000',
-                  fontFamily: 'Inter, Arial, sans-serif',
-                  backgroundColor: '#fff',
-                  borderRadius: '12px',
-                  fontSize: '12px',
-                  padding: '2px',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#2e2e2e',
-                    borderWidth: '1px',
-                    borderRadius: '12px',
-                  },
-                },
-                '& .MuiInputLabel-outlined': {
-                  color: '#2e2e2e',
-                  fontWeight: 'bold',
-                },
-              }}
+              sx={formStyles.input}
             />
           </Grid>
         );
@@ -234,31 +266,13 @@ const GenericForm = ({
               type={type}
               label={label}
               // placeholder={label}
-              value={formData[fieldName] || ''}
+              value={getNestedValue(formData, fieldName) || ''}
               required={required}
               onChange={(e) => handleInputChange(fieldName, e.target.value)}
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
               InputLabelProps={{ shrink: true }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  color: '#000',
-                  fontFamily: 'Inter, Arial, sans-serif',
-                  backgroundColor: '#fff',
-                  borderRadius: '12px',
-                  fontSize: '12px',
-                  padding: '2px',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#2e2e2e',
-                    borderWidth: '1px',
-                    borderRadius: '12px',
-                  },
-                },
-                '& .MuiInputLabel-outlined': {
-                  color: '#2e2e2e',
-                  fontWeight: 'bold',
-                },
-              }}
+              sx={formStyles.input}
             />
           </Grid>
         );
@@ -275,25 +289,7 @@ const GenericForm = ({
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
               InputLabelProps={{ shrink: true }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  color: '#000',
-                  fontFamily: 'Inter, Arial, sans-serif',
-                  backgroundColor: '#fff',
-                  borderRadius: '12px',
-                  fontSize: '12px',
-                  padding: '2px',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#2e2e2e',
-                    borderWidth: '1px',
-                    borderRadius: '12px',
-                  },
-                },
-                '& .MuiInputLabel-outlined': {
-                  color: '#2e2e2e',
-                  fontWeight: 'bold',
-                },
-              }}
+              sx={formStyles.input}
             />
           </Grid>
         );
@@ -304,13 +300,45 @@ const GenericForm = ({
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={!!formData[fieldName]}
+                  checked={!!getNestedValue(formData, fieldName)}
                   onChange={(e) =>
                     handleInputChange(fieldName, e.target.checked)
                   }
                 />
               }
-              label={label}
+              label={
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: '1px solid #ccc', // Border to make it look like an input
+                    color: '#000',
+                    fontSize: '12px',
+                    borderWidth: '1px',
+                    borderRadius: '8px',
+                    padding: '6px 12px',
+                    minHeight: '48px',
+                    justifyContent: 'center',
+                    backgroundColor: 'rgb(252, 252, 252)',
+                    borderColor: 'rgb(238, 238, 237)',
+                    flexGrow: '1',
+                  }}
+                >
+                  {label}
+                </Box>
+              }
+              sx={{
+                display: 'flex',
+                alignItems: 'center', // Vertically center the checkbox and label
+                justifyContent: 'space-between', // Space between checkbox and label
+                '.MuiFormControlLabel-label': {
+                  flexGrow: '1',
+                  display: 'flex',
+                  // alignItems: 'center',
+                  // justifyContent: 'center',
+                  // height: '100%',
+                },
+              }}
             />
           </Grid>
         );
@@ -319,7 +347,7 @@ const GenericForm = ({
         return (
           <Grid item xs={gridSize} key={fieldName}>
             <RadioGroup
-              value={formData[fieldName] || ''}
+              value={getNestedValue(formData, fieldName) || ''}
               onChange={(e) => handleInputChange(fieldName, e.target.value)}
             >
               {options?.map((option) => (
@@ -345,51 +373,60 @@ const GenericForm = ({
                 fieldOptions.find((opt) => opt.value === formData[fieldName]) ||
                 null
               }
+              onFocus={() => {
+                if (!autocompleteOptions[fieldName]) {
+                  fetchAutocompleteOptions(field);
+                }
+              }}
               onChange={(_, selected) =>
                 handleInputChange(fieldName, selected?.value || '')
               }
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={label}
+                  placeholder={label}
                   required={required}
                   error={!!errors[fieldName]}
                   helperText={errors[fieldName]}
-                  backgroundColor="#fff"
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      color: '#000',
-                      fontFamily: 'Inter, Arial, sans-serif',
-                      backgroundColor: '#fff',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      padding: '2px',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#2e2e2e',
-                        borderWidth: '1px',
-                        borderRadius: '12px',
-                      },
-                    },
-                    '& .MuiInputLabel-outlined': {
-                      color: '#2e2e2e',
-                      fontWeight: 'bold',
-                    },
-                  }}
+                  sx={formStyles.input}
                 />
               )}
             />
           </Grid>
         );
-
+      case 'password':
+        return (
+          <Grid item xs={gridSize} key={fieldName}>
+            <TextField
+              fullWidth
+              type="password"
+              placeholder={label}
+              value={getNestedValue(formData, fieldName) || ''}
+              required={required}
+              onChange={(e) => handleInputChange(fieldName, e.target.value)}
+              error={!!errors[fieldName]}
+              helperText={errors[fieldName]}
+              sx={formStyles.input}
+            />
+          </Grid>
+        );
       default:
         return null;
     }
   };
-
+  const cancelHandler = () => {
+    if (onCancel) {
+      setFormData({});
+      onCancel();
+    } else {
+      setFormData({});
+      navigate(-1);
+    }
+  };
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ ...styles }}>
+    <Box component="form" sx={{ ...styles }}>
       <Grid container spacing={2}>
-        {layout?.map((section, sectionIndex) => (
+        {formLayout?.map((section, sectionIndex) => (
           <Grid item xs={12} key={`section-${sectionIndex}`}>
             {section.label && (
               <Typography variant="h6" color="primary" gutterBottom>
@@ -402,33 +439,22 @@ const GenericForm = ({
           </Grid>
         ))}
       </Grid>
-      <Box mt={3} display="flex" justifyContent="flex-end" gap={2}>
-        {/* <Button text={} onClick={() => {
-            setFormData({});
-            navigate(-1);
-          }} /> */}
+      <Box
+        mt={3}
+        display="flex"
+        justifyContent="flex-end"
+        gap={2}
+        {...buttonContainerStyles}
+      >
         {showCancelButton && (
-          <Button
-            variant="outlined"
-            startIcon={<Close />}
-            onClick={() => {
-              setFormData({});
-              navigate(-1);
-            }}
-          >
-            Cancel
-          </Button>
+          <Button text={cancelButtonText} onClick={cancelHandler} />
         )}
         <Button
-          variant="contained"
-          color="primary"
-          startIcon={<Save />}
-          type="submit"
-        >
-          {saveButtonText}
-        </Button>
-
-        {/* <Button></Button> */}
+          text={saveButtonText}
+          onClick={(e) => {
+            handleSubmit(e);
+          }}
+        />
       </Box>
     </Box>
   );
@@ -445,7 +471,7 @@ GenericForm.propTypes = {
           type: PropTypes.string.isRequired,
           label: PropTypes.string.isRequired,
           field: PropTypes.string.isRequired,
-          required: PropTypes.bool,
+          required: PropTypes.bool | PropTypes.func,
           visible: PropTypes.func,
           size: PropTypes.oneOf(['small', 'medium', 'large']),
           options: PropTypes.arrayOf(

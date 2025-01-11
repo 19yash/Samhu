@@ -63,9 +63,10 @@ const Sports = () => {
           iconPosition="start"
         />,
       ]}
-      api={routeLink.sports}
+      // api={routeLink.sports}
       //   filter
       onPress={(row) => {
+        console.log('🚀 ~ Sports ~ row:', row);
         navigate(`categories`, {
           sportsId: row._id,
         });

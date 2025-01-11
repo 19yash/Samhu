@@ -30,7 +30,7 @@ import Button from '../components/button/Button';
 //   rewards,
 
 // }
-const EventCard2 = ({ event = {} }) => {
+const EventCard2 = ({ event = {}, onPress }) => {
   const theme = useTheme();
   const {
     title,
@@ -62,11 +62,9 @@ const EventCard2 = ({ event = {} }) => {
           cursor: 'pointer',
         },
       }}
-      onClick={() =>
-        navigate('event-details', {
-          state: { event },
-        })
-      }
+      onClick={() => {
+        onPress();
+      }}
     >
       {/* Image */}
       <CardMedia

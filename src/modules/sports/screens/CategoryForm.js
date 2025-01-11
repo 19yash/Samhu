@@ -14,8 +14,8 @@ const CategoryForm = () => {
         {
           type: 'autocomplete',
           label: 'Sport',
-          field: 'sport',
-          api: routeLink.sport,
+          field: 'sports_id',
+          api: routeLink.sports,
           required: true,
           size: 'medium',
         },
@@ -37,12 +37,12 @@ const CategoryForm = () => {
         },
         {
           label: 'weight',
-          field: 'weight',
+          field: 'max_weight_allowed',
           type: 'number',
         },
         {
           label: 'Number of Participant',
-          field: 'paticipants',
+          field: 'participants_in_team',
           type: 'number',
           required: true,
         },

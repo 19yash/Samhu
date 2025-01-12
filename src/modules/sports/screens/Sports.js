@@ -7,38 +7,11 @@ import images from '../../../images';
 
 const Sports = () => {
   const navigate = useNavigate();
-  const data = [
-    {
-      name: 'Football',
-      categories: 5,
-      activeEvents: 14,
-      _id: 1,
-    },
-    {
-      name: 'Cricket',
-      categories: 5,
-      activeEvents: 14,
-      _id: 2,
-    },
-    {
-      name: 'Basketball',
-      categories: 5,
-      activeEvents: 14,
-      _id: 3,
-    },
-    {
-      name: 'Kabadi',
-      categories: 5,
-      activeEvents: 14,
-      _id: 4,
-    },
-  ];
   const columns = [
     {
       header: 'Sports Name',
       render: (row) => {
-        console.log('🚀 ~ Sports ~ row:', row);
-        return `${row.name}`;
+        return `${row.sports_name}`;
       },
     },
     {
@@ -63,16 +36,14 @@ const Sports = () => {
           iconPosition="start"
         />,
       ]}
-      // api={routeLink.sports}
-      //   filter
+      api={routeLink.sports}
       onPress={(row) => {
         console.log('🚀 ~ Sports ~ row:', row);
-        navigate(`categories`, {
-          sportsId: row._id,
+        navigate(`${row.id}/categories`, {
+          sportsId: row.id,
         });
       }}
       columns={columns}
-      data={data}
     />
   );
 };

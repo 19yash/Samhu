@@ -5,22 +5,22 @@ import SportsForm from '../screens/SportsForm';
 const SportsRoute = [
   {
     name: 'Add Sports',
-    path: '/sports/add-sports',
+    path: '/sports/:sportsId/add-sports',
     element: <SportsForm />,
   },
   {
     name: 'Sports Categories',
-    path: '/sports/categories',
+    path: '/sports/:sportsId/categories',
     element: <Category />,
   },
   {
     name: 'Add Category',
-    path: '/sports/categories/add-category',
+    path: '/sports/:sportsId/categories/add-category',
     element: <CategoryForm />,
   },
   {
     name: 'Edit Category',
-    path: '/sports/categories/edit',
+    path: '/sports/:sportsId/categories/:categoryId/edit',
     element: <CategoryForm />,
   },
 ];

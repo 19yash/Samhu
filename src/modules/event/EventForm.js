@@ -12,19 +12,14 @@ const EventForm = () => {
 
   const fetchCategories = async (sportsId) => {
     try {
-      // const response = await httpService.get(routeLink.category);
-      // console.log('🚀 ~ fetchCategories ~ response:', response);
-      // return response;
-      return [
-        {
-          _id: '123456',
-          name: 'Women',
-        },
-        {
-          _id: '123457',
-          name: 'Men',
-        },
-      ];
+      const response = await httpService.get(`${routeLink.category}/`, {
+        sports_id: sportsId,
+      });
+      if (response.data) {
+        return response.data;
+      } else {
+        throw new Error('No Categories Available');
+      }
       // if (response) {
       //   // setCategories(response.data);
       //   setCategories();
@@ -166,22 +161,10 @@ const EventForm = () => {
         {
           label: 'Sports',
           type: 'autocomplete',
-          field: 'sport',
+          field: 'sports_id',
           api: routeLink.sports,
-          options: [
-            {
-              label: 'Cricket',
-              value: { name: 'Cricket', _id: '123456' },
-            },
-            {
-              label: 'Football',
-              value: { name: 'Football', _id: '123457' },
-            },
-            {
-              label: 'Archery',
-              value: { name: 'Archery', _id: '123458' },
-            },
-          ],
+          keyField: 'id',
+          suggestionField: 'sports_name',
           required: true,
           size: 'large',
         },
@@ -192,20 +175,20 @@ const EventForm = () => {
     <GenericForm
       computations={[
         {
-          fields: ['sport'],
+          fields: ['sports_id'],
           condition: (formData) => {
-            return formData?.sport;
+            return formData?.sports_id;
           },
           compute: async ({ formData, formLayout, setFormLayout }) => {
             try {
-              const { sport } = formData || {};
-              if (!sport?._id) {
+              const { sports_id } = formData || {};
+              if (!sports_id) {
                 console.error('Sport ID is missing.');
                 return;
               }
 
               // Fetch categories for the selected sport
-              const categories = await fetchCategories(sport._id);
+              const categories = await fetchCategories(sports_id);
 
               if (!categories || !Array.isArray(categories)) {
                 console.error('Invalid categories data.');

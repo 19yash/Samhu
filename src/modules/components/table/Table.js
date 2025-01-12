@@ -15,7 +15,7 @@ const Table = ({
   api,
   columns,
   data,
-  filter,
+  filter = {},
   styles = {},
   headerActions = [],
   onPress,
@@ -29,7 +29,7 @@ const Table = ({
       const fetchData = async () => {
         try {
           const response = await httpService.get(api, {
-            filter,
+            ...filter,
           });
           console.log('🚀 ~ fetchData ~ response:', response);
           if (response?.data && response.data.length) {
@@ -97,7 +97,14 @@ const Table = ({
           <TableBody>
             {tableData.length > 0 ? (
               tableData.map((row, rowIndex) => (
-                <TableRow key={rowIndex} onClick={onPress}>
+                <TableRow
+                  key={rowIndex}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!onPress) return;
+                    onPress(row);
+                  }}
+                >
                   {columns.map((col, colIndex) => {
                     const cellData = col?.render
                       ? col.render(row)

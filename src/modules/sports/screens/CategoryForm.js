@@ -2,11 +2,13 @@ import React from 'react';
 import GenericForm from '../../components/form/Form';
 import routeLink from '../../../constants/routeLink';
 import { modes } from '../../../constants/formConstants';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const CategoryForm = () => {
   const { state } = useLocation();
-  const { category, mode = modes.create } = state || {};
+  const { categoryId } = useParams();
+  const navigate = useNavigate();
+  const { mode = modes.create } = state || {};
 
   const layout = [
     {
@@ -18,6 +20,8 @@ const CategoryForm = () => {
           api: routeLink.sports,
           required: true,
           size: 'medium',
+          keyField: 'id',
+          suggestionField: 'sports_name',
         },
         {
           label: 'Category',
@@ -36,8 +40,13 @@ const CategoryForm = () => {
           type: 'number',
         },
         {
-          label: 'weight',
+          label: 'Max weight',
           field: 'max_weight_allowed',
+          type: 'number',
+        },
+        {
+          label: 'Min weight',
+          field: 'min_weight_allowed',
           type: 'number',
         },
         {
@@ -46,28 +55,41 @@ const CategoryForm = () => {
           type: 'number',
           required: true,
         },
-        {
-          label: 'Gender',
-          field: 'gender',
-          type: 'autocomplete',
-          options: [
-            { label: 'Male', value: 'male' },
-            { label: 'Female', value: 'female' },
-          ],
-        },
+        // {
+        //   label: 'Gender',
+        //   field: 'gender',
+        //   type: 'autocomplete',
+        //   options: [
+        //     { label: 'Male', value: 'male' },
+        //     { label: 'Female', value: 'female' },
+        //   ],
+        // },
       ],
     },
   ];
   return (
     <GenericForm
+      afterSubmit={(response) => {
+        navigate(-1);
+      }}
+      beforeSubmit={(formData) => {
+        return {
+          ...formData,
+          is_team_sport: formData.Participants_in_team > 1,
+          participants_in_team: Number(formData.Participants_in_team),
+          min_age: Number(formData.min_age),
+          max_age: Number(formData.max_age),
+          min_weight_allowed: Number(formData.min_weight_allowed),
+          max_weight_allowed: Number(formData.max_weight_allowed),
+        };
+      }}
       mode={mode}
       apiPath={
         mode === modes.create
-          ? routeLink.category
-          : `${routeLink.category}/${category?._id}`
+          ? `${routeLink.category}/`
+          : `${routeLink.category}/${categoryId}`
       }
       layout={layout}
-      onSubmit=""
       styles={{
         container: {
           width: '100%',

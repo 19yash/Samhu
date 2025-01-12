@@ -11,7 +11,6 @@ import {
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import httpService from '../../../services/httpService';
@@ -50,7 +49,7 @@ const GenericForm = ({
   const fetchFormData = async (apiPath) => {
     setLoading(true);
     try {
-      const response = await axios.get(apiPath);
+      const response = await httpService.get(apiPath);
       setFormData(response.data || {});
     } catch (error) {
       console.error('Error fetching data:', error);

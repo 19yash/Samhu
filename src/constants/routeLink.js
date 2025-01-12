@@ -7,6 +7,7 @@ const routeLink = {
   confirmOtp: '/validate-otp',
   resetPassword: 'reset-password',
   category: '/categories',
+  participants: '/participants',
 };
 
 export default routeLink;

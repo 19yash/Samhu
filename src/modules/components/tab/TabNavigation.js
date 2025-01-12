@@ -24,13 +24,9 @@ const TabNavigation = ({ tabs, styles }) => {
           let selectedTab = false;
           if (tab.route) {
             const route = tab.route.split('/');
-            if (path[path.length - 1] === route[route.length - 1]) {
-              selectedTab = true;
-            }
-          } else {
-            if (index === activeTab) {
-              selectedTab = true;
-            }
+            selectedTab = path[path.length - 1] === route[route.length - 1];
+          } else if (index === activeTab) {
+            selectedTab = true;
           }
           return selectedTab ? (
             <SelectedTab key={index}>{tab.name}</SelectedTab>
@@ -38,13 +34,13 @@ const TabNavigation = ({ tabs, styles }) => {
             <Tab
               key={index}
               onClick={() => {
-                setActiveTab(index),
-                  navigate(tab.route, {
-                    state: {
-                      ...tab.state,
-                      ...(tab.props || {}),
-                    },
-                  });
+                setActiveTab(index);
+                navigate(tab.route, {
+                  state: {
+                    ...tab.state,
+                    ...(tab.props || {}),
+                  },
+                });
               }}
             >
               {tab.name}

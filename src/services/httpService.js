@@ -4,7 +4,8 @@ import { toast } from 'react-toastify';
 
 // Configure the base URL
 const axiosInstance = axios.create({
-  baseURL: 'https://404a-43-204-148-133.ngrok-free.app/api/v1', // Replace with your base API URL
+  baseURL:
+    'https://95cf-2401-4900-5f3a-848-8115-3999-42d7-5901.ngrok-free.app/api/v1', // Replace with your base API URL
   // baseURL: `${process.env.REACT_APP_BASE_URL}`, // Replace with your base API URL
   timeout: 30000, // Optional: Set a timeout for requests
 });

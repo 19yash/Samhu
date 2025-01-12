@@ -55,35 +55,35 @@ const EventForm = () => {
         {
           label: 'Start Date',
           type: 'date',
-          field: 'eventDate',
+          field: 'event_start_date',
           required: true,
           size: 'medium',
         },
         {
           label: 'End Date',
           type: 'date',
-          field: 'eventDate',
+          field: 'event_end_Date',
           required: true,
           size: 'medium',
         },
         {
           label: 'Registration start Date',
           type: 'date',
-          field: 'eventDate',
+          field: 'registration_start_date',
           required: true,
           size: 'medium',
         },
         {
           label: 'Registration End Date',
           type: 'date',
-          field: 'eventDate',
+          field: 'registration_end_date',
           required: true,
           size: 'medium',
         },
         {
           label: 'Reward',
           type: 'text',
-          field: 'reward',
+          field: 'rewards',
           required: true,
         },
         {
@@ -100,7 +100,7 @@ const EventForm = () => {
         {
           label: 'Name',
           type: 'text',
-          field: 'name',
+          field: 'organizer_name',
           required: true,
           size: 'medium',
         },
@@ -175,11 +175,11 @@ const EventForm = () => {
             },
             {
               label: 'Football',
-              value: 'Football',
+              value: { name: 'Football', _id: '123457' },
             },
             {
               label: 'Archery',
-              value: 'Archery',
+              value: { name: 'Archery', _id: '123458' },
             },
           ],
           required: true,
@@ -245,6 +245,21 @@ const EventForm = () => {
           },
         },
       ]}
+      beforeSubmit={(formData) => {
+        const processedFormData = { categories: [] };
+        Object.keys(formData).forEach((key) => {
+          if (key.startsWith('categories_') && formData[key].selected) {
+            const category_id = key.replace('categories_', '');
+            processedFormData['categories'].push({
+              category_id: category_id,
+              price: formData[key].price,
+            });
+          } else {
+            processedFormData[key] = formData[key];
+          }
+        });
+        return processedFormData;
+      }}
       mode={mode}
       apiPath={
         mode === modes.create

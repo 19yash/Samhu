@@ -163,6 +163,7 @@ const GenericForm = ({
   };
 
   const handleSubmit = (e) => {
+    console.log('called');
     e.preventDefault();
 
     const requiredErrors = {};

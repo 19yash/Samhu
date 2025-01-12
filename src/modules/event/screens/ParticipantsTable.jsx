@@ -3,7 +3,9 @@ import Table from '../../components/table/Table';
 import routeLink from '../../../constants/routeLink';
 import { Img } from '../styles/EventCard.style';
 import images from '../../../images';
+import { useParams } from 'react-router-dom';
 const ParticaipantsTable = () => {
+  const { eventId } = useParams();
   const data = [
     {
       first_name: 'John',
@@ -50,7 +52,14 @@ const ParticaipantsTable = () => {
       },
     },
   ];
-  return <Table api={routeLink.participants} columns={columns} data={data} />;
+  return (
+    <Table
+      api={routeLink.participants}
+      // filter={{ event: eventId, category: categoryId }}
+      columns={columns}
+      data={data}
+    />
+  );
 };
 
 export default ParticaipantsTable;

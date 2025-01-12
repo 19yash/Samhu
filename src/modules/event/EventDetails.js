@@ -17,6 +17,7 @@ import View from '../components/View';
 import Button from '../components/button/Button';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
+import Participants from './screens/Participants';
 const EventDetails = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState({
@@ -141,7 +142,29 @@ const EventDetails = () => {
       {event.description && <p>{event.description}</p>}
       <>
         <Heading>Participants</Heading>
-        <ParticaipantsTable></ParticaipantsTable>
+        <Participants
+          event={{
+            categories: [
+              {
+                categoryId: { name: 'Men' },
+                price: '200',
+              },
+              {
+                categoryId: { name: 'Women' },
+                price: '200',
+              },
+            ],
+            _id: '67815197-23a4-8008-9877-8939e0bb5663',
+            title: 'Football Tournament',
+            subtitle: 'Football',
+            image: 'https://via.placeholder.com/400x225',
+            date: '29 November, 2024',
+            price: '99',
+            venue: 'Sportyzo Sports Academy, Gurugram',
+            organizer: 'All India Football Federation (AIFF)',
+          }}
+        />
+        {/* <ParticaipantsTable></ParticaipantsTable> */}
       </>
     </View>
   );

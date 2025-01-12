@@ -2,18 +2,17 @@ import TabNavigation from '../../components/tab/TabNavigation';
 import ParticaipantsTable from './ParticipantsTable';
 
 const Participants = ({ event }) => {
+  console.log('🚀 ~ Participants ~ event:', event);
   if (!event) {
     return;
   }
 
   const tabs = [];
-  event.categories.map((event) => {
-    event.categories.map((category) => {
-      tabs.push({
-        name: category.name,
-        element: ParticaipantsTable,
-        props: { event: event },
-      });
+  event.categories.map((category) => {
+    tabs.push({
+      name: category.categoryId.name,
+      element: ParticaipantsTable,
+      props: { event: event },
     });
   });
 

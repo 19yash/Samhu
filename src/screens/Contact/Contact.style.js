@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import theme from '../../theme/Theme';
+import images from '../../images';
 
 export const heading = {
   fontSize: '40px',
   fontWeight: '700',
 };
 export const heroSection = {
-  backgroundImage:
-    'url(https://wp.themerange.net/conat/wp-content/uploads/2023/04/11.jpg)',
+  backgroundImage: `url(${images.about})`,
   height: '50vh',
   color: '#fff',
   display: 'flex',

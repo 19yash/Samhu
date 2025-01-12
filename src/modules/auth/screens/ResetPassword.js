@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { styles } from '../styles/ForgotPassword.style';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import httpService from '../../../services/httpService';
 import Button from '../../components/button/Button';
@@ -15,10 +15,7 @@ const ResetPassword = () => {
     formState: { errors },
     setError,
   } = useForm();
-  const { state } = useLocation();
-  console.log('🚀 ~ ResetPassword ~ state:', state);
-  const token = state?.token || {};
-  console.log('🚀 ~ ResetPassword ~ token:', token);
+  const { token } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onSubmit = async (data) => {
@@ -33,28 +30,20 @@ const ResetPassword = () => {
         new_password: data.new_password,
         token: token,
       });
-      console.log('🚀 ~ onSubmit ~ response:', response);
-      if (response.message === 'success') {
+      if (response.message === 'Password successfully reset') {
         toast.success('Password Changed Successfully');
         navigate('/login');
       }
-      setLoading('false');
     } catch (error) {
       console.error('Error logging in:', error);
       setError('identifier', {
         type: 'manual',
         message: 'Invalid credentials',
       });
-      setLoading('false');
     } finally {
+      setLoading(false);
     }
   };
-  // useEffect(() => {
-  //   if (!token) {
-  //     toast.error('Something Went Wrong Please Try Again Later');
-  //     navigate('/forgot-password');
-  //   }
-  // });
   return (
     <div style={styles.container}>
       <form style={styles.form}>

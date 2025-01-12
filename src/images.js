@@ -34,6 +34,24 @@ const security = '/assets/security.svg';
 const users = '/assets/users.svg';
 const call = '/assets/call.svg';
 const address = '/assets/address.svg';
+const homeGetInTouch = '/assets/homeGetInTouch.webp';
+const about = '/assets/about.jpg';
+const about1 = '/assets/about1.webp';
+const objective1 = '/assets/objective1.webp';
+const objective2 = '/assets/objective2.webp';
+const objective3 = '/assets/objective3.webp';
+
+const footer1 = '/assets/footer1.webp';
+const footer2 = '/assets/footer2.webp';
+const footer3 = '/assets/footer3.webp';
+const footer4 = '/assets/footer4.webp';
+const footer5 = '/assets/footer4.png';
+const footer6 = '/assets/footer4.png';
+
+const facebookLogo = '/assets/facebook-logo.svg';
+const instagramLogo = '/assets/instagram-logo.svg';
+const twitterLogo = '/assets/twitter-logo.svg';
+
 const images = {
   trash: trash,
   edit: edit,
@@ -71,6 +89,21 @@ const images = {
   users: users,
   call: call,
   address: address,
+  homeGetInTouch: homeGetInTouch,
+  about: about,
+  about1: about1,
+  objective1: objective1,
+  objective2: objective2,
+  objective3: objective3,
+  footer1: footer1,
+  footer2: footer2,
+  footer3: footer3,
+  footer4: footer4,
+  footer5: footer5,
+  footer6: footer6,
+  facebookLogo: facebookLogo,
+  instagramLogo: instagramLogo,
+  twitterLogo: twitterLogo,
 };
 
 export default images;

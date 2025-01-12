@@ -78,7 +78,7 @@ export const AppNavigator = () => {
       ),
     },
     {
-      path: '/reset-password',
+      path: '/reset-password/:token',
       element: (
         <AuthWrapper>
           <ResetPassword />{' '}

@@ -29,6 +29,7 @@ const GenericForm = ({
   saveButtonText = 'Save',
   defaultValues = {},
   beforeSubmit,
+  afterSubmit,
   buttonContainerStyles = {},
   computations = [],
 }) => {
@@ -124,41 +125,73 @@ const GenericForm = ({
   };
 
   const onSubmit = async (formData) => {
-    if (beforeSubmit) {
-      try {
-        const processedFormData = beforeSubmit({ ...formData });
-        if (processedFormData && typeof processedFormData === 'object') {
-          formData = processedFormData; // Update formData only if valid
-        } else {
-          throw new Error('Invalid data returned from beforeSubmit.');
-        }
-      } catch (error) {
-        console.error('Error in beforeSubmit:', error);
-        toast.error('Failed to process form data. Please check your inputs.');
-        return; // Exit early if beforeSubmit fails
-      }
-    }
+    setLoading(true);
+
     try {
-      if (mode === 'create') {
-        const response = await httpService.post(apiPath, {
-          body: formData,
-        });
-        if (response && response?.message !== 'error') {
-          toast.success('Successfull');
-        }
+      // Process formData before submission, if applicable
+      const processedFormData = beforeSubmit
+        ? await handleBeforeSubmit(formData)
+        : formData;
+
+      // Submit the processed formData
+      const response = await submitFormData(processedFormData);
+
+      // Handle the response after submission
+      await handleAfterSubmit(response);
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast.error('An error occurred. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Helper function to process formData before submission
+  const handleBeforeSubmit = async (formData) => {
+    try {
+      const response = await beforeSubmit(formData);
+      if (response && typeof response === 'object') {
+        return response;
       } else {
-        const response = await httpService.put(apiPath, {
-          body: formData,
-        });
-        if (response && response?.message !== 'error') {
-          toast.success('Successfull');
-        } else {
-          toast.error('An error occurred during the operation.');
-        }
+        throw new Error('Invalid data returned from beforeSubmit.');
       }
-    } catch (err) {
-      console.log(err);
-      toast.error('Something Went wrong . Please try again Later.');
+    } catch (error) {
+      console.error('Error in beforeSubmit:', error);
+      toast.error('Failed to process form data. Please check your inputs.');
+      throw error; // Propagate error to be caught in onSubmit
+    }
+  };
+
+  // Helper function to submit formData based on mode
+  const submitFormData = async (formData) => {
+    try {
+      const response =
+        mode === 'create'
+          ? await httpService.post(apiPath, formData)
+          : await httpService.put(apiPath, formData);
+
+      if (response && response.message !== 'error') {
+        toast.success('Successful');
+        return response;
+      } else {
+        throw new Error('An error occurred during the operation.');
+      }
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      toast.error('An error occurred during the operation.');
+      throw error; // Propagate error to be caught in onSubmit
+    }
+  };
+
+  // Helper function to handle actions after form submission
+  const handleAfterSubmit = async (response) => {
+    if (afterSubmit) {
+      try {
+        await afterSubmit(response);
+      } catch (error) {
+        console.error('Error in afterSubmit:', error);
+        // Optionally, display a toast or handle the error as needed
+      }
     }
   };
 
@@ -455,6 +488,7 @@ const GenericForm = ({
           onClick={(e) => {
             handleSubmit(e);
           }}
+          loading={loading}
         />
       </Box>
     </Box>

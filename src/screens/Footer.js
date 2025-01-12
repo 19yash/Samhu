@@ -40,27 +40,27 @@ const Footer = () => {
           <h3>Quick Links</h3>
           <QuickLinks>
             <li>
-              <a href="#home">
+              <a href="/home">
                 <Icon src={images.rightArrow} />
                 Home
               </a>
             </li>
             <li>
-              <a href="#about">
+              <a href="/about">
                 {' '}
                 <Icon src={images.rightArrow} />
                 About Us
               </a>
             </li>
             <li>
-              <a href="#events">
+              <a href="/events">
                 {' '}
                 <Icon src={images.rightArrow} />
                 Events
               </a>
             </li>
             <li>
-              <a href="#contact">
+              <a href="/contactUs">
                 {' '}
                 <Icon src={images.rightArrow} />
                 Contact Us
@@ -93,9 +93,15 @@ const Footer = () => {
           </InfoItem>
 
           <SocialIcons>
-            <a href="#facebook">{/* <FaFacebookF /> */}</a>
-            <a href="#instagram">{/* <FaInstagram /> */}</a>
-            <a href="#twitter">{/* <FaTwitter />s */}</a>
+            <a href="#facebook">
+              <Icon src={images.facebookLogo} />
+            </a>
+            <a href="#instagram">
+              <Icon src={images.instagramLogo} />
+            </a>
+            <a href="#twitter">
+              <Icon src={images.twitterLogo} />
+            </a>
           </SocialIcons>
         </Section>
       </FooterContainer>

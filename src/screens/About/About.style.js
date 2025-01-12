@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import theme from '../../theme/Theme';
+import images from '../../images';
 export const heroSection = {
-  backgroundImage:
-    'url(https://wp.themerange.net/conat/wp-content/uploads/2023/04/11.jpg)',
+  backgroundImage: `url(${images.about})`,
   height: '50vh',
   color: '#fff',
   display: 'flex',
@@ -35,8 +35,7 @@ export const Section = {
     height: '307px',
     zIndex: '-1',
     backgroundRepeat: 'no-repeat',
-    backgroundImage:
-      'url(https://smuh.in/wp-content/uploads/2024/04/circle-pink.png)',
+    backgroundImage: `url(${images.objective1})`,
   },
   circleLayerTwo: {
     position: 'absolute',
@@ -46,8 +45,7 @@ export const Section = {
     height: '260px',
     zIndex: '-1',
     backgroundRepeat: 'no-repeat',
-    backgroundImage:
-      'url(https://smuh.in/wp-content/uploads/2024/04/circle-icon-one.png)',
+    backgroundImage: `url(${images.objective2})`,
   },
   circleLayerThree: {
     position: 'absolute',
@@ -57,8 +55,7 @@ export const Section = {
     height: '430px',
     zIndex: '1',
     backgroundRepeat: 'no-repeat',
-    backgroundImage:
-      'url(https://smuh.in/wp-content/uploads/2024/04/events-bg.png)',
+    backgroundImage: `url(${images.objective3})`,
   },
   circleLayerFour: {
     backgroundImage:

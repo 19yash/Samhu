@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import images from '../../images';
 
 export const HeroSection = styled.div`
   display: flex;
@@ -8,7 +9,7 @@ export const HeroSection = styled.div`
   gap: 8px;
   height: 100vh;
   color: #fff;
-  background-image: url(https://smuh.in/wp-content/uploads/2024/08/slider-banner-home-1.jpg);
+  background-image: url(${images.heroSection});
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -92,8 +93,7 @@ export const Promotion = {
     justifyContent: 'center',
     height: '60vh',
     gap: '200px',
-    backgroundImage:
-      'url(https://smuh.in/wp-content/uploads/2023/04/image-1.jpg)',
+    backgroundImage: `url(${images.homeGetInTouch})`,
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',

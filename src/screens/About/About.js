@@ -3,14 +3,12 @@ import NavBar from '../NavBar';
 import {
   heroSection,
   IconContainer,
-  IntoCardContainer,
   IntroBackGround,
   IntroCardContainer,
   Section,
 } from './About.style';
 import Footer from '../Footer';
 import images from '../../images';
-import { section } from '../Event/Event.style';
 
 const objective = [
   {
@@ -78,7 +76,7 @@ const About = () => {
     <div>
       <NavBar />
       {/* Intoduction */}
-      <div style={heroSection}>Contact Us</div>
+      <div style={heroSection}>About Us</div>
 
       <div style={{ ...Section.container, backgroundColor: '#fff' }}>
         <div style={Section.subHeading}>Introduction</div>
@@ -91,11 +89,7 @@ const About = () => {
           }}
         >
           <IntroBackGround>
-            <img
-              style={Section.introImage}
-              src="https://smuh.in/wp-content/uploads/2024/08/steptodown.com583227-1024x735.jpg"
-              alt=""
-            />
+            <img style={Section.introImage} src={images.about1} alt="image" />
           </IntroBackGround>
           <IntroCardContainer>
             {Introduction.map((item, index) => {

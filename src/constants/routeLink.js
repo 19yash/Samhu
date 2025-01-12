@@ -2,7 +2,7 @@ const routeLink = {
   login: '/login',
   signup: '/signup',
   events: '/event',
-  sports: '/sports',
+  sports: '/sports/',
   forgotPassword: '/forgot-password',
   confirmOtp: '/validate-otp',
   resetPassword: 'reset-password',

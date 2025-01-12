@@ -1,6 +1,7 @@
 import zIndex from '@mui/material/styles/zIndex';
 import theme from '../theme/Theme';
 import styled from 'styled-components';
+import images from '../images';
 
 export const copyright = {
   backgroundColor: theme.palette.primary.main,
@@ -17,8 +18,7 @@ export const Container = styled.div`
 
 export const Icons = {
   footerOne: {
-    backgroundImage:
-      'url(https://smuh.in/wp-content/themes/conat/assets/images/icons/icon-5.png)',
+    backgroundImage: `url(${images.footer1})`,
     position: 'absolute',
     right: '30px',
     bottom: '180px',
@@ -28,8 +28,7 @@ export const Icons = {
     zIndex: 1,
   },
   footerTwo: {
-    backgroundImage:
-      'url(	https://smuh.in/wp-content/themes/conat/assets/images/icons/icon-5.png)',
+    backgroundImage: `url(${images.footer1})`,
     position: 'absolute',
     left: '30px',
     bottom: '180px',
@@ -39,8 +38,7 @@ export const Icons = {
     zIndex: 1,
   },
   footerThree: {
-    backgroundImage:
-      'url(https://smuh.in/wp-content/themes/conat/assets/images/icons/icon-6.png)',
+    backgroundImage: `url(${images.footer2})`,
     position: 'absolute',
     right: '60px',
     bottom: '80px',
@@ -50,8 +48,7 @@ export const Icons = {
     zIndex: 1,
   },
   footerFour: {
-    backgroundImage:
-      'url(https://smuh.in/wp-content/themes/conat/assets/images/icons/icon-6.png)',
+    backgroundImage: `url(${images.footer2})`,
     position: 'absolute',
     right: '160px',
     bottom: '120px',
@@ -61,8 +58,7 @@ export const Icons = {
     zIndex: 1,
   },
   footerFive: {
-    backgroundImage:
-      'url(https://smuh.in/wp-content/themes/conat/assets/images/icons/icon-7.png)',
+    backgroundImage: `url(${images.footer3})`,
     position: 'absolute',
     left: '0px',
     top: '0px',
@@ -72,8 +68,7 @@ export const Icons = {
     zIndex: 1,
   },
   footerSix: {
-    backgroundImage:
-      'url(https://smuh.in/wp-content/themes/conat/assets/images/icons/icon-8.png)',
+    backgroundImage: `url(${images.footer4})`,
     position: 'absolute',
     right: '0px',
     bottom: '0px',
@@ -83,8 +78,7 @@ export const Icons = {
     zIndex: 1,
   },
   footerSeven: {
-    backgroundImage:
-      'url(https://smuh.in/wp-content/themes/conat/assets/images/icons/icon-9.png)',
+    backgroundImage: `url(${images.footer5})`,
     position: 'absolute',
     right: '0px',
     top: '0px',
@@ -94,8 +88,7 @@ export const Icons = {
     zIndex: 1,
   },
   footerEight: {
-    backgroundImage:
-      'url(https://smuh.in/wp-content/themes/conat/assets/images/icons/icon-10.png)',
+    backgroundImage: `url(${images.footer6})`,
     position: 'absolute',
     right: '0px',
     top: '-80px',

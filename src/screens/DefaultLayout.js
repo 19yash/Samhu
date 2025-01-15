@@ -8,7 +8,6 @@ import { useAuth } from '../modules/auth/hooks/useAuth';
 
 export const DefaultLayout = (props) => {
   const { user } = useAuth();
-  console.log('🚀 ~ DefaultLayout ~ user:', user);
   if (!user) {
     console.log('returning');
     return <Navigate to="/login" />;

@@ -22,6 +22,22 @@ const CategoryForm = () => {
           size: 'medium',
           keyField: 'id',
           suggestionField: 'sports_name',
+          visible: () => {
+            return mode === modes.create;
+          },
+        },
+        {
+          type: 'autocomplete',
+          label: 'Sport',
+          field: 'sport_details',
+          api: routeLink.sports,
+          required: true,
+          size: 'medium',
+          keyField: 'id',
+          suggestionField: 'sports_name',
+          visible: () => {
+            return mode === modes.edit;
+          },
         },
         {
           label: 'Category',
@@ -73,15 +89,19 @@ const CategoryForm = () => {
         navigate(-1);
       }}
       beforeSubmit={(formData) => {
-        return {
+        const newObject = {
           ...formData,
-          is_team_sport: formData.Participants_in_team > 1,
-          participants_in_team: Number(formData.Participants_in_team),
+          is_team_sport: formData?.participants_in_team > 1,
+          participants_in_team: Number(formData?.participants_in_team),
           min_age: Number(formData.min_age),
           max_age: Number(formData.max_age),
           min_weight_allowed: Number(formData.min_weight_allowed),
           max_weight_allowed: Number(formData.max_weight_allowed),
+          sports_id: formData?.sport_details?.id || formData.sports_id,
+          sport_details: null,
         };
+        delete newObject.sport_details;
+        return newObject;
       }}
       mode={mode}
       apiPath={

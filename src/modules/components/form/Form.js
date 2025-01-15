@@ -50,6 +50,7 @@ const GenericForm = ({
     setLoading(true);
     try {
       const response = await httpService.get(apiPath);
+      console.log('🚀 ~ fetchFormData ~ response:', response);
       setFormData(response.data || {});
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -119,8 +120,31 @@ const GenericForm = ({
   const getNestedValue = (obj, path = '') => {
     return path.split('.').reduce((acc, key) => (acc ? acc[key] : ''), obj);
   };
-  const handleFileChange = (field, file) => {
-    setFileData({ ...fileData, [field]: file });
+  const handleFileChange = async (field, file, api) => {
+    if (!file) return;
+    const acceptedFormats = ['image/jpeg', 'image/png', 'image/gif'];
+
+    try {
+      if (!acceptedFormats.includes(file.type)) {
+        throw new Error('Invalid file format');
+      }
+      if (api) {
+        const formData = new FormData();
+        formData.append('media', file);
+
+        const response = await httpService.post(api, formData);
+
+        if (response.url) {
+          setFormData({ ...formData, [field]: response.url });
+        } else {
+          throw new Error('File upload failed Try again later');
+        }
+      }
+      toast.success('File uploaded successfully');
+    } catch (err) {
+      console.log('🚀 ~ handleFileChange ~ err:', err);
+      toast.error(err.message);
+    }
   };
 
   const onSubmit = async (formData) => {
@@ -240,6 +264,8 @@ const GenericForm = ({
       size = 'medium',
       visible,
       options,
+      api,
+      allowedFormats,
     } = field;
 
     // Visibility logic
@@ -311,6 +337,7 @@ const GenericForm = ({
         );
 
       case 'file':
+        console.log('🚀 ~ file:', typeof allowedFormats);
         return (
           <Grid item xs={gridSize} key={fieldName}>
             <TextField
@@ -318,10 +345,13 @@ const GenericForm = ({
               type="file"
               label={label}
               required={required}
-              onChange={(e) => handleFileChange(fieldName, e.target.files[0])}
+              onChange={(e) =>
+                handleFileChange(fieldName, e.target.files[0], api)
+              }
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
               InputLabelProps={{ shrink: true }}
+              accept={allowedFormats} // Allowed formats
               sx={formStyles.input}
             />
           </Grid>
@@ -403,8 +433,12 @@ const GenericForm = ({
               options={fieldOptions}
               getOptionLabel={(option) => option.label}
               value={
-                fieldOptions.find((opt) => opt.value === formData[fieldName]) ||
-                null
+                formData[fieldName]?.[field?.suggestionField]
+                  ? {
+                      label: formData[fieldName]?.[field?.suggestionField],
+                      value: formData[fieldName]?.[field?.keyField],
+                    }
+                  : null
               }
               onFocus={() => {
                 if (!autocompleteOptions[fieldName]) {

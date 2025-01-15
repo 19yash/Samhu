@@ -14,6 +14,9 @@ import { ImageContainer, Img } from './styles/EventCard.style';
 import images from '../../images';
 import { modes } from '../../constants/formConstants';
 import Button from '../components/button/Button';
+import checkAuthorization from '../../services/checkAuthorization';
+import { action, entity } from '../../constants/authorization';
+import { useAuth } from '../auth/hooks/useAuth';
 
 // {
 //     title,
@@ -31,6 +34,7 @@ import Button from '../components/button/Button';
 
 // }
 const EventCard2 = ({ event = {}, onPress }) => {
+  const { user } = useAuth();
   const theme = useTheme();
   const {
     title,
@@ -157,17 +161,20 @@ const EventCard2 = ({ event = {}, onPress }) => {
           />
         </Box>
       </CardContent>
-      <ImageContainer>
-        <Img
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate('add-event', {
-              state: { event, mode: modes.create },
-            });
-          }}
-          src={images.editLight}
-        />
-      </ImageContainer>
+
+      {checkAuthorization(user, entity.Events, action.edit) && (
+        <ImageContainer>
+          <Img
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('add-event', {
+                state: { event, mode: modes.create },
+              });
+            }}
+            src={images.editLight}
+          />
+        </ImageContainer>
+      )}
     </Card>
   );
 };

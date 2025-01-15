@@ -4,8 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import routeLink from '../../../constants/routeLink';
 import Button from '../../components/button/Button';
 import images from '../../../images';
+import checkAuthorization from '../../../services/checkAuthorization';
+import { useAuth } from '../../auth/hooks/useAuth';
+import { action, entity } from '../../../constants/authorization';
 
 const Sports = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const columns = [
     {
@@ -27,18 +31,21 @@ const Sports = () => {
   return (
     <Table
       headerActions={[
-        <Button
-          text="Add New Sport"
-          onClick={() => {
-            navigate('add-sports');
-          }}
-          icon={images.plus}
-          iconPosition="start"
-        />,
+        ...(checkAuthorization(user, entity.Sports, action.create)
+          ? [
+              <Button
+                text="Add New Sport"
+                onClick={() => {
+                  navigate('add-sports');
+                }}
+                icon={images.plus}
+                iconPosition="start"
+              />,
+            ]
+          : []),
       ]}
       api={routeLink.sports}
       onPress={(row) => {
-        console.log('🚀 ~ Sports ~ row:', row);
         navigate(`${row.id}/categories`, {
           sportsId: row.id,
         });

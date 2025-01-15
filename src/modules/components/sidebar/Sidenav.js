@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import {
-  CSidebar,
-  CSidebarBrand,
-  CSidebarNav,
-  CSidebarToggler,
-} from '@coreui/react';
+import { CSidebar, CSidebarBrand, CSidebarNav } from '@coreui/react';
 import '@coreui/coreui/dist/css/coreui.min.css';
 import SidenavItem from './SidenavItem';
 import images from '../../../images';
 import { Icon, Img } from './AppSideBar.style';
-import { SideBarNav, SideBarToggle, StyledSidenavItem } from './sidenav.style';
+import { SideBarNav, SideBarToggle } from './sidenav.style';
 
 const Sidenav = ({ navItems, brandName }) => {
   const [selectedItem, setSelectedItem] = useState(0);

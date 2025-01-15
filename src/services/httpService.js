@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 // Configure the base URL
 const axiosInstance = axios.create({
   baseURL:
-    'https://c638-2401-4900-5f1a-cecf-eaa9-4865-1d12-cdea.ngrok-free.app/api/v1', // Replace with your base API URL
+    'https://b6a0-2401-4900-5d1a-b3b8-f29-97c2-b90d-be46.ngrok-free.app/api/v1', // Replace with your base API URL
   timeout: 30000, // Optional: Set a timeout for requests
   withCredentials: true, // Include credentials with requests
   headers: {
@@ -26,7 +26,17 @@ const httpService = {
 
   post: async (endpoint, body = {}, config = {}) => {
     try {
-      const response = await axiosInstance.post(endpoint, body, config);
+      const isFormData = body instanceof FormData;
+
+      // Merge headers for FormData if necessary
+      const updatedConfig = {
+        ...config,
+        headers: {
+          ...config.headers,
+          ...(isFormData ? { 'Content-Type': 'multipart/form-data' } : {}),
+        },
+      };
+      const response = await axiosInstance.post(endpoint, body, updatedConfig);
       return response.data;
     } catch (error) {
       console.log('🚀 ~ post: ~ error:', error);

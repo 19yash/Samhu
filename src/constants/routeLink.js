@@ -8,6 +8,7 @@ const routeLink = {
   resetPassword: 'reset-password',
   category: '/categories',
   participants: '/participants',
+  uploadEventPoster: '/event/upload',
 };
 
 export default routeLink;

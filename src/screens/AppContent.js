@@ -32,7 +32,6 @@ const AppContent = ({ children }) => {
     }
     return visible;
   });
-  console.log('🚀 ~ visibleRoutes ~ visibleRoutes:', visibleRoutes);
   return (
     <AppContentStyle>
       <Routes>

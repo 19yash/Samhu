@@ -1,6 +1,8 @@
 export const entity = {
-  event: 'Event',
-  sports: 'Sports',
+  Events: 'Events',
+  Sports: 'Sports',
+  Category: 'Category',
+  Participants: 'Participants',
 };
 
 export const action = {
@@ -12,13 +14,21 @@ export const action = {
 
 export const authorization = {
   Admin: {
-    sports: [action.view, action.create, action.edit, action.delete],
-    Event: [action.view, action.create, action.edit, action.delete],
+    Sports: [action.view, action.create, action.edit, action.delete],
+    Category: [action.view, action.create, action.edit, action.delete],
+    Events: [action.view, action.create, action.edit, action.delete],
+    Participant: [action.view, action.edit, action.delete],
   },
   Host: {
-    Event: [action.view, action.create, action.edit, action.delete],
+    Sports: [action.view],
+    Category: [action.view],
+    Events: [action.view, action.create, action.edit, action.delete],
+    Participant: [action.view, action.edit, action.delete],
   },
   Participant: {
-    Event: [action.view],
+    Sports: [],
+    Category: [],
+    Events: [action.view],
+    Participant: [],
   },
 };

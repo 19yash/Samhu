@@ -5,8 +5,10 @@ import routeLink from '../../constants/routeLink';
 import { useLocation } from 'react-router-dom';
 import { modes } from '../../constants/formConstants';
 import { toast } from 'react-toastify';
+import { useAuth } from '../auth/hooks/useAuth';
 
 const EventForm = () => {
+  const { user } = useAuth();
   const { state } = useLocation();
   const { mode = modes.create, event } = state || {};
 
@@ -20,12 +22,6 @@ const EventForm = () => {
       } else {
         throw new Error('No Categories Available');
       }
-      // if (response) {
-      //   // setCategories(response.data);
-      //   setCategories();
-      // } else {
-      //   throw new Error('Try Again Later');
-      // }
     } catch (err) {
       console.log(err);
       toast.error(err.message);
@@ -39,13 +35,9 @@ const EventForm = () => {
         {
           label: 'Tornament Name',
           type: 'text',
-          field: 'name',
+          field: 'title',
           required: true,
           size: 'medium',
-          required: (formData) => {
-            console.log(formData);
-            return true;
-          },
         },
         {
           label: 'Start Date',
@@ -82,36 +74,17 @@ const EventForm = () => {
           required: true,
         },
         {
+          label: 'Description',
+          type: 'text',
+          field: 'description',
+        },
+        {
           label: 'Poster',
           type: 'file',
           field: 'poster',
+          api: routeLink.uploadEventPoster,
           required: true,
-        },
-      ],
-    },
-    {
-      label: 'Organizer Contact Info',
-      fields: [
-        {
-          label: 'Name',
-          type: 'text',
-          field: 'organizer_name',
-          required: true,
-          size: 'medium',
-        },
-        {
-          label: 'Phone Numbetr',
-          type: 'text',
-          field: 'name',
-          required: true,
-          size: 'medium',
-        },
-        {
-          label: 'Email',
-          type: 'text',
-          field: 'name',
-          required: true,
-          size: 'medium',
+          allowedFormats: '.jpg,.png,.jpeg',
         },
       ],
     },
@@ -121,35 +94,14 @@ const EventForm = () => {
         {
           label: 'Name',
           type: 'text',
-          field: 'name',
+          field: 'venue_name',
           required: true,
           size: 'medium',
         },
         {
           label: 'Address',
           type: 'text',
-          field: 'name',
-          required: true,
-          size: 'medium',
-        },
-        {
-          label: 'City',
-          type: 'text',
-          field: 'name',
-          required: true,
-          size: 'medium',
-        },
-        {
-          label: 'ZipCode',
-          type: 'text',
-          field: 'name',
-          required: true,
-          size: 'medium',
-        },
-        {
-          label: 'Country',
-          type: 'text',
-          field: 'name',
+          field: 'venue_address',
           required: true,
           size: 'medium',
         },
@@ -241,6 +193,7 @@ const EventForm = () => {
             processedFormData[key] = formData[key];
           }
         });
+        processedFormData['host_id'] = user._id;
         return processedFormData;
       }}
       mode={mode}

@@ -2,7 +2,6 @@ import TabNavigation from '../../components/tab/TabNavigation';
 import ParticaipantsTable from './ParticipantsTable';
 
 const Participants = ({ event }) => {
-  console.log('🚀 ~ Participants ~ event:', event);
   if (!event) {
     return;
   }

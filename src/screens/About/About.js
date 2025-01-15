@@ -93,7 +93,6 @@ const About = () => {
           </IntroBackGround>
           <IntroCardContainer>
             {Introduction.map((item, index) => {
-              console.log('🚀 ~ {objective.map ~ item:', item);
               return (
                 <div
                   style={{
@@ -138,7 +137,6 @@ const About = () => {
         <div style={Section.heading}>Samuh Objective</div>
         <div style={Section.content.container}>
           {objective.map((item, index) => {
-            console.log('🚀 ~ {objective.map ~ item:', item);
             return (
               <div
                 style={{

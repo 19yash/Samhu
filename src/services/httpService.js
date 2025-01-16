@@ -5,8 +5,7 @@ import { toast } from 'react-toastify';
 // baseURL: `${process.env.REACT_APP_BASE_URL}`, // Replace with your base API URL
 // Configure the base URL
 const axiosInstance = axios.create({
-  baseURL:
-    'https://samuh-backend.onrender.com/api/v1', // Replace with your base API URL
+  baseURL: `${process.env.REACT_APP_BASE_URL}`, // Replace with your base API URL
   timeout: 30000, // Optional: Set a timeout for requests
   withCredentials: true, // Include credentials with requests
   headers: {

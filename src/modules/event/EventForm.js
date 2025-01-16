@@ -2,15 +2,17 @@ import React from 'react';
 import GenericForm from '../components/form/Form';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { modes } from '../../constants/formConstants';
 import { toast } from 'react-toastify';
 import { useAuth } from '../auth/hooks/useAuth';
 
 const EventForm = () => {
+  const { eventId } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { state } = useLocation();
-  const { mode = modes.create, event } = state || {};
+  const { mode = modes.create } = state || {};
 
   const fetchCategories = async (sportsId) => {
     try {
@@ -42,14 +44,14 @@ const EventForm = () => {
         {
           label: 'Start Date',
           type: 'date',
-          field: 'event_start_date',
+          field: 'start_date',
           required: true,
           size: 'medium',
         },
         {
           label: 'End Date',
           type: 'date',
-          field: 'event_end_Date',
+          field: 'end_Date',
           required: true,
           size: 'medium',
         },
@@ -141,6 +143,7 @@ const EventForm = () => {
 
               // Fetch categories for the selected sport
               const categories = await fetchCategories(sports_id);
+              console.log('🚀 ~ compute: ~ categories:', categories);
 
               if (!categories || !Array.isArray(categories)) {
                 console.error('Invalid categories data.');
@@ -159,13 +162,13 @@ const EventForm = () => {
                     {
                       type: 'checkbox',
                       label: category.name,
-                      field: `categories_${category._id}.selected`, // Dynamic field name
+                      field: `categories_${category.id}.selected`, // Dynamic field name
                       size: 'medium',
                     },
                     {
                       type: 'text',
                       label: 'Price',
-                      field: `categories_${category._id}.price`, // Dynamic field name
+                      field: `categories_${category.id}.price`, // Dynamic field name
                       size: 'medium',
                       // required,
                     },
@@ -180,6 +183,9 @@ const EventForm = () => {
           },
         },
       ]}
+      afterSubmit={() => {
+        navigate('-1');
+      }}
       beforeSubmit={(formData) => {
         const processedFormData = { categories: [] };
         Object.keys(formData).forEach((key) => {
@@ -187,7 +193,7 @@ const EventForm = () => {
             const category_id = key.replace('categories_', '');
             processedFormData['categories'].push({
               category_id: category_id,
-              price: formData[key].price,
+              price: Number(formData[key].price),
             });
           } else {
             processedFormData[key] = formData[key];
@@ -199,8 +205,8 @@ const EventForm = () => {
       mode={mode}
       apiPath={
         mode === modes.create
-          ? routeLink.events
-          : `${routeLink.events}/${event?._id}`
+          ? `${routeLink.events}/`
+          : `${routeLink.events}/${eventId}`
       }
       layout={layoutFields}
       styles={{

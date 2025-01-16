@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import LoadingScreen from '../../screens/LoadingScreen';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
 import View from '../components/View';
@@ -11,51 +10,57 @@ import { modes } from '../../constants/formConstants';
 import checkAuthorization from '../../services/checkAuthorization';
 import { useAuth } from '../auth/hooks/useAuth';
 import { action, entity } from '../../constants/authorization';
+import Loader from '../components/Loader';
+import GenericFilter from '../components/filter';
 
 const Event = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState([]);
-  const [filter, setFilter] = useState({});
+  console.log('🚀 ~ Event ~ events:', events);
+  const [filterValues, setFilterValues] = useState({
+    sports_id: '6759e34dc7f4ea8e52c2c4fc',
+  });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   // take from context later
-  const loading = false;
-  const fetchData = () => {
+  const fetchData = async () => {
     try {
-      // setLoading(false);
-      const response = httpService.get(routeLink.events, {
-        params: {
-          filter,
-        },
+      setLoading(true);
+      const response = await httpService.get(`${routeLink.events}/`, {
+        ...filterValues,
       });
       if (response.data) {
         setEvents(response.data);
       }
     } catch (err) {
       console.log(err);
-      // setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
-  // useEffect(() => {
-  //   fetchData();
-  // });
+  useEffect(() => {
+    console.log('filterValues', filterValues);
+    fetchData();
+  }, [filterValues]);
 
   if (loading) {
-    return <LoadingScreen></LoadingScreen>;
+    // return <LoadingScreen></LoadingScreen>;
+    return <Loader />;
   }
 
-  const event1 = {
-    _id: '67815197-23a4-8008-9877-8939e0bb5663',
-    title: 'Football Tournament',
-    subtitle: 'Football',
-    image: 'https://via.placeholder.com/400x225',
-    date: '29 November, 2024',
-    price: '99',
-    venue: 'Sportyzo Sports Academy, Gurugram',
-    organizer: 'All India Football Federation (AIFF)',
-  };
   return (
     <View>
       <EventHeader>
+        <div style={{ width: '200px' }}>
+          <GenericFilter
+            filterKey={'sports_id'}
+            setFilterValues={setFilterValues}
+            label={'Sports'}
+            api={routeLink.sports}
+            suggestionField={'sports_name'}
+            keyField={'id'}
+          />
+        </div>
         {checkAuthorization(user, entity.Events, action.create) && (
           <Button
             variant="outlined"
@@ -72,22 +77,17 @@ const Event = () => {
         )}
       </EventHeader>
       <EventContainer>
-        {/* {events.length &&
+        {events.length &&
           events.map((event) => {
-            return <EventCard event={event} />;
-          })} */}
-        <EventCard
-          event={event1}
-          onPress={() => {
-            navigate(`event-details/${event1._id}`, {});
-          }}
-        />
-        <EventCard
-          event={event1}
-          onPress={() => {
-            navigate(`event-details/${event1._id}`, {});
-          }}
-        />
+            return (
+              <EventCard
+                onPress={() => {
+                  navigate(`event-details/${event.id}`, {});
+                }}
+                event={event}
+              />
+            );
+          })}
       </EventContainer>
     </View>
   );

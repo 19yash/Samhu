@@ -13,7 +13,6 @@ const AppHeader = () => {
       label: 'Logout',
       icon: images.logout,
       onClick: (e) => {
-        console.log('Logout clicked');
         // Add your logout logic here
         logout();
         e.stopPropagation(); // Correct method name

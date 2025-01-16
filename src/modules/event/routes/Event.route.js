@@ -21,6 +21,11 @@ const EventRoutes = [
     element: <EventForm />,
   },
   {
+    name:"Edit Event",
+    path: '/events/edit-event/:eventId',
+    element: <EventForm />,
+  },
+  {
     name: 'Participant Form',
     path: '/events/event-details/:eventId/participate',
     element: <ParticipantForm />,

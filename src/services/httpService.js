@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 // Configure the base URL
 const axiosInstance = axios.create({
   baseURL:
-    'https://b6a0-2401-4900-5d1a-b3b8-f29-97c2-b90d-be46.ngrok-free.app/api/v1', // Replace with your base API URL
+    'https://samuh-backend.onrender.com/api/v1', // Replace with your base API URL
   timeout: 30000, // Optional: Set a timeout for requests
   withCredentials: true, // Include credentials with requests
   headers: {

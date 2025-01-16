@@ -36,6 +36,7 @@ const GenericForm = ({
   const [formData, setFormData] = useState({ ...defaultValues });
   const [fileData, setFileData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [PageLoading, setPageLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [autocompleteOptions, setAutocompleteOptions] = useState({});
   const navigate = useNavigate();
@@ -129,10 +130,10 @@ const GenericForm = ({
         throw new Error('Invalid file format');
       }
       if (api) {
-        const formData = new FormData();
-        formData.append('media', file);
+        const _formData = new FormData();
+        _formData.append('media', file);
 
-        const response = await httpService.post(api, formData);
+        const response = await httpService.post(api, _formData);
 
         if (response.url) {
           setFormData({ ...formData, [field]: response.url });
@@ -427,19 +428,23 @@ const GenericForm = ({
 
       case 'autocomplete':
         const fieldOptions = autocompleteOptions[fieldName] || options || [];
+        let _value = null;
+        if (fieldOptions.length) {
+          _value = fieldOptions.find(
+            (opt) => opt.value === formData[fieldName]
+          );
+        } else if (formData[fieldName]) {
+          _value = {
+            label: formData[fieldName]?.[field?.suggestionField],
+            value: formData[fieldName]?.[field?.keyField],
+          };
+        }
         return (
           <Grid item xs={gridSize} key={fieldName}>
             <Autocomplete
               options={fieldOptions}
               getOptionLabel={(option) => option.label}
-              value={
-                formData[fieldName]?.[field?.suggestionField]
-                  ? {
-                      label: formData[fieldName]?.[field?.suggestionField],
-                      value: formData[fieldName]?.[field?.keyField],
-                    }
-                  : null
-              }
+              value={_value}
               onFocus={() => {
                 if (!autocompleteOptions[fieldName]) {
                   fetchAutocompleteOptions(field);

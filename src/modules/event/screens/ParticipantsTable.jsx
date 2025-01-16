@@ -54,7 +54,7 @@ const ParticaipantsTable = () => {
   ];
   return (
     <Table
-      api={routeLink.participants}
+      // api={routeLink.participants}
       // filter={{ event: eventId, category: categoryId }}
       columns={columns}
       data={data}

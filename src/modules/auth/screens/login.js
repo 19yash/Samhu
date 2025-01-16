@@ -15,7 +15,8 @@ const LoginForm = () => {
     setError,
   } = useForm();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { user, login } = useAuth();
+  console.log("🚀 ~ LoginForm ~ user:", user)
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
     setLoading(true);
@@ -37,6 +38,9 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
+  if (user) {
+    navigate('/app/events');
+  }
   return (
     <div style={styles.container}>
       <form style={styles.form}>

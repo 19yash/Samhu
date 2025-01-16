@@ -5,7 +5,7 @@ import SportsForm from '../screens/SportsForm';
 const SportsRoute = [
   {
     name: 'Add Sports',
-    path: '/sports/:sportsId/add-sports',
+    path: '/sports/add-sports',
     element: <SportsForm />,
   },
   {

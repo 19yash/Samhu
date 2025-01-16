@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import httpService from '../../../services/httpService';
 import { Actions } from './table.style';
+import Loader from '../Loader';
 
 const Table = ({
   api,
@@ -21,7 +22,7 @@ const Table = ({
   onPress,
 }) => {
   const [tableData, setTableData] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   // If API is passed, fetch data from API
   useEffect(() => {
     console.log('called');
@@ -38,11 +39,14 @@ const Table = ({
           }
         } catch (error) {
           console.error('Error fetching data:', error);
+        } finally {
+          setLoading(false);
         }
       };
       fetchData();
     } else if (data) {
       setTableData(data); // Use provided data if no API is given
+      setLoading(false);
     }
   }, [api, data]);
 
@@ -95,35 +99,46 @@ const Table = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableData.length > 0 ? (
-              tableData.map((row, rowIndex) => (
-                <TableRow
-                  key={rowIndex}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!onPress) return;
-                    onPress(row);
-                  }}
-                >
-                  {columns.map((col, colIndex) => {
-                    const cellData = col?.render
-                      ? col.render(row)
-                      : row[col.field];
-                    return (
-                      <TableCell key={colIndex} sx={tableStyles?.bodyCell}>
-                        {cellData}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colspan={columns.length} sx={tableStyles?.bodyCell}>
-                  {'No Data Found'}
+            {loading && (
+              <TableRow rowSpan={columns.length}>
+                <TableCell colspan={columns.length}>
+                  <Loader />{' '}
                 </TableCell>
               </TableRow>
             )}
+            {!loading &&
+              (tableData.length > 0 ? (
+                tableData.map((row, rowIndex) => (
+                  <TableRow
+                    key={rowIndex}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!onPress) return;
+                      onPress(row);
+                    }}
+                  >
+                    {columns.map((col, colIndex) => {
+                      const cellData = col?.render
+                        ? col.render(row)
+                        : row[col.field];
+                      return (
+                        <TableCell key={colIndex} sx={tableStyles?.bodyCell}>
+                          {cellData}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colspan={columns.length}
+                    sx={tableStyles?.bodyCell}
+                  >
+                    {'No Data Found'}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </MuiTable>
       </TableContainer>

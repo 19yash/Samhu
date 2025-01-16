@@ -1,10 +1,10 @@
 // src/components/Loader.js
 import React from 'react';
-
+import './Loader.css';
 const Loader = () => {
   return (
     <div style={styles.loaderContainer}>
-      <div style={styles.spinner}></div>
+      <div class="loader"></div>
     </div>
   );
 };
@@ -15,7 +15,8 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    width: '100%',
+    // height: '90vh',
   },
   spinner: {
     border: '4px solid rgba(0, 0, 0, 0.1)',
@@ -31,4 +32,18 @@ const styles = {
   },
 };
 
+/* HTML: <div class="loader"></div> */
+// .loader {
+//   width: 50px;
+//   aspect-ratio: 1;
+//   border-radius: 50%;
+//   background:
+//     radial-gradient(farthest-side,#ffa516 94%,#0000) top/8px 8px no-repeat,
+//     conic-gradient(#0000 30%,#ffa516);
+//   -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+//   animation: l13 1s infinite linear;
+// }
+// @keyframes l13{
+//   100%{transform: rotate(1turn)}
+// }
 export default Loader;

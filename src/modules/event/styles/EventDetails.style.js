@@ -15,15 +15,16 @@ export const Img = styled.img`
 `;
 
 export const ImageContainer = styled.div`
-  width: 70%;
-  height: 70%;
+  width: 60%;
+  height: 40%;
+  border-radius: 8px;
 `;
 
 export const EventDetailsStyles = styled.div`
-  width: 30%;
+  width: 40%;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 10px;
   justify-content: center;
 `;
 export const BasicInfo = styled.div`
@@ -46,4 +47,8 @@ export const Information = styled.div`
 `;
 export const Heading = styled.div`
   font-size: 1.5rem;
+`;
+export const Heading1 = styled.div`
+  font-size: 1.75rem;
+  color: rgb(255, 145, 77);
 `;

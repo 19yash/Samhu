@@ -7,7 +7,6 @@ import { Icon, Img } from './AppSideBar.style';
 import { SideBarNav, SideBarToggle } from './sidenav.style';
 
 const Sidenav = ({ navItems, brandName }) => {
-  const [selectedItem, setSelectedItem] = useState(0);
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleSidebar = () => {
@@ -25,8 +24,6 @@ const Sidenav = ({ navItems, brandName }) => {
         {navItems.map((item, index) => (
           <SidenavItem
             key={index}
-            selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
             style={{ color: '#fff' }}
             index={index}
             item={item}

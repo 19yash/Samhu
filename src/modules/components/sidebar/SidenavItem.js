@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CNavItem, CNavLink } from '@coreui/react';
 import { CIcon } from '@coreui/icons-react';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SidenavGroup from './SidenavGroup';
 import {
   hoveredStyle,
@@ -11,15 +11,12 @@ import {
   selectedSideNavItemStyle,
   SideNavItemStyle,
 } from './sidenav.style';
-import theme from '../../../theme/Theme';
 
-const SidenavItem = ({
-  item,
-  index: key,
-  level,
-  selectedItem,
-  setSelectedItem,
-}) => {
+const SidenavItem = ({ item, index: key, level }) => {
+  const location = useLocation();
+  const isSelected =
+    location.pathname.split('/')[2] === item.path?.split('/')[2];
+
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
@@ -37,15 +34,12 @@ const SidenavItem = ({
         <CNavItem>
           <CNavLink
             onClick={(event) => {
-              setSelectedItem(key);
               handleClick(event);
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={{
-              ...(key === selectedItem
-                ? selectedSideNavItemStyle
-                : SideNavItemStyle),
+              ...(isSelected ? selectedSideNavItemStyle : SideNavItemStyle),
               ...(isHovered ? hoveredStyle : {}),
             }}
           >
@@ -53,7 +47,7 @@ const SidenavItem = ({
               icon={item.icon}
               customClassName="nav-icon"
               style={{
-                ...(key === selectedItem ? selectedIconStyle : iconStyle),
+                ...(isSelected ? selectedIconStyle : iconStyle),
                 ...(isHovered ? hoveredStyle : {}),
               }}
             />

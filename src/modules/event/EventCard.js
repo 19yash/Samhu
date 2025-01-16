@@ -6,7 +6,6 @@ import {
   Typography,
   Box,
   useTheme,
-  // Button,
 } from '@mui/material';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -18,39 +17,25 @@ import checkAuthorization from '../../services/checkAuthorization';
 import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
 
-// {
-//     title,
-//     date,
-//     start_time,
-//     end_time,
-//     venue_name,
-//     venue_address,
-//     host_id,
-//     organized_by,
-//     registration_start_time,
-//     registration_end_time,
-//     price,
-//   rewards,
-
-// }
 const EventCard2 = ({ event = {}, onPress }) => {
   const { user } = useAuth();
   const theme = useTheme();
   const {
+    id,
     title,
-    date,
-    start_time,
-    end_time,
+    start_date,
     venue_name,
     venue_address,
-    host_id,
-    organized_by,
-    registration_start_time,
-    registration_end_time,
-    price,
+    host_details,
+    registration_start_date,
+    sport_details,
+    poster,
   } = event;
 
-  const Date = moment(date).format('DD MMMM, YYYY');
+  const startDate = moment(start_date).format('DD MMMM, YYYY');
+  const registrationDate = moment(registration_start_date).format(
+    'DD MMMM, YYYY'
+  );
   const navigate = useNavigate();
   return (
     <Card
@@ -74,7 +59,7 @@ const EventCard2 = ({ event = {}, onPress }) => {
       <CardMedia
         component="img"
         height="140"
-        image="https://smuh.in/wp-content/uploads/2024/08/Game3-766x1024.jpg"
+        image={poster}
         alt="Event Image"
       />
       {/* Content */}
@@ -85,7 +70,7 @@ const EventCard2 = ({ event = {}, onPress }) => {
           color={theme.palette.text.secondary}
           sx={{ textTransform: 'uppercase', fontWeight: 600, fontSize: '10px' }}
         >
-          Football
+          {sport_details.sports_name}
         </Typography>
         <Typography
           variant="h6"
@@ -106,19 +91,19 @@ const EventCard2 = ({ event = {}, onPress }) => {
               variant="subtitle2"
               color={theme.palette.text.secondary}
             >
-              Date:
+              Event Date:
             </Typography>
-            <Typography variant="body2">{Date}</Typography>
+            <Typography variant="body2">{startDate}</Typography>
           </Box>
           <Box>
             <Typography
               variant="subtitle2"
               color={theme.palette.text.secondary}
             >
-              Price:
+              Registration Date:
             </Typography>
             <Typography variant="body2" color={theme.palette.success.main}>
-              ₹{price ? price : '90'}
+              {registrationDate}
             </Typography>
           </Box>
         </Box>
@@ -132,9 +117,7 @@ const EventCard2 = ({ event = {}, onPress }) => {
               Venue:
             </Typography>
             <Typography variant="body2">
-              {venue_address
-                ? `${venue_name}, ${venue_address}`
-                : 'Sportyzo Sports Academy, Gurugram'}
+              {`${venue_name}, ${venue_address}`}
             </Typography>
           </Box>
           <Box textAlign="right">
@@ -142,23 +125,22 @@ const EventCard2 = ({ event = {}, onPress }) => {
               variant="subtitle2"
               color={theme.palette.text.secondary}
             >
-              {' '}
-              Organized By:{' '}
+              Organized By:
             </Typography>{' '}
             <Typography variant="body2">
-              {venue_address
-                ? `${venue_name}, ${venue_address}`
-                : 'All India Football Federation (AIFF)'}
+              {`${host_details.organisation_name}`}
             </Typography>
           </Box>
         </Box>
         <Box marginTop={'1rem'}>
-          <Button
-            text={'Participate'}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
+          {checkAuthorization(user, entity.Participants, action.create) && (
+            <Button
+              text={'Participate'}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          )}
         </Box>
       </CardContent>
 
@@ -167,8 +149,8 @@ const EventCard2 = ({ event = {}, onPress }) => {
           <Img
             onClick={(e) => {
               e.stopPropagation();
-              navigate('add-event', {
-                state: { event, mode: modes.create },
+              navigate(`edit-event/${id}`, {
+                state: { event, mode: modes.edit },
               });
             }}
             src={images.editLight}

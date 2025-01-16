@@ -42,7 +42,8 @@ export const useAuth = () => {
     try {
       // await UserService.logout();
       clearAuth();
-      navigate('/login');
+      console.log('navigating to login');
+      navigate('/home');
     } catch (error) {
       showError(error);
     }

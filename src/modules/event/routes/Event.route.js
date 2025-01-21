@@ -2,6 +2,7 @@ import CategoryForm from '../../sports/screens/CategoryForm';
 import EventDetails from '../EventDetails';
 import EventForm from '../EventForm';
 import ParticipantForm from '../ParticipantaForm';
+import React from 'react';
 
 const EventRoutes = [
   {
@@ -21,7 +22,7 @@ const EventRoutes = [
     element: <EventForm />,
   },
   {
-    name:"Edit Event",
+    name: 'Edit Event',
     path: '/events/edit-event/:eventId',
     element: <EventForm />,
   },

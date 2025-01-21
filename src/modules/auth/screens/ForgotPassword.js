@@ -65,8 +65,9 @@ const ForgotPassword = () => {
             placeholder="Enter your email"
           />
           <label htmlFor="email" style={{ ...styles.label, fontSize: '12px' }}>
-            Enter your user account's verified email address and we will send
-            you a password reset link.
+            {
+              ' Enter your user account verified email address and we will send you a password reset link.'
+            }
           </label>
 
           {errors.email && (

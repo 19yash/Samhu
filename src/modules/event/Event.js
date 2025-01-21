@@ -12,6 +12,7 @@ import { useAuth } from '../auth/hooks/useAuth';
 import { action, entity } from '../../constants/authorization';
 import Loader from '../components/Loader';
 import GenericFilter from '../components/filter';
+import React from 'react';
 
 const Event = () => {
   const { user } = useAuth();

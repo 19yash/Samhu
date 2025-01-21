@@ -12,6 +12,7 @@ import {
   subHeading,
 } from './Event.style';
 import Footer from '../Footer';
+import React from 'react';
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);

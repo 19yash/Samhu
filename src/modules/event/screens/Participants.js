@@ -1,5 +1,6 @@
 import TabNavigation from '../../components/tab/TabNavigation';
 import ParticaipantsTable from './ParticipantsTable';
+import React from 'react';
 
 const Participants = ({ event }) => {
   if (!event) {

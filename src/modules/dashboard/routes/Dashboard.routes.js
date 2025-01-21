@@ -1,5 +1,6 @@
 import Event from '../../event/Event';
 import Sports from '../../sports/screens/Sports';
+import React from 'react';
 import Dashboard from '../Dashboard';
 
 const DasboardRoutes = [

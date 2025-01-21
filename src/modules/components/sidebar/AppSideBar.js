@@ -3,6 +3,7 @@ import Sidenav from './Sidenav';
 import checkAuthorization from '../../../services/checkAuthorization';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { action, entity } from '../../../constants/authorization';
+import React from 'react';
 
 const navItems = [
   {

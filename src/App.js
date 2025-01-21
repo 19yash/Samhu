@@ -1,7 +1,8 @@
-import './App.css';
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { AppNavigator } from './routes/AppNavigator';
 import { ToastContainer } from 'react-toastify';
+import { AppNavigator } from './routes/AppNavigator';
+import './App.css';
 
 function App() {
   return (

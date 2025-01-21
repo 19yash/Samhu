@@ -22,7 +22,7 @@ export const Home = () => {
         <div style={heroStyle.content}>
           <h1 style={heroStyle.title}>Discover Your Sport</h1>
           <p>
-            Whether it's football, basketball, tennis, or cricket —dive into a
+            Whether it football, basketball, tennis, or cricket —dive into a
             diverse selection of sports and find the perfect fit for you.
           </p>
           <Button

@@ -3,16 +3,17 @@ import ParticaipantsTable from './ParticipantsTable';
 import React from 'react';
 
 const Participants = ({ event }) => {
+  console.log("🚀 ~ Participants ~ event:", event)
   if (!event) {
     return;
   }
 
   const tabs = [];
-  event.categories.map((category) => {
+  event?.categories?.map((category) => {
     tabs.push({
-      name: category.categoryId.name,
+      name: category?.category_details?.name,
       element: ParticaipantsTable,
-      props: { event: event },
+      props: { category: category.category_details },
     });
   });
 

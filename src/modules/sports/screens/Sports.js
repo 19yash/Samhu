@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from '../../components/table/Table';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import routeLink from '../../../constants/routeLink';
 import Button from '../../components/button/Button';
 import images from '../../../images';
@@ -9,6 +9,7 @@ import { useAuth } from '../../auth/hooks/useAuth';
 import { action, entity } from '../../../constants/authorization';
 
 const Sports = () => {
+  console.log('hello logging');
   const { user } = useAuth();
   const navigate = useNavigate();
   const columns = [
@@ -29,29 +30,31 @@ const Sports = () => {
   ];
 
   return (
-    <Table
-      headerActions={[
-        ...(checkAuthorization(user, entity.Sports, action.create)
-          ? [
-              <Button
-                text="Add New Sport"
-                onClick={() => {
-                  navigate('add-sports');
-                }}
-                icon={images.plus}
-                iconPosition="start"
-              />,
-            ]
-          : []),
-      ]}
-      api={routeLink.sports}
-      onPress={(row) => {
-        navigate(`${row.id}/categories`, {
-          sportsId: row.id,
-        });
-      }}
-      columns={columns}
-    />
+    <>
+      <Table
+        headerActions={[
+          ...(checkAuthorization(user, entity.Sports, action.create)
+            ? [
+                <Button
+                  text="Add New Sport"
+                  onClick={() => {
+                    navigate('add-sports');
+                  }}
+                  icon={images.plus}
+                  iconPosition="start"
+                />,
+              ]
+            : []),
+        ]}
+        api={routeLink.sports}
+        onPress={(row) => {
+          navigate(`${row.id}/categories`, {
+            sportsId: row.id,
+          });
+        }}
+        columns={columns}
+      />
+    </>
   );
 };
 

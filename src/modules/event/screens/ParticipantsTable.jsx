@@ -3,9 +3,8 @@ import Table from '../../components/table/Table';
 import routeLink from '../../../constants/routeLink';
 import { Img } from '../styles/EventCard.style';
 import images from '../../../images';
-import { useParams } from 'react-router-dom';
-const ParticaipantsTable = () => {
-  const { eventId } = useParams();
+const ParticaipantsTable = ({ category }) => {
+  console.log('🚀 ~ ParticaipantsTable ~ category:', category);
   const data = [
     {
       first_name: 'John',
@@ -52,10 +51,17 @@ const ParticaipantsTable = () => {
       },
     },
   ];
+  // const TeamColumns = [
+  //   {
+  //     render: ()=>{
+  //       return <Table></Table>
+  //     },
+  //   }
+  // ]
   return (
     <Table
-      // api={routeLink.participants}
-      // filter={{ event: eventId, category: categoryId }}
+      // api={`${routeLink.participants}/`}
+      // filter={{ categoryId: category.id }}
       columns={columns}
       data={data}
     />

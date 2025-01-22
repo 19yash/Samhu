@@ -20,6 +20,7 @@ const fields = [
 ];
 
 const SportsForm = () => {
+  console.log('Loaded completely');
   const handleSubmit = (formData) => {
     console.log('Form submitted:', formData);
   };

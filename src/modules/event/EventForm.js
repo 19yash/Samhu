@@ -121,6 +121,22 @@ const EventForm = () => {
           suggestionField: 'sports_name',
           required: true,
           size: 'large',
+          visible: () => {
+            return mode === modes.create;
+          },
+        },
+        {
+          label: 'Sports',
+          type: 'autocomplete',
+          field: 'sport_details',
+          api: routeLink.sports,
+          keyField: 'id',
+          suggestionField: 'sports_name',
+          required: true,
+          size: 'large',
+          visible: () => {
+            return mode === modes.edit;
+          },
         },
       ],
     },

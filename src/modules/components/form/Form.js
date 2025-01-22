@@ -52,6 +52,17 @@ const GenericForm = ({
     try {
       const response = await httpService.get(apiPath);
       console.log('🚀 ~ fetchFormData ~ response:', response);
+      const formData = response.data;
+      formLayout.map(async (field) => {
+        if (field.type === 'autocomplete') {
+          await fetchAutocompleteOptions(field);
+          formData[field.field] = {
+            label: formData[field.field]['suggestionField'],
+            value: formData[field.field]['keyField'],
+          };
+        }
+      });
+      doInititalComputations(formData);
       setFormData(response.data || {});
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -82,6 +93,32 @@ const GenericForm = ({
     return newObj;
   };
 
+  const doInititalComputations = async (formData) => {
+    console.log('doing intital computations computations', formData);
+    if (computations.length) {
+      for (const computation of computations) {
+        // Check if the field triggers this computation
+        const shouldCompute =
+          !computation.condition || computation.condition(formData);
+        if (shouldCompute) {
+          try {
+            // Call the compute function with the updated form data
+            await computation.compute({
+              formData: formData,
+              setFormData,
+              formLayout,
+              setFormLayout,
+            });
+          } catch (error) {
+            console.error(
+              `Error during computation for field ${computation.field}:`,
+              error
+            );
+          }
+        }
+      }
+    }
+  };
   const handleInputChange = async (field, value) => {
     console.log('handleInputChange called', field, value, formData);
 
@@ -181,8 +218,11 @@ const GenericForm = ({
       }
     } catch (error) {
       console.error('Error in beforeSubmit:', error);
-      toast.error('Failed to process form data. Please check your inputs.');
-      throw error; // Propagate error to be caught in onSubmit
+      toast.error(
+        error.message ||
+          'Failed to process form data. Please check your inputs.'
+      );
+      // throw error; // Propagate error to be caught in onSubmit
     }
   };
 
@@ -267,6 +307,8 @@ const GenericForm = ({
       options,
       api,
       allowedFormats,
+      readOnly,
+      value,
     } = field;
 
     // Visibility logic
@@ -281,7 +323,6 @@ const GenericForm = ({
       large: 12,
     };
     const gridSize = sizeMapping[size] || 6;
-
     // Field rendering
     switch (type) {
       case 'text':
@@ -292,12 +333,15 @@ const GenericForm = ({
               type={type}
               // label={label}
               placeholder={label}
-              value={getNestedValue(formData, fieldName) || ''}
+              value={value || getNestedValue(formData, fieldName) || ''}
               required={required}
               onChange={(e) => handleInputChange(fieldName, e.target.value)}
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
               sx={formStyles.input}
+              InputProps={{
+                readOnly: readOnly, // Makes the field read-only
+              }}
             />
           </Grid>
         );
@@ -309,12 +353,15 @@ const GenericForm = ({
               type={type}
               // label={label}
               placeholder={label}
-              value={getNestedValue(formData, fieldName) || ''}
+              value={value || getNestedValue(formData, fieldName) || ''}
               required={required}
               onChange={(e) => handleInputChange(fieldName, e.target.value)}
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
               sx={formStyles.input}
+              InputProps={{
+                readOnly: readOnly, // Makes the field read-only
+              }}
             />
           </Grid>
         );
@@ -333,6 +380,9 @@ const GenericForm = ({
               helperText={errors[fieldName]}
               InputLabelProps={{ shrink: true }}
               sx={formStyles.input}
+              InputProps={{
+                readOnly: readOnly, // Makes the field read-only
+              }}
             />
           </Grid>
         );
@@ -354,6 +404,9 @@ const GenericForm = ({
               InputLabelProps={{ shrink: true }}
               accept={allowedFormats} // Allowed formats
               sx={formStyles.input}
+              InputProps={{
+                readOnly: readOnly, // Makes the field read-only
+              }}
             />
           </Grid>
         );
@@ -398,9 +451,6 @@ const GenericForm = ({
                 '.MuiFormControlLabel-label': {
                   flexGrow: '1',
                   display: 'flex',
-                  // alignItems: 'center',
-                  // justifyContent: 'center',
-                  // height: '100%',
                 },
               }}
             />
@@ -479,6 +529,9 @@ const GenericForm = ({
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
               sx={formStyles.input}
+              InputProps={{
+                readOnly: readOnly, // Makes the field read-only
+              }}
             />
           </Grid>
         );

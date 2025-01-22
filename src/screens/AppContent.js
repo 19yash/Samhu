@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import privateRoutes from '../routes/PrivateRoutes';
 import { AppContentStyle } from './AppContent.style';
 
@@ -11,7 +11,11 @@ const resolveRoute = (route, idx) => {
         path={route.path}
         exact={route.exact}
         name={route.name}
-        element={route.element}
+        element={
+          <>
+            {route.element} <Outlet />
+          </>
+        }
       >
         {route.children &&
           route.children.map((childRoute, idx) => {

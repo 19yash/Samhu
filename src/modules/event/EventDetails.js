@@ -25,33 +25,13 @@ import { useAuth } from '../auth/hooks/useAuth';
 const EventDetails = () => {
   const { eventId } = useParams();
   const { user } = useAuth();
-  const [event, setEvent] = useState({
-    sports: {
-      name: 'Football',
-    },
-    category: {
-      name: 'U-19 Females',
-    },
-    start_time: '19:00',
-    end_time: '21:00',
-    title: 'Football Tournament',
-    date: '2024-12-26',
-    venue_name: 'Indoor Stadium',
-    venue_address:
-      'Veer Savarkar Indoor Stadium, Race Course Rd, Race Course, Sadar Rajkot, Gujarat 360007 India',
-    host_id: '',
-    organized_by: 'Sports Club',
-    registration_start_time: '2024-12-20',
-    registration_end_time: '2024-12-21',
-    price: '1000',
-    rewards: 'Winnners Team Will get a Price Money of 1 lack rupees',
-    description: `Are you ready to showcase your Basketball skills and compete for glory?Join us for the 2024 Basketball Tournament, where teams from across the region will battle it out for the championship title.Whether you’re a seasoned player or just love the game, this is your chance to be part of an unforgettable Basketball experience!`,
-  });
+  const [event, setEvent] = useState();
   const navigate = useNavigate();
   const fetchEvent = async () => {
     try {
       const response = await httpService.get(`${routeLink.events}/${eventId}`);
       if (response?.data) {
+        console.log('🚀 ~ fetchEvent ~ response:', response);
         setEvent(response.data);
       }
     } catch (err) {
@@ -74,15 +54,19 @@ const EventDetails = () => {
         </ImageContainer>
         <EventDetailsStyles>
           {/* <div> */}
-          {moment(event?.registration_end_date) > moment() &&
-            checkAuthorization(user, entity.Participants, action.create) && (
-              <Button
-                text={'Participate Now'}
-                onClick={() => {
-                  navigate('participate');
-                }}
-              />
-            )}
+          {/* moment(event?.registration_end_date) > moment() &&
+            checkAuthorization(user, entity.Participants, action.create) && ( */}
+          {
+            <Button
+              text={'Participate Now'}
+              onClick={() => {
+                navigate('participate', {
+                  state: { event: event },
+                });
+              }}
+            />
+            // )
+          }
           {moment(event?.registration_end_date) < moment() && (
             <Information>Registration has been closed Now !!</Information>
           )}
@@ -90,7 +74,7 @@ const EventDetails = () => {
             <Information>Results has been Anounced !!</Information>
           )}
           <BasicInfo>
-            <h2>{event.title}</h2>
+            <h2>{event?.title}</h2>
             <div>
               {'Sports'}: {event?.sport_details?.sports_name}
             </div>
@@ -106,38 +90,38 @@ const EventDetails = () => {
             </Info>
             <Info>
               <Img src={images.clock} />
-              {event.start_date} - {event.end_date}
+              {event?.start_date} - {event?.end_date}
             </Info>
             {/* <div>Price: ₹ {event.price}</div> */}
           </BasicInfo>
           <div>
             <Heading1>Venue :</Heading1>
             <p>
-              {event.venue_name} , {event.venue_address}
+              {event?.venue_name} , {event?.venue_address}
             </p>
           </div>
           <div>
             <Heading1>Registration Date :</Heading1>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Img src={images.calender} />
-              {moment(event.registration_start_time).format('DD MMMM, YYYY')} -
-              {moment(event.registration_end_time).format('DD MMMM, YYYY')}
+              {moment(event?.registration_start_time).format('DD MMMM, YYYY')} -
+              {moment(event?.registration_end_time).format('DD MMMM, YYYY')}
             </div>
           </div>
           <div>
             <Heading1>Organized By : </Heading1>
-            <p>{event.host_details?.organisation_name}</p>
+            <p>{event?.host_details?.organisation_name}</p>
           </div>
-          {event.rewards && (
+          {event?.rewards && (
             <div>
               <Heading1>Rewards:</Heading1>
-              <p>{event.rewards}</p>
+              <p>{event?.rewards}</p>
             </div>
           )}
-          {event.description && (
+          {event?.description && (
             <div>
               <Heading1>Description:</Heading1>
-              <p>{event.description}</p>
+              <p>{event?.description}</p>
             </div>
           )}
 
@@ -146,29 +130,7 @@ const EventDetails = () => {
       </EventContainer>
       <>
         <Heading>Participants</Heading>
-        <Participants
-          event={{
-            categories: [
-              {
-                categoryId: { name: 'Men' },
-                price: '200',
-              },
-              {
-                categoryId: { name: 'Women' },
-                price: '200',
-              },
-            ],
-            _id: '67815197-23a4-8008-9877-8939e0bb5663',
-            title: 'Football Tournament',
-            subtitle: 'Football',
-            image: 'https://via.placeholder.com/400x225',
-            date: '29 November, 2024',
-            price: '99',
-            venue: 'Sportyzo Sports Academy, Gurugram',
-            organizer: 'All India Football Federation (AIFF)',
-          }}
-        />
-        {/* <ParticaipantsTable></ParticaipantsTable> */}
+        {event && <Participants event={event} />}{' '}
       </>
     </View>
   );

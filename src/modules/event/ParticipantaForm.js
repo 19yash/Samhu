@@ -6,65 +6,179 @@ import { useLocation } from 'react-router-dom';
 import { modes } from '../../constants/formConstants';
 import { useAuth } from '../auth/hooks/useAuth';
 
-const event = {};
-
-const layoutFields = [
-  {
-    label: 'Participant Details',
-    fields: [
-      {
-        label: 'Name',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Email',
-        type: 'email',
-        field: 'email',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Phone Number',
-        type: 'text',
-        field: 'phone_number',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Registration Fees',
-        type: 'number',
-        field: 'fees',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Reward',
-        type: 'text',
-        field: 'reward',
-        required: true,
-      },
-      {
-        label: 'Poster',
-        type: 'file',
-        field: 'poster',
-        required: true,
-      },
-    ],
-  },
-];
-
 const ParticipantForm = () => {
   const { state } = useLocation();
   const { mode = modes.create, event } = state || {};
   const { user } = useAuth();
   console.log('🚀 ~ ParticipantForm ~ user:', user);
+  const categoryOptions = event?.categories?.map((category) => {
+    return {
+      label: category?.category_details?.name,
+      value: category?.category_details,
+    };
+  });
+  const computeParticipantLayout = async ({
+    formData,
+    formLayout,
+    setFormLayout,
+  }) => {
+    console.log('computationcalled', formData);
+    try {
+      const { category_id } = formData;
+      if (category_id?.is_team_sport) {
+        const processedLayout = [...formLayout];
+        const participants = category_id?.participants_in_team || 3;
+        processedLayout.push({
+          label: 'Team Details',
+          fields: [
+            {
+              type: 'text',
+              label: 'Team Name',
+              field: 'team_name',
+              required: true,
+              size: 'medium',
+            },
+          ],
+        });
+        for (let i = 0; i < participants; i++) {
+          processedLayout.push({
+            label: `Participant ${i + 1} Details`,
+            fields: [
+              {
+                type: 'text',
+                label: `name`,
+                field: `members_${i}_name`,
+                required: true,
+                size: 'medium',
+              },
+              {
+                type: 'text',
+                label: `email`,
+                field: `members_${i}_email`,
+                required: true,
+                size: 'medium',
+              },
+              {
+                label: 'Phone Number',
+                type: 'text',
+                field: `members_${i}_phone_number`,
+                required: true,
+                size: 'medium',
+              },
+              {
+                label: 'Role',
+                type: 'autocomplete',
+                field: `members_${i}_role`,
+                options: [
+                  { label: 'Captain', value: 'Captain' },
+                  { label: 'Vice Captain', value: 'Vice Captain' },
+                ],
+                size: 'medium',
+              },
+            ],
+          });
+        }
+        setFormLayout(processedLayout);
+      } else {
+        const processedLayout = [...formLayout];
+        processedLayout.push({
+          label: 'Participant Details',
+          fields: [
+            {
+              type: 'text',
+              label: 'name',
+              field: 'name',
+              required: true,
+              size: 'medium',
+              readOnly: true,
+              value: user?.user_name,
+            },
+            {
+              type: 'text',
+              label: 'email',
+              field: 'email',
+              required: true,
+              size: 'medium',
+              readOnly: true,
+              value: user?.email,
+            },
+            {
+              label: 'Phone Number',
+              type: 'text',
+              field: 'phone_number',
+              size: 'medium',
+              required: true,
+              readOnly: true,
+              user: user?.phone_number || '99999999',
+            },
+          ],
+        });
+        setFormLayout(processedLayout);
+      }
+    } catch (error) {
+      console.error('Error in compute function:', error);
+    }
+  };
+  const layoutFields = [
+    {
+      label: '',
+      fields: [
+        {
+          label: 'Select Category In Which You want to Participate',
+          type: 'autocomplete',
+          field: 'category_id',
+          options: categoryOptions,
+          required: true,
+          size: 'medium',
+        },
+      ],
+    },
+  ];
 
   return (
     <GenericForm
       mode={mode}
+      beforeSubmit={(formData) => {
+        const newFormData = {
+          ...formData,
+          members: [],
+        };
+        const participant = formData['category_id']?.participants_in_team || 3;
+        let isCaptainSelected = false;
+        let isViceCaptainSelected = false;
+        for (let i = 0; i < participant; i++) {
+          if (formData[`members_${i}_role`] === 'Captain') {
+            if (isCaptainSelected) {
+              throw new Error('Only one Captain is allowed');
+            }
+            isCaptainSelected = true;
+          }
+          if (formData[`members_${i}_role`] === 'Vice Captain') {
+            if (isViceCaptainSelected) {
+              throw new Error('Only one Vice Captain is allowed');
+            }
+            isViceCaptainSelected = true;
+          }
+          newFormData['members'].push({
+            name: formData[`members_${i}_name`],
+            email: formData[`members_${i}_email`],
+            phone_number: formData[`members_${i}_phone_number`],
+          });
+        }
+        newFormData['category_id'] = formData['category_id'].id;
+        newFormData['event_id'] = event?._id;
+        newFormData['participant_id'] = user?.id;
+        return newFormData;
+      }}
+      computations={[
+        {
+          fields: ['category_id'],
+          condition: (formData) => {
+            return formData?.category_id;
+          },
+          compute: computeParticipantLayout,
+        },
+      ]}
       apiPath={
         mode === modes.create
           ? routeLink.events
@@ -79,7 +193,6 @@ const ParticipantForm = () => {
           flexWrap: 'wrap',
         },
       }}
-      defaultValues={{ name: 'yash', email: 'yashgupta19082000@gmail.com' }}
     />
   );
 };

@@ -9,7 +9,7 @@ import {
   Paper,
 } from '@mui/material';
 import httpService from '../../../services/httpService';
-import { Actions } from './table.style';
+import { Actions, TableHeader, Title } from './table.style';
 import Loader from '../Loader';
 
 const Table = ({
@@ -20,7 +20,9 @@ const Table = ({
   styles = {},
   headerActions = [],
   onPress,
+  title,
 }) => {
+  console.log('🚀 ~ styles:', styles);
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
   // If API is passed, fetch data from API
@@ -56,38 +58,72 @@ const Table = ({
       flexDirection: 'column',
       gap: '16px',
       flex: '1',
+      backgroundColor: '#fff',
+      border: '1px solid #e5e5ea',
+      padding: '0.5rem',
+      borderRadius: '8px',
     },
-    tableContainer: { backgroundColor: '#fff' },
+    tableContainer: {},
     actions: {},
     table: {},
     headerCell: {
       fontWeight: 'bold',
-      backgroundColor: '#e5e5ea',
-      color: '#697887',
+      // backgroundColor: '#e5e5ea',
+      // color: '#697887',
       padding: '8px',
+      border: '0px',
+      borderBottom: '1px solid #e5e5ea',
+      fontSize: '14px',
+      textAlign: 'center',
     },
     bodyCell: {
       color: '#000',
       padding: '8px',
+      border: '0px',
+      borderBottom: '1px solid #e5e5ea',
+      fontSize: '14px',
+      textAlign: 'center',
+    },
+    lastCell: {
+      color: '#000',
+      padding: '8px',
+      border: '0px',
+      fontSize: '14px',
+      textAlign: 'center',
     },
   };
 
   // Merge default styles with custom styles
   const tableStyles = {
     container: { ...defaultStyles.container, ...styles?.container },
+    tableContainer: {
+      ...defaultStyles.tableContainer,
+      ...styles?.tableContainer,
+    },
     table: { ...defaultStyles.table, ...styles?.table },
     headerCell: { ...defaultStyles.headerCell, ...styles?.headerCell },
     bodyCell: { ...defaultStyles.bodyCell, ...styles?.bodyCell },
+    lastCell: {
+      ...defaultStyles.lastCell,
+      ...styles?.lastCell,
+    },
   };
+  console.log('🚀 ~ tableStyles:', tableStyles);
 
   return (
     <div style={tableStyles?.container}>
-      <Actions style={tableStyles?.Actions}>
-        {headerActions.map((action) =>
-          typeof action === 'function' ? action() : action
-        )}
-      </Actions>
-      <TableContainer component={Paper} sx={tableStyles?.tableContainer}>
+      {(title || headerActions.length > 0) && (
+        <TableHeader>
+          {title && <Title>{title}</Title>}{' '}
+          <Actions style={tableStyles?.Actions}>
+            {headerActions.map((action) =>
+              typeof action === 'function' ? action() : action
+            )}
+          </Actions>
+        </TableHeader>
+      )}
+      {/* component={Paper} */}
+      <TableContainer sx={tableStyles?.tableContainer}>
         <MuiTable sx={tableStyles?.table}>
           <TableHead>
             <TableRow>
@@ -122,7 +158,14 @@ const Table = ({
                         ? col.render(row)
                         : row[col.field];
                       return (
-                        <TableCell key={colIndex} sx={tableStyles?.bodyCell}>
+                        <TableCell
+                          key={colIndex}
+                          sx={
+                            rowIndex === tableData.length - 1
+                              ? tableStyles.lastCell
+                              : tableStyles?.bodyCell
+                          }
+                        >
                           {cellData}
                         </TableCell>
                       );

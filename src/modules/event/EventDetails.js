@@ -129,7 +129,7 @@ const EventDetails = () => {
         </EventDetailsStyles>
       </EventContainer>
       <>
-        <Heading>Participants</Heading>
+        {/* <Heading>Participants</Heading> */}
         {event && <Participants event={event} />}{' '}
       </>
     </View>

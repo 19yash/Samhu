@@ -1,11 +1,13 @@
 import React from 'react';
 import Table from '../../components/table/Table';
 import routeLink from '../../../constants/routeLink';
-import { Img } from '../styles/EventCard.style';
 import images from '../../../images';
-const ParticaipantsTable = ({ category }) => {
+import { Img } from '../styles/participantTable.style';
+import { borderBottom, fontSize, padding } from '@mui/system';
+import Button from '../../components/button/Button';
+const ParticaipantsTable = ({ category = { is_team_sport: true } }) => {
   console.log('🚀 ~ ParticaipantsTable ~ category:', category);
-  const data = [
+  const members = [
     {
       first_name: 'John',
       last_name: 'Doe',
@@ -31,7 +33,72 @@ const ParticaipantsTable = ({ category }) => {
       phoneNumber: '1234567890',
     },
   ];
-  const columns = [
+  let data = [];
+  if (category.is_team_sport) {
+    data = [
+      {
+        team_name: 'Mumbai Indians',
+        members: members,
+      },
+      {
+        team_name: 'Mumbai Indians',
+        members: members,
+      },
+      {
+        team_name: 'Mumbai Indians',
+        members: members,
+      },
+      {
+        team_name: 'Mumbai Indians',
+        members: members,
+      },
+    ];
+  } else {
+    data = [...members];
+  }
+  let columns = [];
+  if (!category.is_team_sport) {
+    columns = [
+      {
+        header: 'Name',
+        render: (row) => {
+          return `${row?.first_name} ${row?.last_name}`;
+        },
+      },
+      { header: 'Email', field: 'email' },
+      { header: 'Phone Number', field: 'phoneNumber' },
+      {
+        header: 'Actions',
+        render: () => {
+          return (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: '1rem',
+              }}
+            >
+              <Img src={images.edit} />
+              <Img src={images.trash} />
+            </div>
+          );
+        },
+      },
+    ];
+  } else {
+    columns = [
+      {
+        header: 'Teams Details',
+        render: (row) => {
+          console.log('🚀 ~ ParticaipantsTable ~ row:', row);
+          return renderTeam(row);
+        },
+      },
+    ];
+  }
+
+  const MembersTableCoumns = [
     {
       header: 'Name',
       render: (row) => {
@@ -40,16 +107,6 @@ const ParticaipantsTable = ({ category }) => {
     },
     { header: 'Email', field: 'email' },
     { header: 'Phone Number', field: 'phoneNumber' },
-    {
-      render: () => {
-        return (
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
-            <Img src={images.edit} />
-            <Img src={images.trash} />
-          </div>
-        );
-      },
-    },
   ];
   // const TeamColumns = [
   //   {
@@ -58,10 +115,44 @@ const ParticaipantsTable = ({ category }) => {
   //     },
   //   }
   // ]
+
+  const renderTeam = (row) => {
+    console.log('🚀 ~ renderTeam ~ row:', row);
+    return (
+      // <div>{row.team_name}</div>
+
+      <Table
+        columns={MembersTableCoumns}
+        headerActions={[
+          <Button
+            style={{ padding: '0.2rem', fontSize: '12px' }}
+            text={'Edit'}
+            onClick={() => {
+              console.log('edit');
+            }}
+          />,
+        ]}
+        title={row.team_name}
+        data={row?.members}
+      />
+    );
+  };
   return (
     <Table
       // api={`${routeLink.participants}/`}
       // filter={{ categoryId: category.id }}
+      styles={{
+        headerCell: {
+          borderBottom: '0px',
+          fontSize: '16px',
+        },
+        bodyCell: {
+          borderBottom: '0px',
+        },
+        lastCell: {
+          borderBottom: '0px',
+        },
+      }}
       columns={columns}
       data={data}
     />

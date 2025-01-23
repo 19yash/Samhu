@@ -5,6 +5,7 @@ export const TabNavigationStyle = styled.div`
   flex-direction: column;
   flex: 1;
   background-color: #fff;
+  gap:0.5rem;
   overflow: hidden;
   ${({ style }) => style && { ...style }}
 `;
@@ -15,6 +16,7 @@ export const TabContainer = styled.div`
   align-items: stretch;
   cursor: pointer;
   border: 1px solid #e4e4e7;
+  border-radius: 8px;
   overflow-x: auto;
   overflow-y: hidden;
   ${({ style }) => style && { ...style }}
@@ -53,9 +55,10 @@ export const SelectedTab = styled.div`
 export const TabContent = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 6px;
+  // padding: 6px;
   flex-grow: 1;
-  border: 1px solid #e4e4e7;
+  // border: 1px solid #e4e4e7;
+  // border-radius: 8px;
   height: 100%;
   ${({ style }) => style && { ...style }}
 `;

@@ -7,6 +7,7 @@ import images from '../../../images';
 import checkAuthorization from '../../../services/checkAuthorization';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { action, entity } from '../../../constants/authorization';
+import { textAlign } from '@mui/system';
 
 const Sports = () => {
   console.log('hello logging');
@@ -32,6 +33,7 @@ const Sports = () => {
   return (
     <>
       <Table
+        title={'Sports Details'}
         headerActions={[
           ...(checkAuthorization(user, entity.Sports, action.create)
             ? [
@@ -46,10 +48,22 @@ const Sports = () => {
               ]
             : []),
         ]}
+        styles={{
+          headerCell: {
+            textAlign: 'start',
+          },
+          bodyCell: {
+            textAlign: 'start',
+          },
+          lastCell: {
+            textAlign: 'start',
+          },
+        }}
         api={routeLink.sports}
         onPress={(row) => {
+          console.log('🚀 ~ Sports ~ row:', row);
           navigate(`${row.id}/categories`, {
-            sportsId: row.id,
+            state: { sportsId: row.id, sport: row },
           });
         }}
         columns={columns}

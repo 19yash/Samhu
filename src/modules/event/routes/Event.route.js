@@ -31,6 +31,11 @@ const EventRoutes = [
     path: '/events/event-details/:eventId/participate',
     element: <ParticipantForm />,
   },
+  {
+    name: 'Edit Participant',
+    path: '/events/event-details/:eventId/edit-participant/:participantId',
+    element: <ParticipantForm />,
+  },
 ];
 
 export default EventRoutes;

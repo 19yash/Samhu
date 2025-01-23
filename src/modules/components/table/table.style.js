@@ -10,3 +10,21 @@ export const Actions = styled.div`
   flex: 1;
   ${({ style }) => style && style};
 `;
+
+export const Title = styled.div`
+  font-weight: 600;
+  font-size: 18px;
+`;
+
+export const TableHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  ${({ style }) => style && style};
+`;

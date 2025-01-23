@@ -1,14 +1,26 @@
 import TabNavigation from '../../components/tab/TabNavigation';
+import Table from '../../components/table/Table';
 import ParticaipantsTable from './ParticipantsTable';
 import React from 'react';
 
 const Participants = ({ event }) => {
-  console.log("🚀 ~ Participants ~ event:", event)
+  console.log('🚀 ~ Participants ~ event:', event);
   if (!event) {
     return;
   }
+  const columns = [
+    {
+      header: 'Name',
+      render: (row) => {
+        return `${row?.first_name} ${row?.last_name}`;
+      },
+    },
+    { header: 'Email', field: 'email' },
+    { header: 'Phone Number', field: 'phoneNumber' },
+  ];
 
   const tabs = [];
+  
   event?.categories?.map((category) => {
     tabs.push({
       name: category?.category_details?.name,

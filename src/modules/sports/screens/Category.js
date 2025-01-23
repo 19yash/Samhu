@@ -1,32 +1,33 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Table from '../../components/table/Table';
 import routeLink from '../../../constants/routeLink';
-import { Img } from '../../event/styles/EventCard.style';
 import images from '../../../images';
 import Button from '../../components/button/Button';
 import { useAuth } from '../../auth/hooks/useAuth';
 import checkAuthorization from '../../../services/checkAuthorization';
 import { action, entity } from '../../../constants/authorization';
+import { Img } from '../../event/styles/participantTable.style';
 
 const Category = () => {
   const { user } = useAuth();
   const { sportsId } = useParams();
+  const { state } = useLocation();
+  const { sport } = state || {};
+  console.log('🚀 ~ Category ~ sport:', sport);
   const navigate = useNavigate();
   const renderActions = (row) => {
     if (checkAuthorization(user, entity.Category, action.edit)) {
       return (
-        <>
-          <Img
-            src={images.edit}
-            onClick={(e) => {
-              navigate(`${row.id}/edit`, {
-                state: { mode: 'edit' },
-              });
-              e.stopPropagation();
-            }}
-          />
-        </>
+        <Img
+          src={images.edit}
+          onClick={(e) => {
+            navigate(`${row.id}/edit`, {
+              state: { mode: 'edit' },
+            });
+            e.stopPropagation();
+          }}
+        />
       );
     }
   };
@@ -52,6 +53,7 @@ const Category = () => {
       field: 'gender',
     },
     {
+      header: 'Actions',
       render: renderActions,
     },
   ];
@@ -71,6 +73,7 @@ const Category = () => {
             ]
           : []),
       ]}
+      title={`${sport?.sports_name ? sport.sports_name : ''} Categories`}
       columns={columns}
       api={`${routeLink.category}/`}
       filter={{

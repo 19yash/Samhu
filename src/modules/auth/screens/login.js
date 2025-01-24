@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { styles } from '../styles/login.style';
-import FullLogo from '../../../assets/brand/FullLogo.PNG';
 import { useNavigate } from 'react-router-dom';
-import httpService from '../../../services/httpService';
-import { ApiPaths } from '../../../constants/apiPaths';
-import { AuthContext } from '../../../context/auth/AuthContext';
+import images from '../../../images';
+import { useAuth } from '../hooks/useAuth';
+import { toast } from 'react-toastify';
+import Button from '../../components/button/Button';
 
 const LoginForm = () => {
   const {
@@ -14,38 +14,39 @@ const LoginForm = () => {
     formState: { errors },
     setError,
   } = useForm();
-  const { setLoading, setAuth, state } = useContext(AuthContext);
-  const { user, loading } = state;
+  const navigate = useNavigate();
+  const { user, login } = useAuth();
+  console.log("🚀 ~ LoginForm ~ user:", user)
+  const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
-    console.log('Email:', data.email, 'Password:', data.password);
     setLoading(true);
+    console.log('🚀 ~ onSubmit ~ data:', data);
     try {
-      const response = await httpService.post(ApiPaths.login, data);
-      if (response.user) {
-        setAuth(response.user);
-      } else {
-        throw new Error('Invalid login response');
+      const response = await login(data);
+      console.log('🚀 ~ onSubmit ~ response:', response);
+      if (response.message === 'success') {
+        navigate('/app/dashboard');
+        toast.success('Login Successfully');
       }
+      setLoading(false);
     } catch (error) {
       console.error('Error logging in:', error);
       setError('identifier', {
         type: 'manual',
         message: 'Invalid credentials',
       });
-    } finally {
       setLoading(false);
     }
   };
-  const navigate = useNavigate();
-  // if (loading)
+  if (user) {
+    navigate('/app/events');
+  }
   return (
     <div style={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
+      <form style={styles.form}>
         <div style={styles.imageContainer}>
-          <img src={FullLogo} alt={'logo'} width={'200px'} height={'80px'} />
+          <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
         </div>
-        <h2 style={styles.title}>Login</h2>
-
         <div style={styles.formGroup}>
           <label htmlFor="email" style={styles.label}>
             Email
@@ -91,21 +92,36 @@ const LoginForm = () => {
             <p style={styles.errorMessage}>{errors.password.message}</p>
           )}
         </div>
-        <div style={styles.formGroup}>
-          <button type="submit" style={styles.button}>
-            Login
-          </button>
-        </div>
-
-        <button
-          type=""
-          style={styles.button}
+        <div
+          style={styles.formGroup}
           onClick={() => {
-            navigate('/singup');
+            navigate('/forgot-password');
           }}
         >
-          Create New Account
-        </button>
+          <a href="#" style={styles.linkStyle}>
+            Forgot Password
+          </a>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            width: '100%',
+          }}
+        >
+          <Button
+            text="Login"
+            onClick={handleSubmit(onSubmit)}
+            loading={loading}
+          />
+          <Button
+            text="Create New Account"
+            onClick={() => {
+              navigate('/singup');
+            }}
+          />
+        </div>
       </form>
     </div>
   );

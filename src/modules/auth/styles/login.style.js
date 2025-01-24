@@ -15,7 +15,6 @@ export const styles = {
     boxSizing: 'border-box',
   },
   imageContainer: {
-    // width:'100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -24,7 +23,7 @@ export const styles = {
     backgroundColor: themeColors.secondary,
     padding: '2rem',
     borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0px 8px 12px rgba(0, 0, 0, 0.2)',
     width: '100%',
     maxWidth: '400px',
     transition: 'all 0.3s ease', // Smooth transitions for resizing
@@ -42,25 +41,25 @@ export const styles = {
     display: 'block',
     marginBottom: '.5rem',
     color: themeColors.accent,
-    fontSize: '1rem',
+    fontSize: '16px',
   },
   input: {
     width: '100%',
-    padding: '.75rem',
+    padding: '.5rem',
     borderRadius: '4px',
     border: `1px solid ${themeColors.accent}`,
-    fontSize: '1rem',
+    fontSize: '12px',
     color: themeColors.accent,
     boxSizing: 'border-box', // Ensure padding doesn't break layout
   },
   button: {
     width: '100%',
-    padding: '0.75rem',
+    padding: '0.5rem',
     backgroundColor: themeColors.primary,
     color: themeColors.secondary,
     border: 'none',
     borderRadius: '4px',
-    fontSize: '1rem',
+    fontSize: '0.75rem',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
   },
@@ -68,6 +67,11 @@ export const styles = {
     color: 'red',
     fontSize: '0.875rem',
     marginTop: '0.5rem',
+  },
+
+  linkStyle: {
+    color: themeColors.primary,
+    fontSize: '14px',
   },
 
   // Media query for responsiveness

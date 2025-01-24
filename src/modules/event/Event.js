@@ -1,79 +1,95 @@
 import { useEffect, useState } from 'react';
-import LoadingScreen from '../../screens/LoadingScreen';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
-import EventCard from './EventCard';
-import { EventContainer, EventHeader } from './styles/Event.style';
-import Header from '../components/Header';
 import View from '../components/View';
-import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { EventContainer, EventHeader } from './styles/Event.style';
+import EventCard from './EventCard';
+import { modes } from '../../constants/formConstants';
+import checkAuthorization from '../../services/checkAuthorization';
+import { useAuth } from '../auth/hooks/useAuth';
+import { action, entity } from '../../constants/authorization';
+import Loader from '../components/Loader';
+import GenericFilter from '../components/filter';
+import React from 'react';
 
 const Event = () => {
+  const { user } = useAuth();
   const [events, setEvents] = useState([]);
-  const [filter, setFilter] = useState({});
+  const [filterValues, setFilterValues] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState(null);
+
   const navigate = useNavigate();
   // take from context later
-  const loading = false;
-  const fetchData = () => {
+  const fetchData = async () => {
     try {
-      // setLoading(false);
-      const response = httpService.get(routeLink.events, {
-        params: {
-          filter,
-        },
+      setLoading(true);
+      const response = await httpService.get(`${routeLink.events}/`, {
+        ...filterValues,
       });
       if (response.data) {
         setEvents(response.data);
       }
     } catch (err) {
       console.log(err);
-      // setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
-  // useEffect(() => {
-  //   fetchData();
-  // });
+  useEffect(() => {
+    fetchData();
+  }, [filterValues]);
 
-  if (loading) {
-    return <LoadingScreen></LoadingScreen>;
-  }
   return (
     <View>
       <EventHeader>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            navigate('add-event');
-          }}
-        >
-          Add Event
-        </Button>
+        <div style={{ width: '200px' }}>
+          <GenericFilter
+            value={value}
+            setValue={setValue}
+            filterKey={'sports_id'}
+            setFilterValues={setFilterValues}
+            label={'Sports'}
+            api={routeLink.sports}
+            suggestionField={'sports_name'}
+            keyField={'id'}
+          />
+        </div>
+        {checkAuthorization(user, entity.Events, action.create) && (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              navigate('add-event', {
+                state: {
+                  mode: modes.create,
+                },
+              });
+            }}
+          >
+            Add Event
+          </Button>
+        )}
       </EventHeader>
-      <EventContainer>
-        {/* {events.length &&
-          events.map((event) => {
-            return <EventCard event={event} />;
-          })} */}
-        <EventCard
-          title="Football Tournament"
-          subtitle="Football"
-          image="https://via.placeholder.com/400x225"
-          date="29 November, 2024"
-          price={99}
-          venue="Sportyzo Sports Academy, Gurugram"
-          organizer="All India Football Federation (AIFF)"
-        />
-        <EventCard
-          title="Football Tournament"
-          subtitle="Football"
-          image="https://via.placeholder.com/400x225"
-          date="29 November, 2024"
-          price={99}
-          venue="Sportyzo Sports Academy, Gurugram"
-          organizer="All India Football Federation (AIFF)"
-        />
-      </EventContainer>
+
+      {!loading ? (
+        <EventContainer>
+          {events.length &&
+            events.map((event) => {
+              return (
+                <EventCard
+                  onPress={() => {
+                    navigate(`event-details/${event.id}`, {});
+                  }}
+                  event={event}
+                />
+              );
+            })}
+        </EventContainer>
+      ) : (
+        <Loader />
+      )}
     </View>
   );
 };

@@ -2,200 +2,229 @@ import React from 'react';
 import GenericForm from '../components/form/Form';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
-
-const layoutFields = [
-  {
-    label: 'Tounament Details',
-    fields: [
-      {
-        label: 'Tornament Name',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Sports',
-        type: 'autocomplete',
-        field: 'sport',
-        options: [
-          {
-            label: 'Cricket',
-            value: 'Cricket',
-          },
-          {
-            label: 'Football',
-            value: 'Football',
-          },
-          {
-            label: 'Archery',
-            value: 'Archery',
-          },
-        ],
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Category',
-        type: 'autocomplete',
-        field: 'category',
-        options: [
-          {
-            label: 'U-19',
-            value: 'Womens U-19',
-          },
-          {
-            label: 'U-21',
-            value: 'Womens U-19',
-          },
-          {
-            label: 'Womens U-19',
-            value: 'Womens U-19',
-          },
-        ],
-        required: true,
-        size: 'medium',
-      },
-
-      {
-        label: 'Registration Fees',
-        type: 'number',
-        field: 'fees',
-        required: true,
-        size: 'medium',
-      },
-
-      {
-        label: 'Reward',
-        type: 'text',
-        field: 'reward',
-        required: true,
-      },
-      {
-        label: 'Poster',
-        type: 'file',
-        field: 'poster',
-        required: true,
-      },
-    ],
-  },
-  {
-    label: 'Dates',
-    fields: [
-      {
-        label: 'Start Date',
-        type: 'date',
-        field: 'eventDate',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'End Date',
-        type: 'date',
-        field: 'eventDate',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Registration start Date',
-        type: 'date',
-        field: 'eventDate',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Registration End Date',
-        type: 'date',
-        field: 'eventDate',
-        required: true,
-        size: 'medium',
-      },
-    ],
-  },
-  {
-    label: 'Organizer Contact Info',
-    fields: [
-      {
-        label: 'Name',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Phone Numbetr',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Email',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-    ],
-  },
-  {
-    label: 'Venue Info',
-    fields: [
-      {
-        label: 'Name',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Address',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'City',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'ZipCode',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-      {
-        label: 'Country',
-        type: 'text',
-        field: 'name',
-        required: true,
-        size: 'medium',
-      },
-    ],
-  },
-];
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { modes } from '../../constants/formConstants';
+import { toast } from 'react-toastify';
+import { useAuth } from '../auth/hooks/useAuth';
 
 const EventForm = () => {
-  const handleSubmit = async (formData) => {
-    console.log('Form submitted:', formData);
-    const data = await httpService.post(routeLink.events, {
-      body: {
-        ...formData,
-      },
-    });
+  const { eventId } = useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { mode = modes.create } = state || {};
+
+  const fetchCategories = async (sportsId) => {
+    try {
+      const response = await httpService.get(`${routeLink.category}/`, {
+        sports_id: sportsId,
+      });
+      if (response.data) {
+        return response.data;
+      } else {
+        throw new Error('No Categories Available');
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
+    }
   };
 
+  const layoutFields = [
+    {
+      label: 'Tournament Details',
+      fields: [
+        {
+          label: 'Tornament Name',
+          type: 'text',
+          field: 'title',
+          required: true,
+          size: 'medium',
+        },
+        {
+          label: 'Start Date',
+          type: 'date',
+          field: 'start_date',
+          required: true,
+          size: 'medium',
+        },
+        {
+          label: 'End Date',
+          type: 'date',
+          field: 'end_date',
+          required: true,
+          size: 'medium',
+        },
+        {
+          label: 'Registration start Date',
+          type: 'date',
+          field: 'registration_start_date',
+          required: true,
+          size: 'medium',
+        },
+        {
+          label: 'Registration End Date',
+          type: 'date',
+          field: 'registration_end_date',
+          required: true,
+          size: 'medium',
+        },
+        {
+          label: 'Reward',
+          type: 'text',
+          field: 'rewards',
+          required: true,
+        },
+        {
+          label: 'Description',
+          type: 'text',
+          field: 'description',
+        },
+        {
+          label: 'Poster',
+          type: 'file',
+          field: 'poster',
+          api: routeLink.uploadEventPoster,
+          required: true,
+          allowedFormats: '.jpg,.png,.jpeg',
+        },
+      ],
+    },
+    {
+      label: 'Venue Info',
+      fields: [
+        {
+          label: 'Name',
+          type: 'text',
+          field: 'venue_name',
+          required: true,
+          size: 'medium',
+        },
+        {
+          label: 'Address',
+          type: 'text',
+          field: 'venue_address',
+          required: true,
+          size: 'medium',
+        },
+      ],
+    },
+    {
+      label: 'Sports Details',
+      fields: [
+        {
+          label: 'Sports',
+          type: 'autocomplete',
+          field: 'sports_id',
+          api: routeLink.sports,
+          keyField: 'id',
+          suggestionField: 'sports_name',
+          required: true,
+          size: 'large',
+          visible: () => {
+            return mode === modes.create;
+          },
+        },
+        {
+          label: 'Sports',
+          type: 'autocomplete',
+          field: 'sport_details',
+          api: routeLink.sports,
+          keyField: 'id',
+          suggestionField: 'sports_name',
+          required: true,
+          size: 'large',
+          visible: () => {
+            return mode === modes.edit;
+          },
+        },
+      ],
+    },
+  ];
   return (
     <GenericForm
-      //   mode="edit"
-      apiPath="https://api.example.com/user/123"
+      computations={[
+        {
+          fields: ['sports_id'],
+          condition: (formData) => {
+            return formData?.sports_id;
+          },
+          compute: async ({ formData, formLayout, setFormLayout }) => {
+            try {
+              const { sports_id } = formData || {};
+              if (!sports_id) {
+                console.error('Sport ID is missing.');
+                return;
+              }
+
+              // Fetch categories for the selected sport
+              const categories = await fetchCategories(sports_id);
+              console.log('🚀 ~ compute: ~ categories:', categories);
+
+              if (!categories || !Array.isArray(categories)) {
+                console.error('Invalid categories data.');
+                return;
+              }
+
+              // Create copies of form data and layout
+              const processedLayout = [...formLayout];
+
+              // Process each category
+              categories.forEach((category) => {
+                // Add category layout to processedLayout
+                processedLayout.push({
+                  label: '',
+                  fields: [
+                    {
+                      type: 'checkbox',
+                      label: category.name,
+                      field: `categories_${category.id}.selected`, // Dynamic field name
+                      size: 'medium',
+                    },
+                    {
+                      type: 'text',
+                      label: 'Price',
+                      field: `categories_${category.id}.price`, // Dynamic field name
+                      size: 'medium',
+                      // required,
+                    },
+                  ],
+                });
+              });
+              // Update the state
+              setFormLayout(processedLayout);
+            } catch (error) {
+              console.error('Error in compute function:', error);
+            }
+          },
+        },
+      ]}
+      afterSubmit={() => {
+        navigate('-1');
+      }}
+      beforeSubmit={(formData) => {
+        const processedFormData = { categories: [] };
+        Object.keys(formData).forEach((key) => {
+          if (key.startsWith('categories_') && formData[key].selected) {
+            const category_id = key.replace('categories_', '');
+            processedFormData['categories'].push({
+              category_id: category_id,
+              price: Number(formData[key].price),
+            });
+          } else {
+            processedFormData[key] = formData[key];
+          }
+        });
+        processedFormData['host_id'] = user._id;
+        return processedFormData;
+      }}
+      mode={mode}
+      apiPath={
+        mode === modes.create
+          ? `${routeLink.events}/`
+          : `${routeLink.events}/${eventId}`
+      }
       layout={layoutFields}
-      onSubmit={handleSubmit}
       styles={{
         container: {
           width: '100%',

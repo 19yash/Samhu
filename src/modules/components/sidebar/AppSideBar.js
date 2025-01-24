@@ -1,5 +1,9 @@
 import { cilSpeedometer, cilPuzzle, cilSettings, cilUser } from '@coreui/icons';
 import Sidenav from './Sidenav';
+import checkAuthorization from '../../../services/checkAuthorization';
+import { useAuth } from '../../auth/hooks/useAuth';
+import { action, entity } from '../../../constants/authorization';
+import React from 'react';
 
 const navItems = [
   {
@@ -35,15 +39,19 @@ const navItems = [
     //   },
     // ],
   },
+  {
+    name: 'Sports',
+    icon: cilPuzzle,
+    path: '/app/sports',
+  },
 ];
 
 function AppSideBar() {
-  return (
-    <div className="App">
-      <Sidenav navItems={navItems} brandName="MyApp" />
-      {/* Other components like main content */}
-    </div>
-  );
+  const { user } = useAuth();
+  const navItemsToShow = navItems.filter((navItem) => {
+    return checkAuthorization(user, entity[navItem.name], action.view);
+  });
+  return <Sidenav navItems={navItemsToShow} brandName="Samuh" />;
 }
 
 export default AppSideBar;

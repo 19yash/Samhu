@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 // Define the initial state
-export const initialState = {
+export const initialState = JSON.parse(localStorage.getItem('auth')) || {
   user: null,
   loading: true,
   isAuthenticated: false,
@@ -24,6 +24,8 @@ export const authReducer = (state, action) => {
         loading: false,
       };
     case CLEAR_AUTH:
+      console.log('Clearing local storage');
+      localStorage.removeItem('auth');
       return {
         ...initialState,
         loading: false,

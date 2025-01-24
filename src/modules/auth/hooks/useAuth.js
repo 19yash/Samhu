@@ -13,10 +13,16 @@ export const useAuth = () => {
 
   const login = async (credentials) => {
     try {
-      const user = await UserService.login(credentials);
-      setAuth({ user });
+      const response = await UserService.login(credentials);
+      if (response?.data) {
+        setAuth({ user: response.data });
+        return { message: 'success' };
+      } else {
+        return { message: 'error' };
+      }
     } catch (error) {
       showError(error);
+      return { message: 'error' };
     }
   };
 
@@ -31,7 +37,7 @@ export const useAuth = () => {
 
   const logout = async () => {
     try {
-      await UserService.logout();
+      // await UserService.logout();
       clearAuth();
     } catch (error) {
       showError(error);

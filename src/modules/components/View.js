@@ -1,6 +1,6 @@
 import React from 'react';
 
-const View = ({ children, customStyles, ...props }) => {
+const View = ({ children, style: customStyles, ...props }) => {
   const defaultStyles = {
     display: 'flex',
     flexDirection: 'column',

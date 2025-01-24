@@ -4,7 +4,8 @@ export const EventContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 32px;
+  padding: 16px;
   flex: 1;
 `;
 export const EventHeader = styled.div`

@@ -51,7 +51,7 @@ const EventForm = () => {
         {
           label: 'End Date',
           type: 'date',
-          field: 'end_Date',
+          field: 'end_date',
           required: true,
           size: 'medium',
         },

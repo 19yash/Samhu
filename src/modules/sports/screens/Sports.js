@@ -1,13 +1,12 @@
 import React from 'react';
 import Table from '../../components/table/Table';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import routeLink from '../../../constants/routeLink';
 import Button from '../../components/button/Button';
 import images from '../../../images';
 import checkAuthorization from '../../../services/checkAuthorization';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { action, entity } from '../../../constants/authorization';
-import { textAlign } from '@mui/system';
 
 const Sports = () => {
   console.log('hello logging');
@@ -61,7 +60,6 @@ const Sports = () => {
         }}
         api={routeLink.sports}
         onPress={(row) => {
-          console.log('🚀 ~ Sports ~ row:', row);
           navigate(`${row.id}/categories`, {
             state: { sportsId: row.id, sport: row },
           });

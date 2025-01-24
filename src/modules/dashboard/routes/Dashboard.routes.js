@@ -2,6 +2,7 @@ import Event from '../../event/Event';
 import Sports from '../../sports/screens/Sports';
 import React from 'react';
 import Dashboard from '../Dashboard';
+import Settings from '../Settings';
 import SportsForm from '../../sports/screens/SportsForm';
 
 const DasboardRoutes = [
@@ -26,6 +27,11 @@ const DasboardRoutes = [
         element: <SportsForm />,
       },
     ],
+  },
+  {
+    name: 'Settings',
+    path: '/settings',
+    element: <Settings />,
   },
 ];
 

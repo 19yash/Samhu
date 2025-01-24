@@ -2,13 +2,24 @@ import React, { useState, useEffect, useRef } from 'react';
 import images from '../images';
 import { Action, AppHeaderStyle, DropDown, Img, Row } from './AppHeader.style';
 import { useAuth } from '../modules/auth/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const AppHeader = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const dropdownRef = useRef(null); // Ref to track dropdown
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const actions = [
+    {
+      label: 'Profile',
+      icon: images.settings,
+      onClick: (e) => {
+        e.stopPropagation();
+        navigate('/app/settings', {});
+        setShowDropDown(false);
+      },
+    },
     {
       label: 'Logout',
       icon: images.logout,
@@ -16,6 +27,7 @@ const AppHeader = () => {
         // Add your logout logic here
         logout();
         e.stopPropagation(); // Correct method name
+        setShowDropDown(false);
       },
     },
   ];

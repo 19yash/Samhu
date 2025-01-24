@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -18,8 +18,6 @@ import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
 
 const EventCard2 = ({ event = {}, onPress }) => {
-  const { user } = useAuth();
-  const theme = useTheme();
   const {
     id,
     title,
@@ -31,6 +29,13 @@ const EventCard2 = ({ event = {}, onPress }) => {
     sport_details,
     poster,
   } = event;
+  const [imgSrc, setImgSrc] = useState(poster);
+
+  const handleImageError = () => {
+    setImgSrc(images.game);
+  };
+  const { user } = useAuth();
+  const theme = useTheme();
 
   const startDate = moment(start_date).format('DD MMMM, YYYY');
   const registrationDate = moment(registration_start_date).format(
@@ -40,14 +45,14 @@ const EventCard2 = ({ event = {}, onPress }) => {
   return (
     <Card
       sx={{
-        maxWidth: 345,
+        maxWidth: 305,
         borderRadius: theme.shape.borderRadius,
         boxShadow: theme.shadows[2],
         overflow: 'hidden',
         position: 'relative',
         '&:hover': {
           transform: 'scale(1.05)', // Slight scale-up effect
-          boxShadow: `0px 8px 20px ${theme.palette.primary.main}`, // Deeper shadow on hover
+          boxShadow: `0px 4px 10px ${theme.palette.primary.main}`, // Deeper shadow on hover
           cursor: 'pointer',
         },
       }}
@@ -59,8 +64,8 @@ const EventCard2 = ({ event = {}, onPress }) => {
       <CardMedia
         component="img"
         height="140"
-        image={poster}
-        alt="Event Image"
+        image={imgSrc}
+        onError={handleImageError}
       />
       {/* Content */}
       <CardContent>

@@ -17,10 +17,11 @@ const GenericFilter = ({
   apiFilter,
   suggestionField,
   keyField,
+  value,
+  setValue,
 }) => {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState(null);
 
   // Function to fetch options from API
   const fetchOptions = async () => {

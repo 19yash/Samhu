@@ -2,7 +2,7 @@ const edit = '/assets/edit.svg';
 const editLight = '/assets/editlight.svg';
 const trash = '/assets/trash.svg';
 const fullBrandLogo = '/assets/FullLogo.PNG';
-const fullLogotransparent = '/assets/fullLogotransparent.PNG';
+const fullLogotransparent = '/assets/fullLogotransparent.png';
 const calender = '/assets/calender.svg';
 const clock = '/assets/clock.svg';
 const game = '/assets/game.webp';
@@ -51,6 +51,8 @@ const footer6 = '/assets/footer4.png';
 const facebookLogo = '/assets/facebook-logo.svg';
 const instagramLogo = '/assets/instagram-logo.svg';
 const twitterLogo = '/assets/twitter-logo.svg';
+
+const settings = '/assets/settings.svg';
 
 const images = {
   trash: trash,
@@ -104,6 +106,7 @@ const images = {
   facebookLogo: facebookLogo,
   instagramLogo: instagramLogo,
   twitterLogo: twitterLogo,
+  settings: settings,
 };
 
 export default images;

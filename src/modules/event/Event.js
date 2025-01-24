@@ -17,11 +17,10 @@ import React from 'react';
 const Event = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState([]);
-  console.log('🚀 ~ Event ~ events:', events);
-  const [filterValues, setFilterValues] = useState({
-    sports_id: '6759e34dc7f4ea8e52c2c4fc',
-  });
+  const [filterValues, setFilterValues] = useState({});
   const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState(null);
+
   const navigate = useNavigate();
   // take from context later
   const fetchData = async () => {
@@ -40,20 +39,16 @@ const Event = () => {
     }
   };
   useEffect(() => {
-    console.log('filterValues', filterValues);
     fetchData();
   }, [filterValues]);
-
-  if (loading) {
-    // return <LoadingScreen></LoadingScreen>;
-    return <Loader />;
-  }
 
   return (
     <View>
       <EventHeader>
         <div style={{ width: '200px' }}>
           <GenericFilter
+            value={value}
+            setValue={setValue}
             filterKey={'sports_id'}
             setFilterValues={setFilterValues}
             label={'Sports'}
@@ -77,19 +72,24 @@ const Event = () => {
           </Button>
         )}
       </EventHeader>
-      <EventContainer>
-        {events.length &&
-          events.map((event) => {
-            return (
-              <EventCard
-                onPress={() => {
-                  navigate(`event-details/${event.id}`, {});
-                }}
-                event={event}
-              />
-            );
-          })}
-      </EventContainer>
+
+      {!loading ? (
+        <EventContainer>
+          {events.length &&
+            events.map((event) => {
+              return (
+                <EventCard
+                  onPress={() => {
+                    navigate(`event-details/${event.id}`, {});
+                  }}
+                  event={event}
+                />
+              );
+            })}
+        </EventContainer>
+      ) : (
+        <Loader />
+      )}
     </View>
   );
 };

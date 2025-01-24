@@ -12,6 +12,7 @@ const Sidenav = ({ navItems, brandName }) => {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+  console.log('🚀 ~ images:', images.fullLogotransparent);
 
   return (
     <CSidebar style={SideBarNav.container} narrow={!isOpen}>

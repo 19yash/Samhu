@@ -5,6 +5,7 @@ export const EventContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px;
+  padding: 16px;
   flex: 1;
 `;
 export const EventHeader = styled.div`

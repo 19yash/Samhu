@@ -1,7 +1,6 @@
 import moment from 'moment';
 import routeLink from '../../constants/routeLink';
 import React from 'react';
-import { userRole } from '../../constants/userRole';
 import httpService from '../../services/httpService';
 import { useAuth } from '../auth/hooks/useAuth';
 import { useEffect, useState } from 'react';
@@ -13,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
   const { user } = useAuth();
   const [upcomingEvent, setUpcomingEvent] = useState([]);
+  const [otherEvents, setOtherEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -21,11 +21,19 @@ const Dashboard = () => {
       const response = await httpService.get(`${routeLink.events}/`, {
         hostId: user.id,
       });
+      const upcomingEvents = [];
+      const otherEvents = [];
       if (response.data) {
-        const data = response.data.filter(
-          (event) => moment(event.start_date) > moment()
-        );
-        setUpcomingEvent(data);
+        response.data.forEach((event) => {
+          if (moment(event.start_date) > moment()) {
+            upcomingEvents.push(event);
+          } else {
+            otherEvents.push(event);
+          }
+        });
+
+        setUpcomingEvent(upcomingEvents);
+        setOtherEvents(otherEvents);
       }
     } catch (err) {
       console.log(err);
@@ -36,7 +44,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  });
 
   if (loading) {
     return <Loader />;
@@ -50,11 +58,20 @@ const Dashboard = () => {
             display: 'flex',
             flexDirection: 'column',
             gap: '1rem',
-            padding: '1rem',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '2rem',
           }}
         >
           <h1 style={{ color: theme.palette.primary.main }}>Upcoming Events</h1>
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              gap: '2rem',
+              flexWrap: 'wrap',
+            }}
+          >
             {!upcomingEvent.length && <div>No Upcoming Event</div>}
             {upcomingEvent.length &&
               upcomingEvent.map((event) => {
@@ -69,11 +86,38 @@ const Dashboard = () => {
               })}
           </div>
         </div>
-        <div>
-          <h1 style={{ color: theme.palette.primary.main }}>Others Event</h1>
-          {/* {
-            
-          } */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '2rem',
+          }}
+        >
+          <h1 style={{ color: theme.palette.primary.main }}>Other Events</h1>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              gap: '2rem',
+              flexWrap: 'wrap',
+            }}
+          >
+            {!otherEvents.length && <div>No Upcoming Event</div>}
+            {otherEvents.length &&
+              otherEvents.map((event) => {
+                return (
+                  <EventCard2
+                    event={event}
+                    onPress={() => {
+                      navigate(`/app/events/event-details/${event.id}`, {});
+                    }}
+                  />
+                );
+              })}
+          </div>
         </div>
       </div>
     );

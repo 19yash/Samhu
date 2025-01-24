@@ -22,8 +22,8 @@ const TabNavigation = ({ tabs, styles }) => {
       <TabContainer style={styles?.TabContainer || {}}>
         {tabs.map((tab, index) => {
           let selectedTab = false;
-          if (tab.route) {
-            const route = tab.route.split('/');
+          if (tab?.route) {
+            const route = tab?.route.split('/');
             selectedTab = path[path.length - 1] === route[route.length - 1];
           } else if (index === activeTab) {
             selectedTab = true;

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ParticaipantsTable from './screens/ParticipantsTable';
 import images from '../../images';
 import {
   EventContainer,
   EventDetailsStyles,
   ImageContainer,
   Img,
-  Heading,
   Information,
   BasicInfo,
   Info,
@@ -22,13 +20,16 @@ import Participants from './screens/Participants';
 import checkAuthorization from '../../services/checkAuthorization';
 import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
+import Loader from '../components/Loader';
 const EventDetails = () => {
   const { eventId } = useParams();
   const { user } = useAuth();
   const [event, setEvent] = useState();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const fetchEvent = async () => {
     try {
+      setLoading(true);
       const response = await httpService.get(`${routeLink.events}/${eventId}`);
       if (response?.data) {
         console.log('🚀 ~ fetchEvent ~ response:', response);
@@ -36,13 +37,17 @@ const EventDetails = () => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
     fetchEvent();
   }, [eventId]);
 
-  console.log('events', event);
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <View style={{ gap: '12px' }}>
       <EventContainer>
@@ -130,7 +135,8 @@ const EventDetails = () => {
       </EventContainer>
       <>
         {/* <Heading>Participants</Heading> */}
-        {event && <Participants event={event} />}{' '}
+        {checkAuthorization(user, entity.Participants, action.view) &&
+          event && <Participants event={event} />}{' '}
       </>
     </View>
   );

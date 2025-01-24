@@ -20,6 +20,7 @@ export const Row = styled.div`
 `;
 
 export const DropDown = styled.div`
+  width: 150px;
   position: absolute;
   bottom: -90px;
   right: 14px;
@@ -28,7 +29,6 @@ export const DropDown = styled.div`
   gap: 4px;
   border: 1px solid ${theme.palette.background.greyPrimary};
   border-radius: 8px;
-  padding: 16px;
   min-height: 100px;
   z-index: 10;
   background-color: white;
@@ -38,11 +38,14 @@ export const Action = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
-
+  justify-content: center;
+  gap: 16px;
+  border-bottom: 1px solid ${theme.palette.background.greyPrimary};
+  padding: 8px;
   &:hover {
     color: ${theme.palette.primary.main};
   }
+  flex: 1;
 `;
 export const Img = styled.img`
   width: 20px;

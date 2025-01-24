@@ -3,11 +3,9 @@ import { AuthContext } from '../../../context/auth/AuthContext';
 import UserService from '../../../services/AuthService';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
 
 export const useAuth = () => {
   const { state, setAuth, clearAuth, sessionTimeOut } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const showError = (error) => {
     toast.error(error.message);
@@ -16,7 +14,6 @@ export const useAuth = () => {
   const login = async (credentials) => {
     try {
       const response = await UserService.login(credentials);
-      console.log('🚀 ~ login ~ response:', response);
       if (response?.data) {
         setAuth({ user: response.data });
         return { message: 'success' };
@@ -42,8 +39,6 @@ export const useAuth = () => {
     try {
       // await UserService.logout();
       clearAuth();
-      console.log('navigating to login');
-      navigate('/home');
     } catch (error) {
       showError(error);
     }

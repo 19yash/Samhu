@@ -1,13 +1,6 @@
 import React from 'react';
 import GenericForm from '../components/form/Form';
-import httpService from '../../services/httpService';
-import routeLink from '../../constants/routeLink';
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { modes } from '../../constants/formConstants';
 import { useAuth } from '../auth/hooks/useAuth';
 
@@ -27,7 +20,18 @@ const ParticipantForm = () => {
     formData,
     formLayout,
     setFormLayout,
+    setFormData,
   }) => {
+    const newFormData = { ...formData };
+    if (formData.members) {
+      for (let i = 0; i < formData.members.length; i++) {
+        newFormData[`members_${i}_email`] = formData.members[i].email;
+        newFormData[`members_${i}_name`] = formData.members[i].name;
+        newFormData[`members_${i}_phone_number`] =
+          formData.members[i].phone_number;
+      }
+    }
+
     const filteredField = formLayout?.[0]?.fields?.filter(
       (section) => section.field === 'category_id'
     );
@@ -127,6 +131,7 @@ const ParticipantForm = () => {
         });
       }
       setFormLayout(processedLayout);
+      setFormData(newFormData);
     } catch (error) {
       console.error('Error in compute function:', error);
     }

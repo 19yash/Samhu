@@ -2,15 +2,21 @@ import React from 'react';
 import GenericForm from '../components/form/Form';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
-import { useLocation } from 'react-router-dom';
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import { modes } from '../../constants/formConstants';
 import { useAuth } from '../auth/hooks/useAuth';
 
 const ParticipantForm = () => {
+  const navigate = useNavigate();
+  const { participantId } = useParams();
   const { state } = useLocation();
   const { mode = modes.create, event } = state || {};
   const { user } = useAuth();
-  console.log('🚀 ~ ParticipantForm ~ user:', user);
   const categoryOptions = event?.categories?.map((category) => {
     return {
       label: category?.category_details?.name,
@@ -22,22 +28,18 @@ const ParticipantForm = () => {
     formLayout,
     setFormLayout,
   }) => {
-    console.log('🚀 ~ ParticipantForm ~ formLayout:', formLayout);
-
-    console.log('computationcalled', formLayout[0].fields);
-
-    console.log(
-      'filter',
-      formLayout?.[0]?.fields?.filter(
-        (section) => section.field === 'category_id'
-      )
+    const filteredField = formLayout?.[0]?.fields?.filter(
+      (section) => section.field === 'category_id'
     );
     const processedLayout = [
-      ...formLayout?.[0]?.fields?.filter(
-        (section) => section.field === 'category_id'
-      ),
+      {
+        label: '',
+        fields: [...filteredField],
+      },
+      // ...formLayout?.[0]?.fields?.filter(
+      //   (section) => section.field === 'category_id'
+      // ),
     ];
-    console.log('🚀 ~ ParticipantForm ~ processedLayout:', processedLayout);
 
     try {
       const { category_id } = formData;
@@ -101,7 +103,6 @@ const ParticipantForm = () => {
               type: 'text',
               label: 'name',
               field: 'name',
-              required: true,
               size: 'medium',
               readOnly: true,
               value: user?.user_name,
@@ -110,7 +111,6 @@ const ParticipantForm = () => {
               type: 'text',
               label: 'email',
               field: 'email',
-              required: true,
               size: 'medium',
               readOnly: true,
               value: user?.email,
@@ -118,16 +118,14 @@ const ParticipantForm = () => {
             {
               label: 'Phone Number',
               type: 'text',
-              field: 'phone_number',
+              field: 'PhoneNumber',
               size: 'medium',
-              required: true,
               readOnly: true,
-              user: user?.phone_number,
+              value: user?.PhoneNumber,
             },
           ],
         });
       }
-      console.log("###@@@ befor :processedLayout" ,processedLayout);
       setFormLayout(processedLayout);
     } catch (error) {
       console.error('Error in compute function:', error);
@@ -151,6 +149,9 @@ const ParticipantForm = () => {
 
   return (
     <GenericForm
+      afterSubmit={() => {
+        navigate(-1);
+      }}
       mode={mode}
       beforeSubmit={(formData) => {
         const newFormData = {
@@ -179,8 +180,9 @@ const ParticipantForm = () => {
             phone_number: formData[`members_${i}_phone_number`],
           });
         }
+
         newFormData['category_id'] = formData['category_id'].id;
-        newFormData['event_id'] = event?._id;
+        newFormData['event_id'] = event?.id;
         newFormData['participant_id'] = user?.id;
         return newFormData;
       }}
@@ -195,8 +197,8 @@ const ParticipantForm = () => {
       ]}
       apiPath={
         mode === modes.create
-          ? routeLink.events
-          : `${routeLink.events}/${event?._id}`
+          ? '/event/participate'
+          : `/event/participate/${participantId}`
       }
       layout={layoutFields}
       styles={{

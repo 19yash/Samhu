@@ -3,7 +3,6 @@ import ParticaipantsTable from './ParticipantsTable';
 import React from 'react';
 
 const Participants = ({ event }) => {
-  console.log('🚀 ~ Participants ~ event:', event);
   if (!event) {
     return;
   }

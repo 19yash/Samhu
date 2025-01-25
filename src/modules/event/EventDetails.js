@@ -32,7 +32,6 @@ const EventDetails = () => {
       setLoading(true);
       const response = await httpService.get(`${routeLink.events}/${eventId}`);
       if (response?.data) {
-        console.log('🚀 ~ fetchEvent ~ response:', response);
         setEvent(response.data);
       }
     } catch (err) {

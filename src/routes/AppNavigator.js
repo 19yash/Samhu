@@ -26,7 +26,6 @@ const AuthWrapper = ({ children }) => {
 };
 export const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
-  console.log("🚀 ~ ProtectedRoute ~ user:", user)
   if (!user) {
     // user is not authenticated
     return <Navigate to="/login" />;

@@ -182,6 +182,7 @@ const GenericForm = ({
   };
 
   const onSubmit = async (formData) => {
+    console.log('🚀 ~ onSubmit ~ formData:', formData);
     setLoading(true);
 
     try {
@@ -258,6 +259,7 @@ const GenericForm = ({
   const handleSubmit = (e) => {
     console.log('called');
     e.preventDefault();
+    console.log('called 2');
 
     const requiredErrors = {};
     formLayout?.forEach((section) => {
@@ -267,9 +269,10 @@ const GenericForm = ({
         }
       });
     });
-
+    console.log('setting Errors',requiredErrors);
     setErrors(requiredErrors);
     if (Object.keys(requiredErrors).length === 0) {
+      console.log('no Errors');
       onSubmit({ ...formData, ...fileData });
     }
   };
@@ -305,9 +308,7 @@ const GenericForm = ({
       allowedFormats,
       readOnly,
       value,
-      onChange,
     } = field;
-      console.log("🚀 ~ renderField ~ visible:", visible)
 
     // Visibility logic
     if (visible && typeof visible === 'function' && !visible(formData)) {

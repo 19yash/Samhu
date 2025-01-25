@@ -31,7 +31,6 @@ const CategoryForm = () => {
           label: 'Sport',
           field: 'sport_details',
           api: routeLink.sports,
-          required: true,
           size: 'medium',
           keyField: 'id',
           suggestionField: 'sports_name',
@@ -85,10 +84,11 @@ const CategoryForm = () => {
   ];
   return (
     <GenericForm
-      afterSubmit={(response) => {
+      afterSubmit={() => {
         navigate(-1);
       }}
       beforeSubmit={(formData) => {
+        console.log('🚀 ~ CategoryForm ~ formData:', formData);
         const newObject = {
           ...formData,
           is_team_sport: formData?.participants_in_team > 1,

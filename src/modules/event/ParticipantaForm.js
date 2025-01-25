@@ -22,12 +22,27 @@ const ParticipantForm = () => {
     formLayout,
     setFormLayout,
   }) => {
-    console.log('computationcalled', formData);
+    console.log('🚀 ~ ParticipantForm ~ formLayout:', formLayout);
+
+    console.log('computationcalled', formLayout[0].fields);
+
+    console.log(
+      'filter',
+      formLayout?.[0]?.fields?.filter(
+        (section) => section.field === 'category_id'
+      )
+    );
+    const processedLayout = [
+      ...formLayout?.[0]?.fields?.filter(
+        (section) => section.field === 'category_id'
+      ),
+    ];
+    console.log('🚀 ~ ParticipantForm ~ processedLayout:', processedLayout);
+
     try {
       const { category_id } = formData;
       if (category_id?.is_team_sport) {
-        const processedLayout = [...formLayout];
-        const participants = category_id?.participants_in_team || 3;
+        const participants = category_id?.participants_in_team;
         processedLayout.push({
           label: 'Team Details',
           fields: [
@@ -78,9 +93,7 @@ const ParticipantForm = () => {
             ],
           });
         }
-        setFormLayout(processedLayout);
       } else {
-        const processedLayout = [...formLayout];
         processedLayout.push({
           label: 'Participant Details',
           fields: [
@@ -109,12 +122,13 @@ const ParticipantForm = () => {
               size: 'medium',
               required: true,
               readOnly: true,
-              user: user?.phone_number || '99999999',
+              user: user?.phone_number,
             },
           ],
         });
-        setFormLayout(processedLayout);
       }
+      console.log("###@@@ befor :processedLayout" ,processedLayout);
+      setFormLayout(processedLayout);
     } catch (error) {
       console.error('Error in compute function:', error);
     }
@@ -143,7 +157,7 @@ const ParticipantForm = () => {
           ...formData,
           members: [],
         };
-        const participant = formData['category_id']?.participants_in_team || 3;
+        const participant = formData['category_id']?.participants_in_team;
         let isCaptainSelected = false;
         let isViceCaptainSelected = false;
         for (let i = 0; i < participant; i++) {

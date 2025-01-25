@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { DefaultLayout } from '../screens/DefaultLayout.js';
 import LoginForm from '../modules/auth/screens/login.js';
 import SignUpForm from '../modules/auth/screens/singup.js';
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { Navigate, useNavigate, useRoutes } from 'react-router-dom';
 import ForgotPassword from '../modules/auth/screens/ForgotPassword.js';
 import ConfirmOtp from '../modules/auth/screens/ConfirmOtp.js';
 import { Home } from '../screens/Home/Home.js';
@@ -23,6 +23,15 @@ const AuthWrapper = ({ children }) => {
   }, [user, navigate]);
 
   return <>{!user && children}</>; // Render children only if no user is logged in
+};
+export const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  console.log("🚀 ~ ProtectedRoute ~ user:", user)
+  if (!user) {
+    // user is not authenticated
+    return <Navigate to="/login" />;
+  }
+  return children;
 };
 
 export default AuthWrapper;
@@ -91,7 +100,11 @@ export const AppNavigator = () => {
     },
     {
       path: '/app/*',
-      element: <DefaultLayout />,
+      element: (
+        <ProtectedRoute>
+          <DefaultLayout />
+        </ProtectedRoute>
+      ),
     },
   ]);
   return routes;

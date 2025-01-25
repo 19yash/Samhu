@@ -22,19 +22,16 @@ const Table = ({
   onPress,
   title,
 }) => {
-  console.log('🚀 ~ styles:', styles);
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
   // If API is passed, fetch data from API
   useEffect(() => {
-    console.log('called');
     if (api) {
       const fetchData = async () => {
         try {
           const response = await httpService.get(api, {
             ...filter,
           });
-          console.log('🚀 ~ fetchData ~ response:', response);
           if (response?.data && response.data.length) {
             const result = response.data;
             setTableData(result);
@@ -108,7 +105,6 @@ const Table = ({
       ...styles?.lastCell,
     },
   };
-  console.log('🚀 ~ tableStyles:', tableStyles);
 
   return (
     <div style={tableStyles?.container}>

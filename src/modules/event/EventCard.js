@@ -133,7 +133,7 @@ const EventCard2 = ({ event = {}, onPress }) => {
               Organized By:
             </Typography>{' '}
             <Typography variant="body2">
-              {`${host_details.organisation_name}`}
+              {`${host_details?.organisation_name}`}
             </Typography>
           </Box>
         </Box>

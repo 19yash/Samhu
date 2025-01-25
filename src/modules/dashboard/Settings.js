@@ -4,9 +4,12 @@ import { modes } from '../../constants/formConstants';
 import routeLink from '../../constants/routeLink';
 import { useAuth } from '../auth/hooks/useAuth';
 import { userRole } from '../../constants/userRole';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
+  console.log('🚀 ~ Settings ~ user:', user);
   const layoutFields = [
     {
       label: 'Profile Details',
@@ -39,27 +42,37 @@ const Settings = () => {
           required: true,
           size: 'medium',
         },
-        {
-          type: 'text',
-          label: 'Organization',
-          field: 'organisation_name',
-          required: true,
-          size: 'medium',
-          visible: user.role === userRole.host,
-        },
-        {
-          type: 'text',
-          label: 'Academic Institute Name',
-          field: 'school_or_college',
-          required: true,
-          size: 'medium',
-          visible: user.role === userRole.participant,
-        },
+        ...(user.role === userRole.host
+          ? [
+              {
+                type: 'text',
+                label: 'Organization',
+                field: 'organisation_name',
+                required: true,
+                size: 'medium',
+              },
+            ]
+          : []),
+
+        ...(user.role === userRole.participant
+          ? [
+              {
+                type: 'text',
+                label: 'Academic Institute Name',
+                field: 'school_or_college',
+                required: true,
+                size: 'medium',
+              },
+            ]
+          : []),
       ],
     },
   ];
   return (
     <GenericForm
+      afterSubmit={() => {
+        navigate(-1);
+      }}
       layout={layoutFields}
       mode={modes.edit}
       apiPath={routeLink.user}

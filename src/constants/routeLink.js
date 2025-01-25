@@ -9,7 +9,7 @@ const routeLink = {
   category: '/categories',
   participants: '/participants',
   uploadEventPoster: '/event/upload',
-  user: '/user',
+  user: '/user/',
 };
 
 export default routeLink;

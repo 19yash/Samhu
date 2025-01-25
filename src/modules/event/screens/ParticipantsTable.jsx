@@ -5,59 +5,59 @@ import images from '../../../images';
 import { Img } from '../styles/participantTable.style';
 import { borderBottom, fontSize, padding } from '@mui/system';
 import Button from '../../components/button/Button';
-const ParticaipantsTable = ({ category = { is_team_sport: true } }) => {
+const ParticaipantsTable = ({ category }) => {
   console.log('🚀 ~ ParticaipantsTable ~ category:', category);
-  const members = [
-    {
-      first_name: 'John',
-      last_name: 'Doe',
-      email: '4o3yL@example.com',
-      phoneNumber: '1234567890',
-    },
-    {
-      first_name: 'John',
-      last_name: 'Doe',
-      email: '4o3yL@example.com',
-      phoneNumber: '1234567890',
-    },
-    {
-      first_name: 'John',
-      last_name: 'Doe',
-      email: '4o3yL@example.com',
-      phoneNumber: '1234567890',
-    },
-    {
-      first_name: 'John',
-      last_name: 'Doe',
-      email: '4o3yL@example.com',
-      phoneNumber: '1234567890',
-    },
-  ];
-  let data = [];
-  if (category.is_team_sport) {
-    data = [
-      {
-        team_name: 'Mumbai Indians',
-        members: members,
-      },
-      {
-        team_name: 'Mumbai Indians',
-        members: members,
-      },
-      {
-        team_name: 'Mumbai Indians',
-        members: members,
-      },
-      {
-        team_name: 'Mumbai Indians',
-        members: members,
-      },
-    ];
-  } else {
-    data = [...members];
-  }
+  // const members = [
+  //   {
+  //     first_name: 'John',
+  //     last_name: 'Doe',
+  //     email: '4o3yL@example.com',
+  //     phoneNumber: '1234567890',
+  //   },
+  //   {
+  //     first_name: 'John',
+  //     last_name: 'Doe',
+  //     email: '4o3yL@example.com',
+  //     phoneNumber: '1234567890',
+  //   },
+  //   {
+  //     first_name: 'John',
+  //     last_name: 'Doe',
+  //     email: '4o3yL@example.com',
+  //     phoneNumber: '1234567890',
+  //   },
+  //   {
+  //     first_name: 'John',
+  //     last_name: 'Doe',
+  //     email: '4o3yL@example.com',
+  //     phoneNumber: '1234567890',
+  //   },
+  // ];
+  // let data = [];
+  // if (category.is_team_sport) {
+  //   data = [
+  //     {
+  //       team_name: 'Mumbai Indians',
+  //       members: members,
+  //     },
+  //     {
+  //       team_name: 'Mumbai Indians',
+  //       members: members,
+  //     },
+  //     {
+  //       team_name: 'Mumbai Indians',
+  //       members: members,
+  //     },
+  //     {
+  //       team_name: 'Mumbai Indians',
+  //       members: members,
+  //     },
+  //   ];
+  // } else {
+  //   data = [...members];
+  // }
   let columns = [];
-  if (!category.is_team_sport) {
+  if (!category?.is_team_sport) {
     columns = [
       {
         header: 'Name',
@@ -91,7 +91,6 @@ const ParticaipantsTable = ({ category = { is_team_sport: true } }) => {
       {
         header: 'Teams Details',
         render: (row) => {
-          console.log('🚀 ~ ParticaipantsTable ~ row:', row);
           return renderTeam(row);
         },
       },
@@ -108,19 +107,9 @@ const ParticaipantsTable = ({ category = { is_team_sport: true } }) => {
     { header: 'Email', field: 'email' },
     { header: 'Phone Number', field: 'phoneNumber' },
   ];
-  // const TeamColumns = [
-  //   {
-  //     render: ()=>{
-  //       return <Table></Table>
-  //     },
-  //   }
-  // ]
 
   const renderTeam = (row) => {
-    console.log('🚀 ~ renderTeam ~ row:', row);
     return (
-      // <div>{row.team_name}</div>
-
       <Table
         columns={MembersTableCoumns}
         headerActions={[
@@ -139,8 +128,8 @@ const ParticaipantsTable = ({ category = { is_team_sport: true } }) => {
   };
   return (
     <Table
-      // api={`${routeLink.participants}/`}
-      // filter={{ categoryId: category.id }}
+      api={`/event/participate`}
+      filter={{ category_id: category.id }}
       styles={{
         headerCell: {
           borderBottom: '0px',
@@ -154,7 +143,7 @@ const ParticaipantsTable = ({ category = { is_team_sport: true } }) => {
         },
       }}
       columns={columns}
-      data={data}
+      // data={data}
     />
   );
 };

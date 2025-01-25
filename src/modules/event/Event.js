@@ -13,11 +13,18 @@ import { action, entity } from '../../constants/authorization';
 import Loader from '../components/Loader';
 import GenericFilter from '../components/filter';
 import React from 'react';
+import { userRole } from '../../constants/userRole';
 
 const Event = () => {
   const { user } = useAuth();
   const [events, setEvents] = useState([]);
-  const [filterValues, setFilterValues] = useState({});
+  const [filterValues, setFilterValues] = useState(
+    user.role === userRole.host
+      ? {
+          hostId: user.id,
+        }
+      : {}
+  );
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState(null);
 

@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
   },
 });
 
-export default class HttpService {
+export default class httpService {
   static async handleError(error) {
     console.log('🚀 ~ handleError ~ error:', error);
     if (error?.response?.status === 401) {

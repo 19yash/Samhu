@@ -8,11 +8,12 @@ import { SideBarNav, SideBarToggle } from './sidenav.style';
 
 const Sidenav = ({ navItems, brandName }) => {
   const [isOpen, setIsOpen] = useState(true);
+  console.log('🚀 ~ Sidenav ~ isOpen:', isOpen);
 
   const toggleSidebar = () => {
+    console.log('toggler called');
     setIsOpen(!isOpen);
   };
-  console.log('🚀 ~ images:', images.fullLogotransparent);
 
   return (
     <CSidebar style={SideBarNav.container} narrow={!isOpen}>

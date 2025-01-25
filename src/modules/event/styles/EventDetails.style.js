@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 
 export const EventContainer = styled.div`
-  width: 100%;
+  // width: 100%;
   display: flex;
   border-radius: 8px;
   gap: 1rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const Img = styled.img`
@@ -18,6 +21,10 @@ export const ImageContainer = styled.div`
   width: 60%;
   height: 40%;
   border-radius: 8px;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 export const EventDetailsStyles = styled.div`
@@ -26,7 +33,11 @@ export const EventDetailsStyles = styled.div`
   flex-direction: column;
   gap: 10px;
   justify-content: center;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
+
 export const BasicInfo = styled.div`
   display: flex;
   flex-direction: column;

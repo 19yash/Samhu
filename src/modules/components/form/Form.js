@@ -51,9 +51,8 @@ const GenericForm = ({
     setLoading(true);
     try {
       const response = await httpService.get(apiPath);
-      console.log('🚀 ~ fetchFormData ~ response:', response);
       const formData = response.data;
-      formLayout.map(async (field) => {
+      formLayout?.map(async (field) => {
         if (field.type === 'autocomplete') {
           await fetchAutocompleteOptions(field);
           formData[field.field] = {
@@ -94,7 +93,6 @@ const GenericForm = ({
   };
 
   const doInititalComputations = async (formData) => {
-    console.log('doing intital computations computations', formData);
     if (computations.length) {
       for (const computation of computations) {
         // Check if the field triggers this computation
@@ -120,8 +118,6 @@ const GenericForm = ({
     }
   };
   const handleInputChange = async (field, value) => {
-    console.log('handleInputChange called', field, value, formData);
-
     // Update the nested field in formData
     const newFormData = updateNestedObject(formData, field, value);
 
@@ -283,7 +279,7 @@ const GenericForm = ({
     try {
       if (autocompleteOptions[fieldName]?.length) return; // Skip if options are already loaded
       const response = await httpService.get(api, { params: filter });
-      const options = response.data.map((item) => ({
+      const options = response?.data?.map((item) => ({
         label: item[suggestionField],
         value: item[keyField],
       }));
@@ -309,7 +305,9 @@ const GenericForm = ({
       allowedFormats,
       readOnly,
       value,
+      onChange,
     } = field;
+      console.log("🚀 ~ renderField ~ visible:", visible)
 
     // Visibility logic
     if (visible && typeof visible === 'function' && !visible(formData)) {
@@ -388,7 +386,6 @@ const GenericForm = ({
         );
 
       case 'file':
-        console.log('🚀 ~ file:', typeof allowedFormats);
         return (
           <Grid item xs={gridSize} key={fieldName}>
             <TextField
@@ -559,7 +556,7 @@ const GenericForm = ({
               </Typography>
             )}
             <Grid container spacing={2}>
-              {section.fields.map((field) => renderField(field))}
+              {section?.fields?.map((field) => renderField(field))}
             </Grid>
           </Grid>
         ))}

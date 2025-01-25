@@ -14,6 +14,7 @@ export const useAuth = () => {
   const login = async (credentials) => {
     try {
       const response = await UserService.login(credentials);
+      console.log("🚀 ~ login ~ response:", response)
       if (response?.data) {
         setAuth({ user: response.data });
         return { message: 'success' };

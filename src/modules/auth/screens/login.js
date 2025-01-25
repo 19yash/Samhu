@@ -38,9 +38,9 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
-  if (user) {
-    navigate('/app/events');
-  }
+  // if (user) {
+  //   navigate('/app/events');
+  // }
   return (
     <div style={styles.container}>
       <form style={styles.form}>

@@ -58,19 +58,17 @@ const EventDetails = () => {
         </ImageContainer>
         <EventDetailsStyles>
           {/* <div> */}
-          {/* moment(event?.registration_end_date) > moment() &&
-            checkAuthorization(user, entity.Participants, action.create) && ( */}
-          {
-            <Button
-              text={'Participate Now'}
-              onClick={() => {
-                navigate('participate', {
-                  state: { event: event },
-                });
-              }}
-            />
-            // )
-          }
+          {moment(event?.registration_end_date) > moment() &&
+            checkAuthorization(user, entity.Participants, action.create) && (
+              <Button
+                text={'Participate Now'}
+                onClick={() => {
+                  navigate('participate', {
+                    state: { event: event },
+                  });
+                }}
+              />
+            )}
           {moment(event?.registration_end_date) < moment() && (
             <Information>Registration has been closed Now !!</Information>
           )}

@@ -138,14 +138,16 @@ const EventCard = ({ event = {}, onPress }) => {
           </Box>
         </Box>
         <Box marginTop={'1rem'}>
-          {checkAuthorization(user, entity.Participants, action.create) && (
-            <Button
-              text={'Participate'}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            />
-          )}
+          {moment(event?.registration_end_date) > moment() &&
+            checkAuthorization(user, entity.Participants, action.create) && (
+              <Button
+                text={'Participate'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onPress();
+                }}
+              />
+            )}
         </Box>
       </CardContent>
 

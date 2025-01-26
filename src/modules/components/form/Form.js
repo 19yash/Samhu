@@ -269,7 +269,7 @@ const GenericForm = ({
         }
       });
     });
-    console.log('setting Errors',requiredErrors);
+    console.log('setting Errors', requiredErrors);
     setErrors(requiredErrors);
     if (Object.keys(requiredErrors).length === 0) {
       console.log('no Errors');
@@ -308,6 +308,7 @@ const GenericForm = ({
       allowedFormats,
       readOnly,
       value,
+      pattern,
     } = field;
 
     // Visibility logic
@@ -523,7 +524,23 @@ const GenericForm = ({
               placeholder={label}
               value={getNestedValue(formData, fieldName) || ''}
               required={required}
-              onChange={(e) => handleInputChange(fieldName, e.target.value)}
+              // onChange={(e) => handleInputChange(fieldName, e.target.value)}
+              onChange={(e) => {
+                console.log("🚀 ~ called ~ e:", e)
+                const value = e.target.value;
+                console.log("🚀 ~ renderField ~ pattern:", pattern)
+
+                // Validate against pattern if provided
+                if (pattern && !new RegExp(pattern).test(value)) {
+                  handleInputChange(
+                    fieldName,
+                    value,
+                    `${label} does not match the required pattern.`
+                  );
+                } else {
+                  handleInputChange(fieldName, value);
+                }
+              }}
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
               sx={formStyles.input}

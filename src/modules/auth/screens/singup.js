@@ -37,12 +37,11 @@ const SignUpForm = () => {
           required: true,
           size: 'medium',
         },
-
         {
           label: 'Organization Name',
           type: 'text',
           field: 'organisation_name',
-          required: true,
+          // required: true,
           size: 'medium',
           visible: (data) => {
             return data.role === 'Host';
@@ -51,9 +50,10 @@ const SignUpForm = () => {
         {
           label: 'Academic Institute Name',
           type: 'text',
-          field: 'organization_name',
+          field: 'school_or_college',
           size: 'medium',
           visible: (data) => {
+            console.log('🚀 ~ SignUpForm ~ data:', data);
             return data.role === 'Participant';
           },
         },
@@ -92,6 +92,8 @@ const SignUpForm = () => {
           field: 'password',
           required: true,
           size: 'large',
+          pattern:
+            '/^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])[A-Za-z\d\S]+$/',
         },
         {
           label: 'Confirm Password',

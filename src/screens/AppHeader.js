@@ -1,8 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import images from '../images';
-import { Action, AppHeaderStyle, DropDown, Img, Row } from './AppHeader.style';
+import {
+  Action,
+  AppHeaderStyle,
+  DropDown,
+  Img,
+  NavItems,
+  Row,
+} from './AppHeader.style';
 import { useAuth } from '../modules/auth/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { ItemsContainer } from './NavBar.style';
 
 const AppHeader = () => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -31,7 +39,24 @@ const AppHeader = () => {
       },
     },
   ];
-
+  const items = [
+    {
+      name: 'Home',
+      path: '/home',
+    },
+    {
+      name: 'About Us',
+      path: '/about',
+    },
+    {
+      name: 'Events',
+      path: '/events',
+    },
+    {
+      name: 'Contact Us',
+      path: '/contactUs',
+    },
+  ];
   // Handle clicks outside the dropdown
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -51,7 +76,13 @@ const AppHeader = () => {
 
   return (
     <AppHeaderStyle>
-      <div></div>
+      <ItemsContainer>
+        {items.map((item) => {
+          return (
+            <NavItems onClick={() => navigate(item.path)}>{item.name}</NavItems>
+          );
+        })}
+      </ItemsContainer>
       <Row>
         <Img src={images.user} style={{ width: '30px', height: '30px' }} />
         {user?.user_name}

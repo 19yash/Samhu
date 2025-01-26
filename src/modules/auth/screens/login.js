@@ -16,7 +16,7 @@ const LoginForm = () => {
   } = useForm();
   const navigate = useNavigate();
   const { user, login } = useAuth();
-  console.log("🚀 ~ LoginForm ~ user:", user)
+  console.log('🚀 ~ LoginForm ~ user:', user);
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
     setLoading(true);
@@ -38,9 +38,9 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
-  if (user) {
-    navigate('/app/events');
-  }
+  // if (user) {
+  //   navigate('/app/events');
+  // }
   return (
     <div style={styles.container}>
       <form style={styles.form}>
@@ -93,13 +93,18 @@ const LoginForm = () => {
           )}
         </div>
         <div
-          style={styles.formGroup}
-          onClick={() => {
-            navigate('/forgot-password');
+          style={{
+            ...styles.formGroup,
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'space-between',
           }}
         >
-          <a href="#" style={styles.linkStyle}>
+          <a href="/forgot-password" style={styles.linkStyle}>
             Forgot Password
+          </a>
+          <a href="/home" style={styles.linkStyle}>
+            Home Page
           </a>
         </div>
         <div

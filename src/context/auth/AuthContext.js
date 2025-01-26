@@ -28,6 +28,8 @@ export const authReducer = (state, action) => {
       localStorage.removeItem('auth');
       return {
         ...initialState,
+        user: null,
+        isAuthenticated: false,
         loading: false,
       };
     case SET_LOADING:

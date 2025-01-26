@@ -132,7 +132,6 @@ const EventForm = () => {
           api: routeLink.sports,
           keyField: 'id',
           suggestionField: 'sports_name',
-          required: true,
           size: 'large',
           visible: () => {
             return mode === modes.edit;
@@ -151,6 +150,21 @@ const EventForm = () => {
           },
           compute: async ({ formData, formLayout, setFormLayout }) => {
             try {
+              const processedLayout = [];
+
+              console.log('🚀 ~ compute: ~ formLayout:', formLayout);
+              formLayout.forEach((section) => {
+                const _sections = {
+                  ...section,
+                };
+                const _fields = section.fields.filter((input) => {
+                  return !input.field.includes('categories_');
+                });
+                _sections.fields = _fields;
+                processedLayout.push(_sections);
+              });
+              console.log('### processedLayout', processedLayout);
+
               const { sports_id } = formData || {};
               if (!sports_id) {
                 console.error('Sport ID is missing.');
@@ -167,7 +181,6 @@ const EventForm = () => {
               }
 
               // Create copies of form data and layout
-              const processedLayout = [...formLayout];
 
               // Process each category
               categories.forEach((category) => {

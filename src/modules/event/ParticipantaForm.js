@@ -1,16 +1,15 @@
 import React from 'react';
 import GenericForm from '../components/form/Form';
-import httpService from '../../services/httpService';
-import routeLink from '../../constants/routeLink';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { modes } from '../../constants/formConstants';
 import { useAuth } from '../auth/hooks/useAuth';
 
 const ParticipantForm = () => {
+  const navigate = useNavigate();
+  const { participantId } = useParams();
   const { state } = useLocation();
   const { mode = modes.create, event } = state || {};
   const { user } = useAuth();
-  console.log('🚀 ~ ParticipantForm ~ user:', user);
   const categoryOptions = event?.categories?.map((category) => {
     return {
       label: category?.category_details?.name,
@@ -21,13 +20,35 @@ const ParticipantForm = () => {
     formData,
     formLayout,
     setFormLayout,
+    setFormData,
   }) => {
-    console.log('computationcalled', formData);
+    const newFormData = { ...formData };
+    if (formData.members) {
+      for (let i = 0; i < formData.members.length; i++) {
+        newFormData[`members_${i}_email`] = formData.members[i].email;
+        newFormData[`members_${i}_name`] = formData.members[i].name;
+        newFormData[`members_${i}_phone_number`] =
+          formData.members[i].phone_number;
+      }
+    }
+
+    const filteredField = formLayout?.[0]?.fields?.filter(
+      (section) => section.field === 'category_id'
+    );
+    const processedLayout = [
+      {
+        label: '',
+        fields: [...filteredField],
+      },
+      // ...formLayout?.[0]?.fields?.filter(
+      //   (section) => section.field === 'category_id'
+      // ),
+    ];
+
     try {
       const { category_id } = formData;
       if (category_id?.is_team_sport) {
-        const processedLayout = [...formLayout];
-        const participants = category_id?.participants_in_team || 3;
+        const participants = category_id?.participants_in_team;
         processedLayout.push({
           label: 'Team Details',
           fields: [
@@ -78,9 +99,7 @@ const ParticipantForm = () => {
             ],
           });
         }
-        setFormLayout(processedLayout);
       } else {
-        const processedLayout = [...formLayout];
         processedLayout.push({
           label: 'Participant Details',
           fields: [
@@ -88,7 +107,6 @@ const ParticipantForm = () => {
               type: 'text',
               label: 'name',
               field: 'name',
-              required: true,
               size: 'medium',
               readOnly: true,
               value: user?.user_name,
@@ -97,7 +115,6 @@ const ParticipantForm = () => {
               type: 'text',
               label: 'email',
               field: 'email',
-              required: true,
               size: 'medium',
               readOnly: true,
               value: user?.email,
@@ -105,16 +122,16 @@ const ParticipantForm = () => {
             {
               label: 'Phone Number',
               type: 'text',
-              field: 'phone_number',
+              field: 'PhoneNumber',
               size: 'medium',
-              required: true,
               readOnly: true,
-              user: user?.phone_number || '99999999',
+              value: user?.PhoneNumber,
             },
           ],
         });
-        setFormLayout(processedLayout);
       }
+      setFormLayout(processedLayout);
+      setFormData(newFormData);
     } catch (error) {
       console.error('Error in compute function:', error);
     }
@@ -137,13 +154,16 @@ const ParticipantForm = () => {
 
   return (
     <GenericForm
+      afterSubmit={() => {
+        navigate(-1);
+      }}
       mode={mode}
       beforeSubmit={(formData) => {
         const newFormData = {
           ...formData,
           members: [],
         };
-        const participant = formData['category_id']?.participants_in_team || 3;
+        const participant = formData['category_id']?.participants_in_team;
         let isCaptainSelected = false;
         let isViceCaptainSelected = false;
         for (let i = 0; i < participant; i++) {
@@ -165,8 +185,9 @@ const ParticipantForm = () => {
             phone_number: formData[`members_${i}_phone_number`],
           });
         }
+
         newFormData['category_id'] = formData['category_id'].id;
-        newFormData['event_id'] = event?._id;
+        newFormData['event_id'] = event?.id;
         newFormData['participant_id'] = user?.id;
         return newFormData;
       }}
@@ -181,8 +202,8 @@ const ParticipantForm = () => {
       ]}
       apiPath={
         mode === modes.create
-          ? routeLink.events
-          : `${routeLink.events}/${event?._id}`
+          ? '/event/participate'
+          : `/event/participate/${participantId}`
       }
       layout={layoutFields}
       styles={{

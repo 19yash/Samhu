@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import images from '../../images';
 import {
   EventContainer,
@@ -22,6 +22,8 @@ import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
 import Loader from '../components/Loader';
 const EventDetails = () => {
+  const { state } = useLocation();
+  const { fromDashboard } = state || {};
   const { eventId } = useParams();
   const { user } = useAuth();
   const [event, setEvent] = useState();
@@ -32,7 +34,6 @@ const EventDetails = () => {
       setLoading(true);
       const response = await httpService.get(`${routeLink.events}/${eventId}`);
       if (response?.data) {
-        console.log('🚀 ~ fetchEvent ~ response:', response);
         setEvent(response.data);
       }
     } catch (err) {
@@ -49,7 +50,7 @@ const EventDetails = () => {
     return <Loader />;
   }
   return (
-    <View style={{ gap: '12px' }}>
+    <View style={{ gap: '12px', backgroundColor: '#fff', padding: '2rem' }}>
       <EventContainer>
         <ImageContainer>
           <Img
@@ -59,19 +60,26 @@ const EventDetails = () => {
         </ImageContainer>
         <EventDetailsStyles>
           {/* <div> */}
-          {/* moment(event?.registration_end_date) > moment() &&
-            checkAuthorization(user, entity.Participants, action.create) && ( */}
-          {
-            <Button
-              text={'Participate Now'}
-              onClick={() => {
-                navigate('participate', {
-                  state: { event: event },
-                });
-              }}
-            />
-            // )
-          }
+
+          {moment(event?.registration_start_date) <= moment() &&
+            moment(event?.registration_end_date) > moment() &&
+            checkAuthorization(user, entity.Participants, action.create) && (
+              <Button
+                text={'Participate Now'}
+                onClick={() => {
+                  navigate('participate', {
+                    state: { event: event },
+                  });
+                }}
+              />
+            )}
+          {moment(event?.registration_start_date) < moment() && (
+            <Information>
+              Registration will Starts on{' '}
+              {moment(event?.registration_start_date).format('DD MMMM, YYYY')}{' '}
+              !!
+            </Information>
+          )}
           {moment(event?.registration_end_date) < moment() && (
             <Information>Registration has been closed Now !!</Information>
           )}
@@ -133,11 +141,13 @@ const EventDetails = () => {
           {/* </div> */}
         </EventDetailsStyles>
       </EventContainer>
-      <>
-        {/* <Heading>Participants</Heading> */}
-        {checkAuthorization(user, entity.Participants, action.view) &&
-          event && <Participants event={event} />}{' '}
-      </>
+      {!fromDashboard && (
+        <>
+          {/* <Heading>Participants</Heading> */}
+          {checkAuthorization(user, entity.Participants, action.view) &&
+            event && <Participants event={event} />}{' '}
+        </>
+      )}
     </View>
   );
 };

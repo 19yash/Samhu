@@ -38,9 +38,9 @@ export const Section = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '60vh',
     gap: '20px',
     backgroundColor: '#fff',
+    padding: '2rem',
   },
   heading: {
     fontSize: '40px',
@@ -52,6 +52,9 @@ export const Section = {
     lineHeight: '28px',
     width: '40%',
     textAlign: 'center',
+  },
+  backgroundColor: {
+    backgroundColor: 'rgb(235, 235, 235)',
   },
 };
 
@@ -66,9 +69,10 @@ export const Testimonoials = {
   item: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     padding: '20px',
+    flex: 1,
   },
   border: {
     borderRight: '2px solid #000',

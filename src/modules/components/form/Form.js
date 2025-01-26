@@ -51,9 +51,8 @@ const GenericForm = ({
     setLoading(true);
     try {
       const response = await httpService.get(apiPath);
-      console.log('🚀 ~ fetchFormData ~ response:', response);
       const formData = response.data;
-      formLayout.map(async (field) => {
+      formLayout?.map(async (field) => {
         if (field.type === 'autocomplete') {
           await fetchAutocompleteOptions(field);
           formData[field.field] = {
@@ -94,7 +93,6 @@ const GenericForm = ({
   };
 
   const doInititalComputations = async (formData) => {
-    console.log('doing intital computations computations', formData);
     if (computations.length) {
       for (const computation of computations) {
         // Check if the field triggers this computation
@@ -120,8 +118,6 @@ const GenericForm = ({
     }
   };
   const handleInputChange = async (field, value) => {
-    console.log('handleInputChange called', field, value, formData);
-
     // Update the nested field in formData
     const newFormData = updateNestedObject(formData, field, value);
 
@@ -186,6 +182,7 @@ const GenericForm = ({
   };
 
   const onSubmit = async (formData) => {
+    console.log('🚀 ~ onSubmit ~ formData:', formData);
     setLoading(true);
 
     try {
@@ -262,6 +259,7 @@ const GenericForm = ({
   const handleSubmit = (e) => {
     console.log('called');
     e.preventDefault();
+    console.log('called 2');
 
     const requiredErrors = {};
     formLayout?.forEach((section) => {
@@ -271,9 +269,10 @@ const GenericForm = ({
         }
       });
     });
-
+    console.log('setting Errors', requiredErrors);
     setErrors(requiredErrors);
     if (Object.keys(requiredErrors).length === 0) {
+      console.log('no Errors');
       onSubmit({ ...formData, ...fileData });
     }
   };
@@ -283,7 +282,7 @@ const GenericForm = ({
     try {
       if (autocompleteOptions[fieldName]?.length) return; // Skip if options are already loaded
       const response = await httpService.get(api, { params: filter });
-      const options = response.data.map((item) => ({
+      const options = response?.data?.map((item) => ({
         label: item[suggestionField],
         value: item[keyField],
       }));
@@ -309,6 +308,7 @@ const GenericForm = ({
       allowedFormats,
       readOnly,
       value,
+      pattern,
     } = field;
 
     // Visibility logic
@@ -388,7 +388,6 @@ const GenericForm = ({
         );
 
       case 'file':
-        console.log('🚀 ~ file:', typeof allowedFormats);
         return (
           <Grid item xs={gridSize} key={fieldName}>
             <TextField
@@ -525,7 +524,34 @@ const GenericForm = ({
               placeholder={label}
               value={getNestedValue(formData, fieldName) || ''}
               required={required}
-              onChange={(e) => handleInputChange(fieldName, e.target.value)}
+              // onChange={(e) => handleInputChange(fieldName, e.target.value)}
+              onChange={(e) => {
+                console.log('🚀 ~ called ~ e:', e);
+                const value = e.target.value;
+                console.log('🚀 ~ renderField ~ pattern:', pattern);
+
+                // Validate against pattern if provided
+                if (pattern && !new RegExp(pattern).test(value)) {
+                  console.log('Error');
+                  const requiredErrors = { ...errors };
+                  requiredErrors[field.field] =
+                    'Password must contain at least one letter, one uppercase letter, and one special character';
+                  setErrors(requiredErrors);
+                  // handleInputChange(
+                  //   fieldName,
+                  //   value,
+                  //   `${label} does not match the required pattern.`
+                  // );
+                  handleInputChange(fieldName, value);
+                } else {
+                  console.log('Valid');
+                  setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    [fieldName]: '',
+                  }));
+                  handleInputChange(fieldName, value);
+                }
+              }}
               error={!!errors[fieldName]}
               helperText={errors[fieldName]}
               sx={formStyles.input}
@@ -559,7 +585,7 @@ const GenericForm = ({
               </Typography>
             )}
             <Grid container spacing={2}>
-              {section.fields.map((field) => renderField(field))}
+              {section?.fields?.map((field) => renderField(field))}
             </Grid>
           </Grid>
         ))}

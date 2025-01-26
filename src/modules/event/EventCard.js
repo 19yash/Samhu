@@ -17,7 +17,7 @@ import checkAuthorization from '../../services/checkAuthorization';
 import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
 
-const EventCard2 = ({ event = {}, onPress }) => {
+const EventCard = ({ event = {}, onPress }) => {
   const {
     id,
     title,
@@ -133,19 +133,22 @@ const EventCard2 = ({ event = {}, onPress }) => {
               Organized By:
             </Typography>{' '}
             <Typography variant="body2">
-              {`${host_details.organisation_name}`}
+              {`${host_details?.organisation_name}`}
             </Typography>
           </Box>
         </Box>
         <Box marginTop={'1rem'}>
-          {checkAuthorization(user, entity.Participants, action.create) && (
-            <Button
-              text={'Participate'}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            />
-          )}
+          {moment(event?.registration_start_date) <= moment() &&
+            moment(event?.registration_end_date) > moment() &&
+            checkAuthorization(user, entity.Participants, action.create) && (
+              <Button
+                text={'Participate'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onPress();
+                }}
+              />
+            )}
         </Box>
       </CardContent>
 
@@ -166,4 +169,4 @@ const EventCard2 = ({ event = {}, onPress }) => {
   );
 };
 
-export default EventCard2;
+export default EventCard;

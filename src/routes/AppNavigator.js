@@ -11,6 +11,7 @@ import EventPage from '../screens/Event/Event.js';
 import ContactUs from '../screens/Contact/Contact.js';
 import ResetPassword from '../modules/auth/screens/ResetPassword.js';
 import { useAuth } from '../modules/auth/hooks/useAuth.js';
+import EventHomeDetails from '../screens/Event/EventHomeDetails.js';
 
 const AuthWrapper = ({ children }) => {
   const { user } = useAuth(); // Check if the user is logged in
@@ -48,6 +49,10 @@ export const AppNavigator = () => {
     {
       path: '/events',
       element: <EventPage />,
+    },
+    {
+      path: '/events/event-details/:eventId',
+      element: <EventHomeDetails />,
     },
     {
       path: '/contactUs',

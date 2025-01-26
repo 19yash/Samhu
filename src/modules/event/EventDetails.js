@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import images from '../../images';
 import {
   EventContainer,
@@ -22,6 +22,8 @@ import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
 import Loader from '../components/Loader';
 const EventDetails = () => {
+  const { state } = useLocation();
+  const { fromDashboard } = state || {};
   const { eventId } = useParams();
   const { user } = useAuth();
   const [event, setEvent] = useState();
@@ -48,7 +50,7 @@ const EventDetails = () => {
     return <Loader />;
   }
   return (
-    <View style={{ gap: '12px' }}>
+    <View style={{ gap: '12px', backgroundColor: '#fff', padding: '2rem' }}>
       <EventContainer>
         <ImageContainer>
           <Img
@@ -130,11 +132,13 @@ const EventDetails = () => {
           {/* </div> */}
         </EventDetailsStyles>
       </EventContainer>
-      <>
-        {/* <Heading>Participants</Heading> */}
-        {checkAuthorization(user, entity.Participants, action.view) &&
-          event && <Participants event={event} />}{' '}
-      </>
+      {!fromDashboard && (
+        <>
+          {/* <Heading>Participants</Heading> */}
+          {checkAuthorization(user, entity.Participants, action.view) &&
+            event && <Participants event={event} />}{' '}
+        </>
+      )}
     </View>
   );
 };

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import routeLink from '../../constants/routeLink';
-import EventCard2 from '../../modules/event/EventCard';
+import EventCard from '../../modules/event/EventCard';
 import httpService from '../../services/httpService';
-import LoadingScreen from '../LoadingScreen';
 import NavBar from '../NavBar';
 import {
   EventContainer,
@@ -13,31 +12,30 @@ import {
 } from './Event.style';
 import Footer from '../Footer';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Loader from '../../modules/components/Loader';
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);
-  const [filter, setFilter] = useState({});
-  const [loading, setLoading] = useState(false);
-  const fetchEvents = async () => {
-    setLoading(true);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const fetchData = async () => {
     try {
-      // const reposne = await httpService.get(routeLink.events, {
-      //   params: {
-      //     filter: filter,
-      //   },
-      // });
-      // if (reposneesponse.data) {
-      //   setEvents(reposne.data);
-      // }
-      setLoading(false);
+      setLoading(true);
+      const response = await httpService.get(`${routeLink.events}/`, {});
+      console.log('Event Page🚀 ~ fetchData ~ response:', response);
+      if (response.data) {
+        setEvents(response.data);
+      }
     } catch (err) {
       console.log(err);
+    } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
-    fetchEvents();
-  }, [filter]);
+    fetchData();
+  }, []);
   return (
     <div>
       <NavBar />
@@ -50,12 +48,23 @@ const EventPage = () => {
         </div>
         <div style={EventContainer}>
           {loading ? (
-            <LoadingScreen />
-          ) : events.length > 0 ? (
+            <Loader />
+          ) : events.length === 0 ? (
             <div>No Data Found</div>
           ) : (
             events.map((event) => {
-              return <EventCard2 event={event} />;
+              return (
+                <EventCard
+                  onPress={() => {
+                    navigate(`event-details/${event.id}`, {
+                      state: {
+                        fromDashboard: true,
+                      },
+                    });
+                  }}
+                  event={event}
+                />
+              );
             })
           )}
         </div>

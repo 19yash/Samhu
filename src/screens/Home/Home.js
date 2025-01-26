@@ -12,6 +12,7 @@ import {
 import Footer from '../Footer';
 import { useNavigate } from 'react-router-dom';
 import images from '../../images';
+import HomeEvents from './HomeEvents';
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export const Home = () => {
         <div style={Section.subHeading}>
           Explore Our Featured Sports: Where Passion Meets Performance!
         </div>
-        <div></div>
+        <div>{<HomeEvents />}</div>
         <Button
           onClick={() => {
             navigate('/events');
@@ -51,12 +52,12 @@ export const Home = () => {
         />
       </div>
       {/* section2 */}
-      <div style={Section.container}>
+      <div style={{ ...Section.container, ...Section.backgroundColor }}>
         <div style={Section.heading}>Upcoming Events</div>
         <div style={Section.subHeading}>
           Explore Our Upcoming Sports: Where Passion Meets Performance!
         </div>
-        <div></div>
+        <div>{<HomeEvents />}</div>
         <Button
           onClick={() => {
             navigate('/events');

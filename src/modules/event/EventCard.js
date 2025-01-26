@@ -17,7 +17,7 @@ import checkAuthorization from '../../services/checkAuthorization';
 import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
 
-const EventCard2 = ({ event = {}, onPress }) => {
+const EventCard = ({ event = {}, onPress }) => {
   const {
     id,
     title,
@@ -166,4 +166,4 @@ const EventCard2 = ({ event = {}, onPress }) => {
   );
 };
 
-export default EventCard2;
+export default EventCard;

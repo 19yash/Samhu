@@ -73,7 +73,7 @@ const EventDetails = () => {
                 }}
               />
             )}
-          {moment(event?.registration_start_date) < moment() && (
+          {moment(event?.registration_start_date) > moment() && (
             <Information>
               Registration will Starts on{' '}
               {moment(event?.registration_start_date).format('DD MMMM, YYYY')}{' '}

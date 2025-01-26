@@ -102,6 +102,7 @@ const Dashboard = () => {
               upcomingEvent.map((event) => {
                 return (
                   <EventCard2
+                    dashboard={true}
                     event={event}
                     onPress={() => {
                       navigate(`/app/events/event-details/${event.id}`, {});
@@ -138,6 +139,7 @@ const Dashboard = () => {
                 return (
                   <EventCard2
                     event={event}
+                    dashboard={true}
                     onPress={() => {
                       navigate(`/app/events/event-details/${event.id}`, {});
                     }}

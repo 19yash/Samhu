@@ -495,7 +495,7 @@ const GenericForm = ({
               getOptionLabel={(option) => option.label}
               value={_value}
               onFocus={() => {
-                if (!autocompleteOptions[fieldName]) {
+                if (!autocompleteOptions[fieldName] && !options) {
                   fetchAutocompleteOptions(field);
                 }
               }}

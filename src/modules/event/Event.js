@@ -17,12 +17,11 @@ import { userRole } from '../../constants/userRole';
 
 const Event = () => {
   const { user } = useAuth();
-  console.log("🚀 ~ Event ~ user:", user)
   const [events, setEvents] = useState([]);
   const [filterValues, setFilterValues] = useState(
     user.role === userRole.host
       ? {
-          hostId: user.id,
+          host_id: user.id,
         }
       : {}
   );

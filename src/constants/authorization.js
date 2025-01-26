@@ -24,7 +24,7 @@ export const authorization = {
   Host: {
     Dashboard: [action.view],
     Sports: [action.view],
-    Category: [action.view],
+    Category: [action.view, action.create],
     Events: [action.view, action.create, action.edit, action.delete],
     Participants: [action.view, action.edit, action.delete],
   },

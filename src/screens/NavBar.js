@@ -10,8 +10,11 @@ import {
   ItemsContainer,
   SelectedItem,
 } from './NavBar.style';
+import { useAuth } from '../modules/auth/hooks/useAuth';
+import { Row } from './AppHeader.style';
 
 const NavBar = () => {
+  const { user } = useAuth();
   const items = [
     {
       name: 'Home',
@@ -30,6 +33,12 @@ const NavBar = () => {
       path: '/contactUs',
     },
   ];
+  if (user) {
+    items.push({
+      name: 'Dashboard',
+      path: '/app/dashboard',
+    });
+  }
   const { pathname } = useLocation();
   const navigate = useNavigate();
   return (
@@ -61,12 +70,19 @@ const NavBar = () => {
           );
         })}
       </ItemsContainer>
-      <Button
-        onClick={() => {
-          navigate('/login');
-        }}
-        text={'Login'}
-      />
+      {user ? (
+        <Row>
+          <Img src={images.user} style={{ width: '30px', height: '30px' }} />
+          {user?.user_name}
+        </Row>
+      ) : (
+        <Button
+          onClick={() => {
+            navigate('/login');
+          }}
+          text={'Login'}
+        />
+      )}
     </Container>
   );
 };

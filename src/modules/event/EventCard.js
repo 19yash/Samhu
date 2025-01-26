@@ -138,7 +138,8 @@ const EventCard = ({ event = {}, onPress }) => {
           </Box>
         </Box>
         <Box marginTop={'1rem'}>
-          {moment(event?.registration_end_date) > moment() &&
+          {moment(event?.registration_start_date) <= moment() &&
+            moment(event?.registration_end_date) > moment() &&
             checkAuthorization(user, entity.Participants, action.create) && (
               <Button
                 text={'Participate'}

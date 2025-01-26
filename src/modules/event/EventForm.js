@@ -132,7 +132,6 @@ const EventForm = () => {
           api: routeLink.sports,
           keyField: 'id',
           suggestionField: 'sports_name',
-          required: true,
           size: 'large',
           visible: () => {
             return mode === modes.edit;

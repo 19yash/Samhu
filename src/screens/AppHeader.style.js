@@ -6,10 +6,16 @@ export const AppHeaderStyle = styled.div`
   display: flex;
   height: 50px;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  gap: 4px;
+  gap: 3rem;
   padding: 8px;
+`;
+
+export const NavItems = styled.div`
+  &:hover {
+    color: ${theme.palette.primary.main};
+  }
 `;
 
 export const Row = styled.div`
@@ -39,6 +45,7 @@ export const Action = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   gap: 16px;
   border-bottom: 1px solid ${theme.palette.background.greyPrimary};
   padding: 8px;

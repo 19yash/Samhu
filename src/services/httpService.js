@@ -16,9 +16,7 @@ const axiosInstance = axios.create({
 
 export default class httpService {
   static async handleError(error) {
-    console.log('🚀 ~ handleError ~ error:', error);
     if (error?.response?.status === 401) {
-      console.log('401', globalClearAuth);
       globalClearAuth();
     }
     if (error.code === 'ERR_NETWORK') {

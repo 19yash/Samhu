@@ -526,18 +526,29 @@ const GenericForm = ({
               required={required}
               // onChange={(e) => handleInputChange(fieldName, e.target.value)}
               onChange={(e) => {
-                console.log("🚀 ~ called ~ e:", e)
+                console.log('🚀 ~ called ~ e:', e);
                 const value = e.target.value;
-                console.log("🚀 ~ renderField ~ pattern:", pattern)
+                console.log('🚀 ~ renderField ~ pattern:', pattern);
 
                 // Validate against pattern if provided
                 if (pattern && !new RegExp(pattern).test(value)) {
-                  handleInputChange(
-                    fieldName,
-                    value,
-                    `${label} does not match the required pattern.`
-                  );
+                  console.log('Error');
+                  const requiredErrors = { ...errors };
+                  requiredErrors[field.field] =
+                    'Password must contain at least one letter, one uppercase letter, and one special character';
+                  setErrors(requiredErrors);
+                  // handleInputChange(
+                  //   fieldName,
+                  //   value,
+                  //   `${label} does not match the required pattern.`
+                  // );
+                  handleInputChange(fieldName, value);
                 } else {
+                  console.log('Valid');
+                  setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    [fieldName]: '',
+                  }));
                   handleInputChange(fieldName, value);
                 }
               }}

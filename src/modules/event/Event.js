@@ -82,7 +82,12 @@ const Event = () => {
 
       {!loading ? (
         <EventContainer>
-          {events.length &&
+          {events.length === 0 && (
+            <div style={{ width: '100%', textAlign: 'center' }}>
+              Currently No Event Hosted By you
+            </div>
+          )}
+          {events.length > 0 &&
             events.map((event) => {
               return (
                 <EventCard

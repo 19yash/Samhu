@@ -530,21 +530,18 @@ const GenericForm = ({
                 const value = e.target.value;
                 console.log('🚀 ~ renderField ~ pattern:', pattern);
 
+                // Adjust pattern to work with RegExp
+                const regexPattern = new RegExp(pattern);
+
                 // Validate against pattern if provided
-                if (pattern && !new RegExp(pattern).test(value)) {
-                  console.log('Error');
+                if (pattern && !regexPattern.test(value)) {
+                  console.log('Validation failed:', regexPattern.test(value));
                   const requiredErrors = { ...errors };
-                  requiredErrors[field.field] =
+                  requiredErrors[fieldName] =
                     'Password must contain at least one letter, one uppercase letter, and one special character';
                   setErrors(requiredErrors);
-                  // handleInputChange(
-                  //   fieldName,
-                  //   value,
-                  //   `${label} does not match the required pattern.`
-                  // );
                   handleInputChange(fieldName, value);
                 } else {
-                  console.log('Valid');
                   setErrors((prevErrors) => ({
                     ...prevErrors,
                     [fieldName]: '',

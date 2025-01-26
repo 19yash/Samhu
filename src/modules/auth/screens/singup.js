@@ -53,7 +53,6 @@ const SignUpForm = () => {
           field: 'school_or_college',
           size: 'medium',
           visible: (data) => {
-            console.log('🚀 ~ SignUpForm ~ data:', data);
             return data.role === 'Participant';
           },
         },
@@ -93,7 +92,7 @@ const SignUpForm = () => {
           required: true,
           size: 'large',
           pattern:
-            '/^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])[A-Za-z\d\S]+$/',
+            '^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])[A-Za-z\\d\\S]+$',
         },
         {
           label: 'Confirm Password',
@@ -101,6 +100,8 @@ const SignUpForm = () => {
           field: 'confirm_password',
           required: true,
           size: 'large',
+          pattern:
+            '^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])[A-Za-z\\d\\S]+$',
         },
       ],
     },

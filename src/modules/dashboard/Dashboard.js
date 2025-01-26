@@ -14,12 +14,11 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [upcomingEvent, setUpcomingEvent] = useState([]);
   const [otherEvents, setOtherEvents] = useState([]);
-  console.log('🚀 ~ Dashboard ~ otherEvents:', otherEvents);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const filter = {};
   if (user.role === userRole.host) {
-    filter['hostId'] = user.id;
+    filter['host_id'] = user.id;
   }
 
   const fetchData = async () => {
@@ -94,7 +93,11 @@ const Dashboard = () => {
               flexWrap: 'wrap',
             }}
           >
-            {!upcomingEvent.length && <div>No Upcoming Event</div>}
+            {!upcomingEvent.length && (
+              <div style={{ width: '100%', textAlign: 'center' }}>
+                No Upcoming Event
+              </div>
+            )}
             {upcomingEvent.length > 0 &&
               upcomingEvent.map((event) => {
                 return (
@@ -127,7 +130,9 @@ const Dashboard = () => {
               flexWrap: 'wrap',
             }}
           >
-            {!otherEvents.length && <div>No Upcoming Event</div>}
+            {!otherEvents.length && (
+              <div style={{ width: '100%', textAlign: 'center' }}>No Event</div>
+            )}
             {otherEvents.length > 0 &&
               otherEvents.map((event) => {
                 return (

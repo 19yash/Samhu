@@ -213,7 +213,7 @@ const EventForm = () => {
         },
       ]}
       afterSubmit={() => {
-        navigate('-1');
+        navigate(-1);
       }}
       beforeSubmit={(formData) => {
         const processedFormData = { categories: [] };

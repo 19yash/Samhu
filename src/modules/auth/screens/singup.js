@@ -1,5 +1,5 @@
 import React from 'react';
-import { styles } from '../styles/singup.style';
+import { styles, Container, Logo } from '../styles/singup.style';
 import { useNavigate } from 'react-router-dom';
 import images from '../../../images';
 import routeLink from '../../../constants/routeLink';
@@ -108,10 +108,10 @@ const SignUpForm = () => {
   ];
   return (
     <>
-      <div style={styles.container}>
+      <Container>
         {/* Dummy Logo - This will always stay visible */}
         <div style={styles.logoContainer}>
-          <img src={images.fullBrandLogo} alt="Logo" style={styles.logo} />
+          <Logo src={images.fullBrandLogo} alt="Logo" />
         </div>
         <div style={styles.form}>
           <GenericForm
@@ -139,7 +139,7 @@ const SignUpForm = () => {
             onCancel={() => navigate('/login')}
           />
         </div>
-      </div>
+      </Container>
     </>
   );
 };

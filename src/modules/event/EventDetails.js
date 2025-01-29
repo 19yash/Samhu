@@ -10,9 +10,9 @@ import {
   BasicInfo,
   Info,
   Heading1,
+  Container,
 } from './styles/EventDetails.style';
 import moment from 'moment';
-import View from '../components/View';
 import Button from '../components/button/Button';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
@@ -50,12 +50,12 @@ const EventDetails = () => {
     return <Loader />;
   }
   return (
-    <View style={{ gap: '12px', backgroundColor: '#fff', padding: '2rem' }}>
+    <Container>
       <EventContainer>
         <ImageContainer>
           <Img
             src={images.game}
-            style={{ width: '100%', height: '800px', borderRadius: '12px' }}
+            style={{ width: '100%', height: '50%', borderRadius: '12px' }}
           />
         </ImageContainer>
         <EventDetailsStyles>
@@ -148,7 +148,7 @@ const EventDetails = () => {
             event && <Participants event={event} />}{' '}
         </>
       )}
-    </View>
+    </Container>
   );
 };
 

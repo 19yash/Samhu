@@ -572,7 +572,7 @@ const GenericForm = ({
     }
   };
   return (
-    <Box component="form" sx={{ ...styles }}>
+    <Box component="form" sx={{ ...styles, padding: '1rem' }}>
       <Grid container spacing={2}>
         {formLayout?.map((section, sectionIndex) => (
           <Grid item xs={12} key={`section-${sectionIndex}`}>

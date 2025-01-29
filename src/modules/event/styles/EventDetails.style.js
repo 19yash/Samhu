@@ -1,5 +1,19 @@
 import styled from 'styled-components';
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #fff;
+  padding: 2rem;
+  @media (max-width: 425px) {
+    padding: 0.5rem;
+  }
+  @media (min-width: 425px) and (max-width: 768px) {
+    padding: 1rem;
+  }
+`;
+
 export const EventContainer = styled.div`
   // width: 100%;
   display: flex;

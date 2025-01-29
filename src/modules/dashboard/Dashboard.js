@@ -81,7 +81,6 @@ const Dashboard = () => {
             gap: '1rem',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '2rem',
           }}
         >
           <h1 style={{ color: theme.palette.primary.main }}>Upcoming Events</h1>
@@ -91,6 +90,8 @@ const Dashboard = () => {
               display: 'flex',
               gap: '2rem',
               flexWrap: 'wrap',
+              padding: '1rem',
+              justifyContent: 'center',
             }}
           >
             {!upcomingEvent.length && (
@@ -119,7 +120,6 @@ const Dashboard = () => {
             gap: '1rem',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '2rem',
           }}
         >
           <h1 style={{ color: theme.palette.primary.main }}>Other Events</h1>
@@ -129,6 +129,8 @@ const Dashboard = () => {
               display: 'flex',
               gap: '2rem',
               flexWrap: 'wrap',
+              padding: '1rem',
+              justifyContent: 'center',
             }}
           >
             {!otherEvents.length && (

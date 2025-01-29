@@ -6,4 +6,7 @@ export const AppContentStyle = styled.div`
   overflow: auto;
   border-radius: 8px;
   flex: 1;
+  @media (max-width: 768px) {
+    padding: 0px;
+  }
 `;

@@ -26,5 +26,8 @@ export const TableHeader = styled.div`
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
+  @media (max-width: 425px) {
+    flex-direction: column;
+  }
   ${({ style }) => style && style};
 `;

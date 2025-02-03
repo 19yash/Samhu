@@ -142,7 +142,7 @@ const EventCard = ({ event = {}, onPress, dashboard, showEdit }) => {
           {moment(event?.registration_start_date) <= moment() &&
             moment(event?.registration_end_date) > moment() &&
             !dashboard &&
-            user.role === userRole.participant &&
+            user?.role === userRole.participant &&
             checkAuthorization(user, entity.Participants, action.create) && (
               <Button
                 text={'Participate'}

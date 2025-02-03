@@ -8,7 +8,7 @@ export const heading = {
   textAlign: 'center',
 };
 export const heroSection = {
-  backgroundImage: `url(${images.about})`,
+  backgroundImage: `url(${images.contactHero})`,
   height: '50vh',
   color: '#fff',
   display: 'flex',

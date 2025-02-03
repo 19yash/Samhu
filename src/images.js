@@ -53,6 +53,8 @@ const instagramLogo = '/assets/instagram-logo.svg';
 const twitterLogo = '/assets/twitter-logo.svg';
 
 const settings = '/assets/settings.svg';
+const eventsHero = '/assets/EventsHero.jpeg';
+const contactHero = '/assets/ContactHero.jpeg';
 
 const images = {
   trash: trash,
@@ -107,6 +109,8 @@ const images = {
   instagramLogo: instagramLogo,
   twitterLogo: twitterLogo,
   settings: settings,
+  eventsHero: eventsHero,
+  contactHero: contactHero,
 };
 
 export default images;

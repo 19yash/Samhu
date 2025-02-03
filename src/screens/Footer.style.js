@@ -106,6 +106,10 @@ export const FooterContainer = styled.footer`
   justify-content: space-between;
   align-items: flex-start;
   position: relative;
+  @media (max-width: 425px) {
+    flex-direction: column;
+    padding: 1rem 2rem;
+  }
 `;
 
 export const Section = styled.div`

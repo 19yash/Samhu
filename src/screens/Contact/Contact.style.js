@@ -5,6 +5,7 @@ import images from '../../images';
 export const heading = {
   fontSize: '40px',
   fontWeight: '700',
+  textAlign: 'center',
 };
 export const heroSection = {
   backgroundImage: `url(${images.about})`,
@@ -22,6 +23,7 @@ export const subHeading = {
   fontSize: '16px',
   fontWeight: '700',
   color: theme.palette.primary.main,
+  textAlign: 'center',
 };
 
 export const contactSection = {
@@ -30,6 +32,15 @@ export const contactSection = {
   gap: '20px',
   justifyContent: 'space-around',
 };
+export const ContactSection = styled.div`
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 
 export const SectionContainer = styled.div`
   display: flex;
@@ -48,9 +59,9 @@ export const Card = styled.div`
   gap: 30px;
 `;
 
-export const IconWrapper = styled.div`
-  font-size: 1.8rem;
-  color: #f68534;
+export const AddressIconWrapper = styled.img`
+  width: 80px;
+  height: 80px;
 `;
 export const Icon = styled.img`
   width: 40px;
@@ -73,5 +84,6 @@ export const CardContent = styled.div`
     margin: 0;
     color: #555;
     width: 70%;
+    overflow: unset;
   }
 `;

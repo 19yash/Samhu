@@ -1,28 +1,44 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import NavBar from '../NavBar';
 import Button from '../../modules/components/button/Button';
 import { ButtonType } from '../../modules/components/button/buttonTypeConst';
 import {
+  Heading,
+  HeroContent,
   HeroSection,
   heroStyle,
   Promotion,
+  PromotionContainer,
+  PromotionHeading,
   Section,
+  SectionContainer,
+  SectionContainerDark,
+  SectionSubHeading,
+  TestimonalItemBorder,
   Testimonoials,
+  TestimonoialsContainers,
 } from './Home.style';
 import Footer from '../Footer';
 import { useNavigate } from 'react-router-dom';
 import images from '../../images';
 import HomeEvents from './HomeEvents';
+import { setGlobalClearAuth } from '../GlobalFunction';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 export const Home = () => {
   const navigate = useNavigate();
+  const { clearAuth } = useContext(AuthContext);
+
+  useEffect(() => {
+    setGlobalClearAuth(clearAuth);
+  }, []);
   return (
     <div>
-      <NavBar />
+      <NavBar showIcon={true} />
       <HeroSection>
-        <div style={heroStyle.content}>
+        <HeroContent>
           <h1 style={heroStyle.title}>Discover Your Sport</h1>
-          <p>
+          <p style={heroStyle.description}>
             Whether it football, basketball, tennis, or cricket —dive into a
             diverse selection of sports and find the perfect fit for you.
           </p>
@@ -34,15 +50,15 @@ export const Home = () => {
             type={ButtonType.backgroundWithBorder}
             style={{ width: 'fit-content' }}
           />
-        </div>
+        </HeroContent>
       </HeroSection>
       {/* section 1 */}
-      <div style={Section.container}>
-        <div style={Section.heading}>Featured Events</div>
-        <div style={Section.subHeading}>
+      <SectionContainer>
+        <Heading>Featured Events</Heading>
+        <SectionSubHeading>
           Explore Our Featured Sports: Where Passion Meets Performance!
-        </div>
-        <div>{<HomeEvents />}</div>
+        </SectionSubHeading>
+        <HomeEvents />
         <Button
           onClick={() => {
             navigate('/events');
@@ -50,14 +66,14 @@ export const Home = () => {
           text={'View All'}
           type={ButtonType.backgroundWithBorder}
         />
-      </div>
+      </SectionContainer>
       {/* section2 */}
-      <div style={{ ...Section.container, ...Section.backgroundColor }}>
-        <div style={Section.heading}>Upcoming Events</div>
-        <div style={Section.subHeading}>
+      <SectionContainerDark>
+        <Heading>Upcoming Events</Heading>
+        <SectionSubHeading>
           Explore Our Upcoming Sports: Where Passion Meets Performance!
-        </div>
-        <div>{<HomeEvents />}</div>
+        </SectionSubHeading>
+        <HomeEvents />
         <Button
           onClick={() => {
             navigate('/events');
@@ -65,12 +81,12 @@ export const Home = () => {
           text={'View All'}
           type={ButtonType.backgroundWithBorder}
         />
-      </div>
+      </SectionContainerDark>
       {/* Testimonoials */}
       <div style={Section.container}>
         <div style={Section.heading}>Our Numbers</div>
-        <div style={Testimonoials.container}>
-          <div style={{ ...Testimonoials.item, ...Testimonoials.border }}>
+        <TestimonoialsContainers>
+          <TestimonalItemBorder>
             <img
               src={images.handshakeThick}
               alt=""
@@ -78,24 +94,24 @@ export const Home = () => {
             />
             <div style={Testimonoials.number}>100+</div>
             <div style={Testimonoials.text}>Users</div>
-          </div>
-          <div style={{ ...Testimonoials.item, ...Testimonoials.border }}>
+          </TestimonalItemBorder>
+          <TestimonalItemBorder>
             <img src={images.microphone} alt="" style={Testimonoials.icon} />
             <div style={Testimonoials.number}>3</div>
             <div style={Testimonoials.text}>Organizaers</div>
-          </div>
+          </TestimonalItemBorder>
           <div style={Testimonoials.item}>
             <img src={images.training} alt="" style={Testimonoials.icon} />
             <div style={Testimonoials.number}>5</div>
             <div style={Testimonoials.text}>Sports Events</div>
           </div>
-        </div>
+        </TestimonoialsContainers>
       </div>
       {/* Promotion */}
-      <div style={Promotion.container}>
-        <div style={Promotion.heading}>
+      <PromotionContainer>
+        <PromotionHeading>
           Become a Valued Sponsor and Showcase Your Brand to a Wider Audience
-        </div>
+        </PromotionHeading>
         <Button
           onClick={() => {
             navigate('/contactUs');
@@ -103,7 +119,7 @@ export const Home = () => {
           type={ButtonType.backgroundWithBorder}
           text={'Get In Touch'}
         />
-      </div>
+      </PromotionContainer>
       <Footer></Footer>
     </div>
   );

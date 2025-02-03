@@ -2,8 +2,10 @@ import React from 'react';
 import NavBar from '../NavBar';
 import Footer from '../Footer';
 import {
+  AddressIconWrapper,
   Card,
   CardContent,
+  ContactSection,
   contactSection,
   heading,
   heroSection,
@@ -33,13 +35,13 @@ const layoutFields = [
       {
         label: 'Phone Number',
         type: 'text',
-        field: 'subject',
+        field: 'phoneNumber',
         size: 'medium',
       },
       {
         label: 'Are You',
         type: 'autocomplete',
-        field: 'category',
+        field: 'role',
         options: [
           {
             label: 'Player',
@@ -56,20 +58,45 @@ const layoutFields = [
         ],
         size: 'medium',
       },
+      {
+        label: 'Message',
+        type: 'text',
+        field: 'message',
+        size: 'large',
+      },
     ],
   },
 ];
 const ContactUs = () => {
+  const handleSubmit = (formData) => {
+    const subject = `Contact Request from ${formData?.name}`;
+    const body = `
+      Name: ${formData?.name},
+      Email: ${formData?.email},
+      Phone Number: ${formData?.phoneNumber},
+      Role: ${formData?.role},
+      Message: ${formData?.message},
+    `;
+
+    const mailtoLink = `mailto:support@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Open user's default email client
+    window.location.href = mailtoLink;
+  };
   return (
     <div>
-      <NavBar />
+      <NavBar showIcon={true} />
       <div style={heroSection}>Contact Us</div>
-      <div style={contactSection}>
+      <ContactSection>
         <div>
           <div style={subHeading}>GET IN TOUCH</div>
           <div style={heading}>If Contact With Us Send Detail</div>
           <SectionContainer>
             <GenericForm
+              _onSubmit={(formData) => {
+                console.log("🚀 ~ ContactUs ~ formData:", formData)
+                handleSubmit(formData);
+              }}
               layout={layoutFields}
               mode={'create'}
               showCancelButton={false}
@@ -81,9 +108,7 @@ const ContactUs = () => {
           <div style={heading}>Information</div>
           <SectionContainer>
             <Card>
-              <IconWrapper>
-                <Icon src={images.address} />
-              </IconWrapper>
+              <AddressIconWrapper src={images.address} />
               <CardContent>
                 <h3>ADDRESS</h3>
                 <p>648, Gali Kailash Pandit Wali, Chattar Garh Patti, Sirsa.</p>
@@ -107,7 +132,7 @@ const ContactUs = () => {
             </Card>
           </SectionContainer>
         </div>
-      </div>
+      </ContactSection>
       <Footer></Footer>
     </div>
   );

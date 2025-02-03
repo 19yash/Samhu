@@ -29,6 +29,7 @@ const GenericForm = ({
   defaultValues = {},
   beforeSubmit,
   afterSubmit,
+  _onSubmit,
   buttonContainerStyles = {},
   computations = [],
 }) => {
@@ -183,7 +184,17 @@ const GenericForm = ({
 
   const onSubmit = async (formData) => {
     console.log('🚀 ~ onSubmit ~ formData:', formData);
-    setLoading(true);
+    if (_onSubmit) {
+      try {
+        setLoading(true);
+        _onSubmit(formData);
+      } catch (err) {
+        console.log('🚀 ~ onSubmit ~ err:', err);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
 
     try {
       // Process formData before submission, if applicable

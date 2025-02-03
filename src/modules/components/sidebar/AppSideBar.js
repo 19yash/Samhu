@@ -4,6 +4,7 @@ import checkAuthorization from '../../../services/checkAuthorization';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { action, entity } from '../../../constants/authorization';
 import React from 'react';
+import { Container } from './AppSideBar.style';
 
 const navItems = [
   {
@@ -15,29 +16,6 @@ const navItems = [
     name: 'Events',
     icon: cilSettings,
     path: '/app/events',
-    // children: [
-    //   {
-    //     name: 'Users',
-    //     icon: cilUser,
-    //     path: '/management/users',
-    //   },
-    //   {
-    //     name: 'Settings',
-    //     icon: cilSettings,
-    //     children: [
-    //       {
-    //         name: 'Preferences',
-    //         icon: cilPuzzle,
-    //         path: '/management/settings/preferences',
-    //       },
-    //       {
-    //         name: 'Security',
-    //         icon: cilPuzzle,
-    //         path: '/management/settings/security',
-    //       },
-    //     ],
-    //   },
-    // ],
   },
   {
     name: 'Sports',
@@ -51,7 +29,21 @@ function AppSideBar() {
   const navItemsToShow = navItems.filter((navItem) => {
     return checkAuthorization(user, entity[navItem.name], action.view);
   });
-  return <Sidenav navItems={navItemsToShow} brandName="Samuh" />;
+  return (
+    <Container>
+      <Sidenav
+        navItems={[
+          ...navItemsToShow,
+          {
+            name: 'Home',
+            icon: cilUser,
+            path: '/home',
+          },
+        ]}
+        brandName="Samuh"
+      />
+    </Container>
+  );
 }
 
 export default AppSideBar;

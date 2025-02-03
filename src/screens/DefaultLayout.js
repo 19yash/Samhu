@@ -7,13 +7,14 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../modules/auth/hooks/useAuth';
 import { AuthContext } from '../context/auth/AuthContext';
 import { setGlobalClearAuth } from './GlobalFunction';
+// import NavBar from './NavBar';
 
 export const DefaultLayout = (props) => {
   const { user } = useAuth();
   const { clearAuth } = useContext(AuthContext);
   useEffect(() => {
     setGlobalClearAuth(clearAuth);
-  });
+  }, []);
   if (!user) {
     console.log('returning');
     return <Navigate to="/login" />;
@@ -22,6 +23,7 @@ export const DefaultLayout = (props) => {
     <DefaultLayoutStyle>
       <AppSideBar />
       <Content>
+        {/* <NavBar/> */}
         <AppHeader />
         <AppContent />
       </Content>

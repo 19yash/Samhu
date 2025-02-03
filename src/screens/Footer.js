@@ -105,7 +105,7 @@ const Footer = () => {
           </SocialIcons>
         </Section>
       </FooterContainer>
-      <div style={copyright}>© Copyright 2025 SMUH. All Rights Reserved.</div>
+      <div style={copyright}>© Copyright 2025 SMHU Pvt. Ltd.</div>
     </Container>
   );
 };

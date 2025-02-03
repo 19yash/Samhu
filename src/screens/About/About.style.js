@@ -13,6 +13,61 @@ export const heroSection = {
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
 };
+
+export const AboutHero = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 2rem;
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+  @media (min-width: 769px) {
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+`;
+export const SectionContainer = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 2rem;
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+`;
+export const SectionContainerLight = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 2rem;
+  background-color: #fff;
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+`;
+
+export const ContentContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: stretch;
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 0rem;
+  }
+`;
 export const Section = {
   container: {
     display: 'flex',
@@ -70,6 +125,7 @@ export const Section = {
   heading: {
     fontSize: '40px',
     fontWeight: '700',
+    textAlign: 'center',
   },
   subHeading: {
     fontSize: '16px',
@@ -81,6 +137,7 @@ export const Section = {
     icon: {
       height: '30px',
       width: '30px',
+      overflowX: 'auto',
     },
     container: {
       display: 'flex',
@@ -107,7 +164,6 @@ export const Section = {
       Headinng: {
         fontSize: '24px',
         fontWeight: '700',
-        lineHeight: '1.4rem',
         textAlign: 'center',
       },
       text: {
@@ -125,14 +181,17 @@ export const IntroCardContainer = styled.div`
   flex-wrap: wrap;
   gap: 40px;
   justify-content: center;
-  // align-items: stretch;
+  align-items: stretch;
 `;
 export const IntroBackGround = styled.div`
-  width: 40%;
+  width: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-image: url(https://smuh.in/wp-content/uploads/2024/04/pattern-1.png);
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 export const IconContainer = styled.div`
   display: flex;
@@ -150,4 +209,8 @@ export const IconContainer = styled.div`
   color: #fff;
   font-size: 30px;
   background-color: #ff914d;
+`;
+
+export const Icon = styled.img`
+  overflow-x: unset;
 `;

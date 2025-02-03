@@ -38,7 +38,7 @@ const EventPage = () => {
   }, []);
   return (
     <div>
-      <NavBar />
+      <NavBar showIcon={true} />
       <div style={heroSection}>Events</div>
       <div style={section}>
         <div style={heading}>All Events</div>

@@ -23,12 +23,35 @@ export const Row = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 8px;
+  overflow: hidden;
+  position: relative;
+  // z-index: -100;
+`;
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  padding: 12px 24px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+  position: relative;
+`;
+export const IconContainer = styled.div`
+  width: 200px;
+  @media (min-width: 425px) {
+    display: none;
+  }
 `;
 
 export const DropDown = styled.div`
   width: 150px;
   position: absolute;
-  bottom: -90px;
+  // bottom: -90px;
   right: 14px;
   display: flex;
   flex-direction: column;
@@ -59,4 +82,19 @@ export const Img = styled.img`
   height: 20px;
   cursor: pointer;
   ${({ style }) => style && style};
+`;
+
+
+export const ItemsContainer = styled.div`
+  position: relative;
+
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  align-items: center;
+  @media (max-width: 768px) {
+    display: ${({ menuOpen }) => (menuOpen ? 'flex' : 'none')};
+    flex-direction: column;
+  }
 `;

@@ -17,7 +17,7 @@ const axiosInstance = axios.create({
 export default class httpService {
   static async handleError(error) {
     if (error?.response?.status === 401) {
-      globalClearAuth();
+      globalClearAuth && globalClearAuth();
     }
     if (error.code === 'ERR_NETWORK') {
       toast.error('Please check your internet connection');

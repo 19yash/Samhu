@@ -1,11 +1,16 @@
 import React from 'react';
 import NavBar from '../NavBar';
 import {
+  AboutHero,
+  ContentContainer,
   heroSection,
+  Icon,
   IconContainer,
   IntroBackGround,
   IntroCardContainer,
   Section,
+  SectionContainer,
+  SectionContainerLight,
 } from './About.style';
 import Footer from '../Footer';
 import images from '../../images';
@@ -74,11 +79,11 @@ const Introduction = [
 const About = () => {
   return (
     <div>
-      <NavBar />
+      <NavBar showIcon={true} />
       {/* Intoduction */}
       <div style={heroSection}>About Us</div>
 
-      <div style={{ ...Section.container, backgroundColor: '#fff' }}>
+      <SectionContainerLight>
         <div style={Section.subHeading}>Introduction</div>
         <div style={Section.heading}>About SMUH Tech Pvt. Ltd.</div>
         <div
@@ -102,7 +107,7 @@ const About = () => {
                   }}
                 >
                   <IconContainer>
-                    <img
+                    <Icon
                       src={item.icon}
                       alt="icon"
                       style={Section.content.icon}
@@ -127,15 +132,15 @@ const About = () => {
             })}
           </IntroCardContainer>
         </div>
-      </div>
+      </SectionContainerLight>
       {/* Objective */}
-      <div style={Section.container}>
+      <SectionContainer>
         <div style={Section.circleLayerOne}></div>
         <div style={Section.circleLayerTwo}></div>
         <div style={Section.circleLayerThree}></div>
         <div style={Section.subHeading}>KNOW OUR</div>
-        <div style={Section.heading}>Samuh Objective</div>
-        <div style={Section.content.container}>
+        <div style={Section.heading}>Smhu Objective</div>
+        <ContentContainer>
           {objective.map((item, index) => {
             return (
               <div
@@ -154,13 +159,13 @@ const About = () => {
               </div>
             );
           })}
-        </div>
-      </div>
+        </ContentContainer>
+      </SectionContainer>
       {/* Why Join Us */}
-      <div style={{ ...Section.container, backgroundColor: '#fff' }}>
+      <SectionContainerLight>
         <div style={Section.subHeading}>CHOOSE THE BEST</div>
         <div style={Section.heading}>Why Join Us</div>
-        <div style={Section.content.container}>
+        <ContentContainer>
           <div style={Section.circleLayerFour}></div>
           <div style={Section.content.card.container}>
             <img
@@ -196,9 +201,9 @@ const About = () => {
               to new competitions and growth opportunities on our platform.
             </div>
           </div>
-        </div>
-      </div>
-      <Footer></Footer>
+        </ContentContainer>
+      </SectionContainerLight>
+      <Footer />
     </div>
   );
 };

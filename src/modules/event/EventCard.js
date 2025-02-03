@@ -18,7 +18,7 @@ import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
 import { userRole } from '../../constants/userRole';
 
-const EventCard = ({ event = {}, onPress, dashboard }) => {
+const EventCard = ({ event = {}, onPress, dashboard, showEdit }) => {
   const {
     id,
     title,
@@ -155,7 +155,7 @@ const EventCard = ({ event = {}, onPress, dashboard }) => {
         </Box>
       </CardContent>
 
-      {checkAuthorization(user, entity.Events, action.edit) && (
+      {showEdit && checkAuthorization(user, entity.Events, action.edit) && (
         <ImageContainer>
           <Img
             onClick={(e) => {

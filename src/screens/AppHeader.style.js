@@ -23,9 +23,7 @@ export const Row = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  overflow: hidden;
   position: relative;
-  // z-index: -100;
 `;
 
 export const Container = styled.div`
@@ -51,8 +49,8 @@ export const IconContainer = styled.div`
 export const DropDown = styled.div`
   width: 150px;
   position: absolute;
-  // bottom: -90px;
-  right: 14px;
+  bottom: -100px;
+  right: 4px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -83,7 +81,6 @@ export const Img = styled.img`
   cursor: pointer;
   ${({ style }) => style && style};
 `;
-
 
 export const ItemsContainer = styled.div`
   position: relative;

@@ -44,6 +44,7 @@ const HomeEvents = () => {
                   },
                 });
               }}
+              showEdit={false}
               event={event}
             />
           );

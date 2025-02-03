@@ -95,6 +95,7 @@ const Event = () => {
                     navigate(`event-details/${event.id}`, {});
                   }}
                   event={event}
+                  showEdit={true}
                 />
               );
             })}

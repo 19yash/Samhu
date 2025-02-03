@@ -75,8 +75,11 @@ const SignUpForm = () => {
           label: 'Height',
           type: 'text',
           field: 'height',
-          required: true,
           size: 'medium',
+          visible: (data) => {
+            console.log('🚀 ~ SignUpForm ~ data:', data);
+            return data.role === 'Participant';
+          },
         },
         {
           label: 'Address',

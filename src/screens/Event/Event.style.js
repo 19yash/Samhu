@@ -2,7 +2,7 @@ import images from '../../images';
 
 export const heroSection = {
   backgroundImage: `url(${images.eventsHero})`,
-  height: '50vh',
+  height: '70vh',
   color: '#fff',
   display: 'flex',
   alignItems: 'center',

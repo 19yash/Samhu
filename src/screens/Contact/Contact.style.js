@@ -9,7 +9,7 @@ export const heading = {
 };
 export const heroSection = {
   backgroundImage: `url(${images.contactHero})`,
-  height: '50vh',
+  height: '70vh',
   color: '#fff',
   display: 'flex',
   alignItems: 'center',

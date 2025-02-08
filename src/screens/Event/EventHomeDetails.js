@@ -20,6 +20,7 @@ import View from '../../modules/components/View';
 import Button from '../../modules/components/button/Button';
 import NavBar from '../NavBar';
 import Footer from '../Footer';
+import { Typography } from '@mui/material';
 const EventHomeDetails = () => {
   const { state } = useLocation();
   const { fromDashboard } = state || {};
@@ -130,7 +131,9 @@ const EventHomeDetails = () => {
             {event?.description && (
               <div>
                 <Heading1>Description:</Heading1>
-                <p>{event?.description}</p>
+                <Typography sx={{ whiteSpace: 'pre-line' }}>
+                  {event?.description}
+                </Typography>{' '}
               </div>
             )}
 

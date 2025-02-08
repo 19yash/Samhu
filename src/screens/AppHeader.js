@@ -131,6 +131,7 @@ import {
 } from './AppHeader.style';
 import checkAuthorization from '../services/checkAuthorization';
 import { action, entity } from '../constants/authorization';
+import BreadcrumbsComponent from '../modules/components/breadcrums';
 
 const NavBar = () => {
   const { user, logout } = useAuth();
@@ -218,6 +219,8 @@ const NavBar = () => {
 
   return (
     <Container>
+      <BreadcrumbsComponent />
+
       <HamburgerContainer>
         {
           <IconContainer>

@@ -13,7 +13,7 @@ const Participants = ({ event }) => {
     tabs.push({
       name: category?.category_details?.name,
       element: ParticaipantsTable,
-      props: { category: category.category_details },
+      props: { category: category.category_details, event: event },
     });
   });
   if (!tabs.length) {

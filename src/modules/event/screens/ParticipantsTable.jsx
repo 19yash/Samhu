@@ -7,59 +7,12 @@ import { borderBottom, fontSize, padding } from '@mui/system';
 import Button from '../../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { modes } from '../../../constants/formConstants';
-const ParticaipantsTable = ({ category }) => {
+const ParticaipantsTable = ({ category, event }) => {
+  console.log('🚀 ~ ParticaipantsTable ~ category:', category);
   const navigate = useNavigate();
-  // const members = [
-  //   {
-  //     first_name: 'John',
-  //     last_name: 'Doe',
-  //     email: '4o3yL@example.com',
-  //     phoneNumber: '1234567890',
-  //   },
-  //   {
-  //     first_name: 'John',
-  //     last_name: 'Doe',
-  //     email: '4o3yL@example.com',
-  //     phoneNumber: '1234567890',
-  //   },
-  //   {
-  //     first_name: 'John',
-  //     last_name: 'Doe',
-  //     email: '4o3yL@example.com',
-  //     phoneNumber: '1234567890',
-  //   },
-  //   {
-  //     first_name: 'John',
-  //     last_name: 'Doe',
-  //     email: '4o3yL@example.com',
-  //     phoneNumber: '1234567890',
-  //   },
-  // ];
-  // let data = [];
-  // if (category.is_team_sport) {
-  //   data = [
-  //     {
-  //       team_name: 'Mumbai Indians',
-  //       members: members,
-  //     },
-  //     {
-  //       team_name: 'Mumbai Indians',
-  //       members: members,
-  //     },
-  //     {
-  //       team_name: 'Mumbai Indians',
-  //       members: members,
-  //     },
-  //     {
-  //       team_name: 'Mumbai Indians',
-  //       members: members,
-  //     },
-  //   ];
-  // } else {
-  //   data = [...members];
-  // }
   let columns = [];
   if (!category?.is_team_sport) {
+    console.log('not a tema sport');
     columns = [
       {
         header: 'Name',
@@ -123,13 +76,18 @@ const ParticaipantsTable = ({ category }) => {
       },
     },
     { header: 'Email', field: 'email' },
-    { header: 'Phone Number', field: 'phoneNumber' },
+    { header: 'Phone Number', field: 'phone' },
   ];
 
   const renderTeam = (row) => {
     return (
       <Table
         columns={MembersTableCoumns}
+        styles={{
+          container: {
+            border: 'none',
+          },
+        }}
         headerActions={[
           <Button
             style={{ padding: '0.2rem', fontSize: '12px' }}
@@ -140,6 +98,9 @@ const ParticaipantsTable = ({ category }) => {
               navigate(`edit-participant/${row.id}`, {
                 state: {
                   mode: modes.edit,
+                  event: event,
+                  is_team_sport: category?.is_team_sport,
+                  participants_in_team: category?.participants_in_team,
                 },
               });
             }}
@@ -155,6 +116,9 @@ const ParticaipantsTable = ({ category }) => {
       api={`/event/participate`}
       filter={{ category_id: category.id }}
       styles={{
+        container: {
+          border: 'none',
+        },
         headerCell: {
           borderBottom: '0px',
           fontSize: '16px',
@@ -167,7 +131,6 @@ const ParticaipantsTable = ({ category }) => {
         },
       }}
       columns={columns}
-      // data={data}
     />
   );
 };

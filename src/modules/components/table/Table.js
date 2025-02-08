@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Box,
 } from '@mui/material';
 import httpService from '../../../services/httpService';
 import { Actions, TableHeader, Title } from './table.style';
@@ -24,18 +25,14 @@ const Table = ({
 }) => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
-  // If API is passed, fetch data from API
+
   useEffect(() => {
+    setLoading(true);
     if (api) {
       const fetchData = async () => {
         try {
-          const response = await httpService.get(api, {
-            ...filter,
-          });
-          if (response?.data && response.data.length) {
-            const result = response.data;
-            setTableData(result);
-          }
+          const response = await httpService.get(api, { ...filter });
+          setTableData(response?.data?.length ? response.data : []);
         } catch (error) {
           console.error('Error fetching data:', error);
         } finally {
@@ -44,144 +41,144 @@ const Table = ({
       };
       fetchData();
     } else if (data) {
-      setTableData(data); // Use provided data if no API is given
+      setTableData(data);
       setLoading(false);
     }
-  }, [api, data]);
+  }, [api, data, filter]);
 
   const defaultStyles = {
     container: {
       display: 'flex',
       flexDirection: 'column',
       gap: '16px',
-      flex: '1',
       backgroundColor: '#fff',
       border: '1px solid #e5e5ea',
-      padding: '0.5rem',
+      padding: '16px',
       borderRadius: '8px',
+      // maxHeight: '400px',
     },
-    tableContainer: {},
-    actions: {},
-    table: {},
+    tableContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+    },
+    tableHeader: {
+      display: 'block',
+      backgroundColor: '#f5f5f5',
+    },
+    tableBody: {
+      display: 'block',
+      // overflowY: 'auto',
+      // maxHeight: '300px',
+      width: '100%',
+    },
+    table: { width: '100%', tableLayout: 'fixed' },
     headerCell: {
       fontWeight: 'bold',
-      // backgroundColor: '#e5e5ea',
-      // color: '#697887',
       padding: '8px',
-      border: '0px',
-      borderBottom: '1px solid #e5e5ea',
-      fontSize: '14px',
       textAlign: 'center',
     },
     bodyCell: {
-      color: '#000',
       padding: '8px',
-      border: '0px',
-      borderBottom: '1px solid #e5e5ea',
-      fontSize: '14px',
       textAlign: 'center',
     },
     lastCell: {
-      color: '#000',
       padding: '8px',
-      border: '0px',
-      fontSize: '14px',
+      fontWeight: 'bold',
       textAlign: 'center',
     },
   };
 
-  // Merge default styles with custom styles
   const tableStyles = {
     container: { ...defaultStyles.container, ...styles?.container },
     tableContainer: {
       ...defaultStyles.tableContainer,
       ...styles?.tableContainer,
     },
+    tableHeader: { ...defaultStyles.tableHeader, ...styles?.tableHeader },
+    tableBody: { ...defaultStyles.tableBody, ...styles?.tableBody },
     table: { ...defaultStyles.table, ...styles?.table },
     headerCell: { ...defaultStyles.headerCell, ...styles?.headerCell },
     bodyCell: { ...defaultStyles.bodyCell, ...styles?.bodyCell },
-    lastCell: {
-      ...defaultStyles.lastCell,
-      ...styles?.lastCell,
-    },
+    lastCell: { ...defaultStyles.lastCell, ...styles?.lastCell },
   };
 
   return (
-    <div style={tableStyles?.container}>
+    <Box sx={tableStyles.container}>
       {(title || headerActions.length > 0) && (
         <TableHeader>
-          {title && <Title>{title}</Title>}{' '}
-          <Actions style={tableStyles?.Actions}>
+          {title && <Title>{title}</Title>}
+          <Actions>
             {headerActions.map((action) =>
               typeof action === 'function' ? action() : action
             )}
           </Actions>
         </TableHeader>
       )}
-      {/* component={Paper} */}
-      <TableContainer sx={tableStyles?.tableContainer}>
-        <MuiTable sx={tableStyles?.table}>
+
+      <TableContainer component={Paper} sx={tableStyles.tableContainer}>
+        <MuiTable sx={tableStyles.table} stickyHeader>
           <TableHead>
             <TableRow>
               {columns.map((col, index) => (
-                <TableCell key={index} sx={tableStyles?.headerCell}>
+                <TableCell key={index} sx={tableStyles.headerCell}>
                   {col.header}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
-            {loading && (
-              <TableRow rowSpan={columns.length}>
-                <TableCell colspan={columns.length}>
-                  <Loader />{' '}
+
+          {/* Scrollable Table Body */}
+          <TableBody sx={tableStyles.tableBody}>
+            {loading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  sx={{ textAlign: 'center' }}
+                >
+                  <Loader />
+                </TableCell>
+              </TableRow>
+            ) : tableData.length > 0 ? (
+              tableData.map((row, rowIndex) => (
+                <TableRow
+                  key={rowIndex}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onPress && onPress(row);
+                  }}
+                  sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}
+                >
+                  {columns.map((col, colIndex) => {
+                    const cellData = col?.render
+                      ? col.render(row)
+                      : row[col.field];
+                    return (
+                      <TableCell
+                        key={colIndex}
+                        sx={
+                          rowIndex === tableData.length - 1
+                            ? tableStyles.lastCell
+                            : tableStyles.bodyCell
+                        }
+                      >
+                        {cellData}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} sx={tableStyles.bodyCell}>
+                  No Data Found
                 </TableCell>
               </TableRow>
             )}
-            {!loading &&
-              (tableData.length > 0 ? (
-                tableData.map((row, rowIndex) => (
-                  <TableRow
-                    key={rowIndex}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (!onPress) return;
-                      onPress(row);
-                    }}
-                  >
-                    {columns.map((col, colIndex) => {
-                      const cellData = col?.render
-                        ? col.render(row)
-                        : row[col.field];
-                      return (
-                        <TableCell
-                          key={colIndex}
-                          sx={
-                            rowIndex === tableData.length - 1
-                              ? tableStyles.lastCell
-                              : tableStyles?.bodyCell
-                          }
-                        >
-                          {cellData}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colspan={columns.length}
-                    sx={tableStyles?.bodyCell}
-                  >
-                    {'No Data Found'}
-                  </TableCell>
-                </TableRow>
-              ))}
           </TableBody>
         </MuiTable>
       </TableContainer>
-    </div>
+    </Box>
   );
 };
 

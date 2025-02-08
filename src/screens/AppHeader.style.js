@@ -41,7 +41,7 @@ export const Container = styled.div`
 `;
 export const IconContainer = styled.div`
   width: 200px;
-  @media (min-width: 425px) {
+  @media (min-width: 769px) {
     display: none;
   }
 `;

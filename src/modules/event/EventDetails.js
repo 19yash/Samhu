@@ -11,6 +11,7 @@ import {
   Info,
   Heading1,
   Container,
+  Image,
 } from './styles/EventDetails.style';
 import moment from 'moment';
 import Button from '../components/button/Button';
@@ -21,14 +22,17 @@ import checkAuthorization from '../../services/checkAuthorization';
 import { action, entity } from '../../constants/authorization';
 import { useAuth } from '../auth/hooks/useAuth';
 import Loader from '../components/Loader';
+import { Typography } from '@mui/material';
 const EventDetails = () => {
   const { state } = useLocation();
   const { fromDashboard } = state || {};
   const { eventId } = useParams();
   const { user } = useAuth();
   const [event, setEvent] = useState();
+  const [src, setSrc] = useState(event?.poster || images.game);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   const fetchEvent = async () => {
     try {
       setLoading(true);
@@ -46,6 +50,14 @@ const EventDetails = () => {
     fetchEvent();
   }, [eventId]);
 
+  useEffect(() => {
+    setSrc(event?.poster || images.game);
+  }, [event]);
+
+  const handleImageError = () => {
+    setSrc(images.game);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -53,9 +65,12 @@ const EventDetails = () => {
     <Container>
       <EventContainer>
         <ImageContainer>
-          <Img
-            src={images.game}
-            style={{ width: '100%', height: '50%', borderRadius: '12px' }}
+          <Image
+            src={src}
+            style={{
+              borderRadius: '12px',
+            }}
+            onError={handleImageError}
           />
         </ImageContainer>
         <EventDetailsStyles>
@@ -93,8 +108,10 @@ const EventDetails = () => {
             </div>
             <div>
               {'Category'}:{' '}
-              {event?.categories?.map((category) => {
-                return category.category_details.name;
+              {event?.categories?.map((category, index) => {
+                return index === event?.categories?.length - 1
+                  ? category.category_details.name
+                  : category.category_details.name + ', ';
               })}
             </div>
             <Info>
@@ -134,7 +151,9 @@ const EventDetails = () => {
           {event?.description && (
             <div>
               <Heading1>Description:</Heading1>
-              <p>{event?.description}</p>
+              <Typography sx={{ whiteSpace: 'pre-line' }}>
+                {event?.description}
+              </Typography>
             </div>
           )}
 

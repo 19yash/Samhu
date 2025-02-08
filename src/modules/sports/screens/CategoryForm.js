@@ -70,15 +70,15 @@ const CategoryForm = () => {
           type: 'number',
           required: true,
         },
-        // {
-        //   label: 'Gender',
-        //   field: 'gender',
-        //   type: 'autocomplete',
-        //   options: [
-        //     { label: 'Male', value: 'male' },
-        //     { label: 'Female', value: 'female' },
-        //   ],
-        // },
+        {
+          label: 'Gender',
+          field: 'gender',
+          type: 'autocomplete',
+          options: [
+            { label: 'Male', value: 'male' },
+            { label: 'Female', value: 'female' },
+          ],
+        },
       ],
     },
   ];
@@ -91,7 +91,7 @@ const CategoryForm = () => {
         console.log('🚀 ~ CategoryForm ~ formData:', formData);
         const newObject = {
           ...formData,
-          is_team_sport: formData?.participants_in_team > 1,
+          is_team_sport: Number(formData?.participants_in_team) > 1,
           participants_in_team: Number(formData?.participants_in_team),
           min_age: Number(formData.min_age),
           max_age: Number(formData.max_age),

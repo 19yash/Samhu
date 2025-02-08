@@ -60,7 +60,7 @@ const layoutFields = [
       },
       {
         label: 'Message',
-        type: 'text',
+        type: 'textarea',
         field: 'message',
         size: 'large',
       },
@@ -94,7 +94,7 @@ const ContactUs = () => {
           <SectionContainer>
             <GenericForm
               _onSubmit={(formData) => {
-                console.log("🚀 ~ ContactUs ~ formData:", formData)
+                console.log('🚀 ~ ContactUs ~ formData:', formData);
                 handleSubmit(formData);
               }}
               layout={layoutFields}

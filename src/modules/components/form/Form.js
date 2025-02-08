@@ -62,8 +62,8 @@ const GenericForm = ({
           };
         }
       });
-      doInititalComputations(formData);
-      setFormData(response.data || {});
+      let computeFormData = await doInititalComputations(formData);
+      setFormData(computeFormData || response.data || {});
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -94,6 +94,7 @@ const GenericForm = ({
   };
 
   const doInititalComputations = async (formData) => {
+    let computeFormData = null;
     if (computations.length) {
       for (const computation of computations) {
         // Check if the field triggers this computation
@@ -102,7 +103,7 @@ const GenericForm = ({
         if (shouldCompute) {
           try {
             // Call the compute function with the updated form data
-            await computation.compute({
+            computeFormData = await computation.compute({
               formData: formData,
               setFormData,
               formLayout,
@@ -117,6 +118,7 @@ const GenericForm = ({
         }
       }
     }
+    return computeFormData;
   };
   const handleInputChange = async (field, value) => {
     // Update the nested field in formData
@@ -184,9 +186,9 @@ const GenericForm = ({
 
   const onSubmit = async (formData) => {
     console.log('🚀 ~ onSubmit ~ formData:', formData);
+    setLoading(true);
     if (_onSubmit) {
       try {
-        setLoading(true);
         _onSubmit(formData);
       } catch (err) {
         console.log('🚀 ~ onSubmit ~ err:', err);
@@ -336,6 +338,27 @@ const GenericForm = ({
     const gridSize = sizeMapping[size] || 6;
     // Field rendering
     switch (type) {
+      case 'textarea':
+        return (
+          <Grid item xs={gridSize} key={fieldName}>
+            <TextField
+              fullWidth
+              multiline
+              rows={4} // Adjust rows as needed
+              placeholder={label}
+              value={value || getNestedValue(formData, fieldName) || ''}
+              required={required}
+              onChange={(e) => handleInputChange(fieldName, e.target.value)}
+              error={!!errors[fieldName]}
+              helperText={errors[fieldName]}
+              sx={formStyles.input}
+              InputProps={{
+                readOnly: readOnly, // Makes the field read-only
+              }}
+            />
+          </Grid>
+        );
+
       case 'text':
         return (
           <Grid item xs={gridSize} key={fieldName}>

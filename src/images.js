@@ -55,6 +55,7 @@ const twitterLogo = '/assets/twitter-logo.svg';
 const settings = '/assets/settings.svg';
 const eventsHero = '/assets/EventsHero.jpeg';
 const contactHero = '/assets/ContactHero.jpeg';
+const refree = '/assets/refree.jpeg';
 
 const images = {
   trash: trash,
@@ -111,6 +112,7 @@ const images = {
   settings: settings,
   eventsHero: eventsHero,
   contactHero: contactHero,
+  refree: refree,
 };
 
 export default images;

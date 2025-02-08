@@ -77,7 +77,7 @@ const EventForm = () => {
         },
         {
           label: 'Description',
-          type: 'text',
+          type: 'textarea',
           field: 'description',
         },
         {
@@ -151,8 +151,6 @@ const EventForm = () => {
           compute: async ({ formData, formLayout, setFormLayout }) => {
             try {
               const processedLayout = [];
-
-              console.log('🚀 ~ compute: ~ formLayout:', formLayout);
               formLayout.forEach((section) => {
                 const _sections = {
                   ...section,
@@ -216,7 +214,8 @@ const EventForm = () => {
         navigate(-1);
       }}
       beforeSubmit={(formData) => {
-        const processedFormData = { categories: [] };
+        console.log('🚀 ~ EventForm ~ formData:', formData);
+        const processedFormData = { ...formData, categories: [] };
         Object.keys(formData).forEach((key) => {
           if (key.startsWith('categories_') && formData[key].selected) {
             const category_id = key.replace('categories_', '');
@@ -224,8 +223,6 @@ const EventForm = () => {
               category_id: category_id,
               price: Number(formData[key].price),
             });
-          } else {
-            processedFormData[key] = formData[key];
           }
         });
         processedFormData['host_id'] = user._id;

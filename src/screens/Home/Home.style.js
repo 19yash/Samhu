@@ -18,6 +18,23 @@ export const HeroSection = styled.div`
   }
 `;
 
+export const HeroSection2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  height: 100vh;
+  color: #fff;
+  background-image: url(${images.refree});
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  @media (max-width: 425px) {
+    align-items: center;
+  }
+`;
+
 export const HeroContent = styled.div`
   padding: 20px;
   display: flex;

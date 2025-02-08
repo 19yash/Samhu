@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 12px;
   background-color: #fff;
-  padding: 2rem;
+  // padding: 2rem;
   @media (max-width: 425px) {
     padding: 0.5rem;
   }
@@ -15,8 +15,9 @@ export const Container = styled.div`
 `;
 
 export const EventContainer = styled.div`
+  overflow-x: hidden;
   display: flex;
-  border-radius: 8px;
+  justify-content: space-around;
   gap: 1rem;
   padding: 2rem;
   @media (max-width: 768px) {
@@ -31,19 +32,23 @@ export const Img = styled.img`
   cursor: pointer;
   ${({ style }) => style && style};
 `;
-
+export const Image = styled.img`
+  max-width: 100%;
+  ${({ style }) => style && style};
+`;
 export const ImageContainer = styled.div`
-  width: 60%;
-  height: 40%;
-  border-radius: 8px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @media (max-width: 768px) {
     width: 100%;
-    height: 100%;
   }
 `;
 
 export const EventDetailsStyles = styled.div`
-  width: 40%;
+  width: 50%;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   gap: 10px;

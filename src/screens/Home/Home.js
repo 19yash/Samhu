@@ -6,6 +6,7 @@ import {
   Heading,
   HeroContent,
   HeroSection,
+  HeroSection2,
   heroStyle,
   Promotion,
   PromotionContainer,
@@ -24,10 +25,18 @@ import images from '../../images';
 import HomeEvents from './HomeEvents';
 import { setGlobalClearAuth } from '../GlobalFunction';
 import { AuthContext } from '../../context/auth/AuthContext';
+import { Grid2, Typography } from '@mui/material';
 
 export const Home = () => {
   const navigate = useNavigate();
   const { clearAuth } = useContext(AuthContext);
+  const handleWhatsAppRedirect = () => {
+    const phoneNumber = '7015429121'; // Replace with your phone number (without + or spaces)
+    const message = 'Hello! I need a referee.'; // Replace with your message
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappUrl, '_blank');
+  };
 
   useEffect(() => {
     setGlobalClearAuth(clearAuth);
@@ -52,6 +61,49 @@ export const Home = () => {
           />
         </HeroContent>
       </HeroSection>
+      <Grid2 container spacing={2} style={{ height: '100vh' }}>
+        {/* Left Side - Image */}
+        <Grid2 item size={6} style={{ background: '#f0f0f0' }}>
+          <img
+            src={images.refree}
+            alt="Placeholder"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </Grid2>
+
+        {/* Right Side - Text */}
+        <Grid2
+          item
+          size={6}
+          container
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          style={{ padding: '2rem' }}
+        >
+          <Typography variant="h3" gutterBottom>
+            Find a Referee Near You!
+          </Typography>
+          <Typography variant="body1" color="textSecondary">
+            Need a certified referee for your match? Click below to connect with
+            us on WhatsApp and book referee instantly!
+          </Typography>
+          <Button
+            onClick={() => {
+              handleWhatsAppRedirect();
+            }}
+            text={'Message Us on WhatsApp'}
+            type={ButtonType.backgroundWithBorder}
+            style={{ width: 'fit-content' }}
+          />
+        </Grid2>
+      </Grid2>
+      {/* <Grid2 container spacing={2}>
+        <Grid2 size={6}>
+          <img src={images.refree} />
+        </Grid2>
+        <Grid2 size={6}></Grid2>
+      </Grid2> */}
       {/* section 1 */}
       <SectionContainer>
         <Heading>Featured Events</Heading>

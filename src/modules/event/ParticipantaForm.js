@@ -1,6 +1,6 @@
 import React from 'react';
-import GenericForm from '../components/form/Form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import GenericForm from '../components/form/Form';
 import { modes } from '../../constants/formConstants';
 import { useAuth } from '../auth/hooks/useAuth';
 
@@ -8,7 +8,12 @@ const ParticipantForm = () => {
   const navigate = useNavigate();
   const { participantId } = useParams();
   const { state } = useLocation();
-  const { mode = modes.create, event } = state || {};
+  const {
+    mode = modes.create,
+    event,
+    is_team_sport,
+    participants_in_team,
+  } = state || {};
   const { user } = useAuth();
   const categoryOptions = event?.categories?.map((category) => {
     return {
@@ -22,13 +27,13 @@ const ParticipantForm = () => {
     setFormLayout,
     setFormData,
   }) => {
+    console.log('called');
     const newFormData = { ...formData };
     if (formData.members) {
       for (let i = 0; i < formData.members.length; i++) {
         newFormData[`members_${i}_email`] = formData.members[i].email;
         newFormData[`members_${i}_name`] = formData.members[i].name;
-        newFormData[`members_${i}_phone_number`] =
-          formData.members[i].phone_number;
+        newFormData[`members_${i}_phone`] = formData.members[i].phone;
       }
     }
 
@@ -46,9 +51,10 @@ const ParticipantForm = () => {
     ];
 
     try {
-      const { category_id } = formData;
-      if (category_id?.is_team_sport) {
-        const participants = category_id?.participants_in_team;
+      const { category_id, category_details } = formData;
+      if (category_id?.is_team_sport || category_details?.is_team_sport) {
+        const participants =
+          category_id?.participants_in_team || participants_in_team || 11;
         processedLayout.push({
           label: 'Team Details',
           fields: [
@@ -82,7 +88,7 @@ const ParticipantForm = () => {
               {
                 label: 'Phone Number',
                 type: 'text',
-                field: `members_${i}_phone_number`,
+                field: `members_${i}_phone`,
                 required: true,
                 size: 'medium',
               },
@@ -122,7 +128,7 @@ const ParticipantForm = () => {
             {
               label: 'Phone Number',
               type: 'text',
-              field: 'PhoneNumber',
+              field: 'phone',
               size: 'medium',
               readOnly: true,
               value: user?.PhoneNumber,
@@ -131,7 +137,8 @@ const ParticipantForm = () => {
         });
       }
       setFormLayout(processedLayout);
-      setFormData(newFormData);
+      // setFormData(newFormData);
+      return newFormData;
     } catch (error) {
       console.error('Error in compute function:', error);
     }
@@ -159,11 +166,14 @@ const ParticipantForm = () => {
       }}
       mode={mode}
       beforeSubmit={(formData) => {
+        console.log('🚀 ~ ParticipantForm ~ formData:', formData);
         const newFormData = {
           ...formData,
           members: [],
         };
-        const participant = formData['category_id']?.participants_in_team;
+        const participant =
+          formData['category_id']?.participants_in_team ||
+          formData['category_details']?.participants_in_team;
         let isCaptainSelected = false;
         let isViceCaptainSelected = false;
         for (let i = 0; i < participant; i++) {
@@ -182,13 +192,17 @@ const ParticipantForm = () => {
           newFormData['members'].push({
             name: formData[`members_${i}_name`],
             email: formData[`members_${i}_email`],
-            phone_number: formData[`members_${i}_phone_number`],
+            phone: formData[`members_${i}_phone`],
           });
         }
+        if (mode === modes.create) {
+          console.log('mode id create');
+          newFormData['category_id'] = formData['category_id'].id;
+          newFormData['event_id'] = event?.id;
+          newFormData['participant_id'] = user?.id;
+        }
+        console.log('🚀 ~ ParticipantForm ~ formData:', newFormData);
 
-        newFormData['category_id'] = formData['category_id'].id;
-        newFormData['event_id'] = event?.id;
-        newFormData['participant_id'] = user?.id;
         return newFormData;
       }}
       computations={[

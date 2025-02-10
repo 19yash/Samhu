@@ -213,6 +213,7 @@ const Table = ({
   headerActions = [],
   onPress,
   title,
+  key,
 }) => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -235,7 +236,7 @@ const Table = ({
       setTableData(data);
       setLoading(false);
     }
-  }, [api, data, columns]);
+  }, [api, key]);
 
   return (
     <Box sx={{ overflowX: 'auto', width: '100%' }}>

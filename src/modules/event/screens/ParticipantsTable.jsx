@@ -33,6 +33,12 @@ const ParticaipantsTable = ({ category, event }) => {
         },
       },
       {
+        header: 'Role',
+        render: (row) => {
+          return `${row?.participant_details?.role}`;
+        },
+      },
+      {
         header: 'Actions',
         render: (row) => {
           return (
@@ -44,13 +50,6 @@ const ParticaipantsTable = ({ category, event }) => {
                 gap: '1rem',
               }}
             >
-              <Img
-                src={images.edit}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`edit-participant/${row.id}`, {});
-                }}
-              />
               <Img src={images.trash} />
             </div>
           );
@@ -113,6 +112,7 @@ const ParticaipantsTable = ({ category, event }) => {
   };
   return (
     <Table
+      key={`${category.id}`}
       api={`/event/participate`}
       filter={{ category_id: category.id }}
       styles={{

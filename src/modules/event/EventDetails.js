@@ -28,7 +28,7 @@ const EventDetails = () => {
   const { fromDashboard } = state || {};
   const { eventId } = useParams();
   const { user } = useAuth();
-  const [event, setEvent] = useState();
+  const [event, setEvent] = useState(null);
   const [src, setSrc] = useState(event?.poster || images.game);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -160,11 +160,12 @@ const EventDetails = () => {
           {/* </div> */}
         </EventDetailsStyles>
       </EventContainer>
-      {!fromDashboard && (
+      {!fromDashboard && event && (
         <>
           {/* <Heading>Participants</Heading> */}
-          {checkAuthorization(user, entity.Participants, action.view) &&
-            event && <Participants event={event} />}{' '}
+          {checkAuthorization(user, entity.Participants, action.view) && (
+            <Participants event={event} />
+          )}{' '}
         </>
       )}
     </Container>

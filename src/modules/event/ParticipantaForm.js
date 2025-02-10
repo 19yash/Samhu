@@ -29,32 +29,22 @@ const ParticipantForm = () => {
   }) => {
     console.log('called');
     const newFormData = { ...formData };
+    const { category_id, category_details } = formData;
+
     if (formData.members) {
       for (let i = 0; i < formData.members.length; i++) {
         newFormData[`members_${i}_email`] = formData.members[i].email;
         newFormData[`members_${i}_name`] = formData.members[i].name;
         newFormData[`members_${i}_phone`] = formData.members[i].phone;
+        newFormData[`members_${i}_role`] = formData.members[i].role;
       }
     }
-
-    const filteredField = formLayout?.[0]?.fields?.filter(
-      (section) => section.field === 'category_id'
-    );
-    const processedLayout = [
-      {
-        label: '',
-        fields: [...filteredField],
-      },
-      // ...formLayout?.[0]?.fields?.filter(
-      //   (section) => section.field === 'category_id'
-      // ),
-    ];
-
+    const processedLayout = [];
     try {
-      const { category_id, category_details } = formData;
       if (category_id?.is_team_sport || category_details?.is_team_sport) {
         const participants =
-          category_id?.participants_in_team || participants_in_team || 11;
+          category_id?.participants_in_team ||
+          category_details?.participants_in_team;
         processedLayout.push({
           label: 'Team Details',
           fields: [
@@ -138,6 +128,7 @@ const ParticipantForm = () => {
       }
       setFormLayout(processedLayout);
       // setFormData(newFormData);
+      console.log('🚀 ~ ParticipantForm ~ newFormData:', newFormData);
       return newFormData;
     } catch (error) {
       console.error('Error in compute function:', error);
@@ -193,6 +184,7 @@ const ParticipantForm = () => {
             name: formData[`members_${i}_name`],
             email: formData[`members_${i}_email`],
             phone: formData[`members_${i}_phone`],
+            role: formData[`members_${i}_role`],
           });
         }
         if (mode === modes.create) {

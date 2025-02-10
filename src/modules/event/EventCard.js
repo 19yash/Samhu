@@ -37,7 +37,6 @@ const EventCard = ({ event = {}, onPress, dashboard, showEdit }) => {
   };
   const { user } = useAuth();
   const theme = useTheme();
-
   const startDate = moment(start_date).format('DD MMMM, YYYY');
   const registrationDate = moment(registration_start_date).format(
     'DD MMMM, YYYY'
@@ -155,19 +154,21 @@ const EventCard = ({ event = {}, onPress, dashboard, showEdit }) => {
         </Box>
       </CardContent>
 
-      {showEdit && checkAuthorization(user, entity.Events, action.edit) && (
-        <ImageContainer>
-          <Img
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`edit-event/${id}`, {
-                state: { event, mode: modes.edit },
-              });
-            }}
-            src={images.editLight}
-          />
-        </ImageContainer>
-      )}
+      {showEdit &&
+        checkAuthorization(user, entity.Events, action.edit) &&
+        moment(event?.registration_start_date) > moment() && (
+          <ImageContainer>
+            <Img
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`edit-event/${id}`, {
+                  state: { event, mode: modes.edit },
+                });
+              }}
+              src={images.editLight}
+            />
+          </ImageContainer>
+        )}
     </Card>
   );
 };

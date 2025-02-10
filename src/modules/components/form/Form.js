@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import httpService from '../../../services/httpService';
 import { formStyles } from './style';
 import Button from '../button/Button';
+import Loader from '../Loader';
 
 const GenericForm = ({
   mode,
@@ -49,12 +50,17 @@ const GenericForm = ({
   }, [mode, apiPath]);
 
   const fetchFormData = async (apiPath) => {
+    setPageLoading(true);
     setLoading(true);
     try {
       const response = await httpService.get(apiPath);
       const formData = response.data;
       formLayout?.map(async (field) => {
-        if (field.type === 'autocomplete') {
+        if (
+          field.type === 'autocomplete' &&
+          field?.suggestionField &&
+          field?.keyField
+        ) {
           await fetchAutocompleteOptions(field);
           formData[field.field] = {
             label: formData[field.field]['suggestionField'],
@@ -67,6 +73,7 @@ const GenericForm = ({
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
+      setPageLoading(false);
       setLoading(false);
     }
   };
@@ -605,6 +612,9 @@ const GenericForm = ({
       navigate(-1);
     }
   };
+  if (PageLoading) {
+    return <Loader />;
+  }
   return (
     <Box component="form" sx={{ ...styles, padding: '1rem' }}>
       <Grid container spacing={2}>

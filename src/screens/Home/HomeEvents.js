@@ -6,7 +6,7 @@ import { EventContainer } from '../../modules/event/styles/EventDetails.style';
 import { useNavigate } from 'react-router-dom';
 import EventCard from '../../modules/event/EventCard';
 
-const HomeEvents = () => {
+const HomeEvents = ({ upcoming }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -14,9 +14,10 @@ const HomeEvents = () => {
     try {
       setLoading(true);
       const response = await httpService.get(`${routeLink.events}/`, {});
-      console.log('🚀 ~ fetchData ~ response:', response);
-      if (response.data) {
-        setEvents(response.data.slice(0, 3));
+      if (response.data && upcoming) {
+        setEvents(response.data.slice(-3));
+      } else if (response.data && !upcoming) {
+        setEvents(response.data.slice(-6, -3));
       }
     } catch (err) {
       console.log(err);
@@ -33,7 +34,7 @@ const HomeEvents = () => {
   }
   return (
     <EventContainer>
-      {events.length &&
+      {events.length > 0 &&
         events.map((event) => {
           return (
             <EventCard

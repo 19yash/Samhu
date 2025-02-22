@@ -20,21 +20,42 @@ export const HeroSection = styled.div`
 
 export const HeroSection2 = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  height: 100vh;
-  color: #fff;
-  background-image: url(${images.refree});
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  min-height: 100vh;
+  padding: 2rem;
   @media (max-width: 425px) {
-    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 32px;
   }
 `;
 
+export const HeroSection2Image = styled.div`
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: 425px) {
+    width: 90%;
+  }
+`;
+
+export const HeroSection2Content = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 2rem;
+  @media (max-width: 425px) {
+    width: 90%;
+    align-items: center;
+    gap: 1rem;
+  }
+`;
 export const HeroContent = styled.div`
   padding: 20px;
   display: flex;
@@ -188,25 +209,14 @@ export const Testimonoials = {
   },
 };
 export const PromotionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
   background-image: url(${images.homeGetInTouch});
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  @media (max-width: 425px) {
-    flex-direction: column;
-    padding: 1rem;
-  }
-  @media (min-width: 425px) {
-    gap: 200px;
-    height: 60vh;
-  }
 `;
 
 export const PromotionHeading = styled.div`
+  text-align: center;
   font-size: 40px;
   text-transform: capitalize;
   width: 40%;
@@ -214,5 +224,22 @@ export const PromotionHeading = styled.div`
   @media (max-width: 425px) {
     width: 100%;
     padding: 1rem;
+  }
+`;
+
+export const Overlay = styled.div`
+  backdrop-filter: blur(4px); /* Blurs only the background */
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent dark overlay */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  @media (max-width: 425px) {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  @media (min-width: 425px) {
+    gap: 200px;
+    height: 60vh;
   }
 `;

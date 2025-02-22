@@ -19,14 +19,14 @@ const Sports = () => {
         return `${row.sports_name}`;
       },
     },
-    {
-      header: 'Number Of Categories',
-      field: 'categories',
-    },
-    {
-      header: 'Active Sports',
-      field: 'activeEvents',
-    },
+    // {
+    //   header: 'Number Of Categories',
+    //   field: 'categories',
+    // },
+    // {
+    //   header: 'Active Sports',
+    //   field: 'activeEvents',
+    // },
   ];
 
   return (

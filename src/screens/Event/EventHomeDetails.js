@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../modules/auth/hooks/useAuth';
+import { useNavigate, useParams } from 'react-router-dom';
 import httpService from '../../services/httpService';
 import routeLink from '../../constants/routeLink';
 import Loader from '../../modules/components/Loader';
@@ -22,11 +21,9 @@ import NavBar from '../NavBar';
 import Footer from '../Footer';
 import { Typography } from '@mui/material';
 const EventHomeDetails = () => {
-  const { state } = useLocation();
-  const { fromDashboard } = state || {};
   const { eventId } = useParams();
-  const { user } = useAuth();
   const [event, setEvent] = useState();
+  const [src, setSrc] = useState(event?.poster || images.game);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const fetchEvent = async () => {
@@ -46,18 +43,22 @@ const EventHomeDetails = () => {
     fetchEvent();
   }, [eventId]);
 
+  useEffect(() => {
+    setSrc(event?.poster || images.game);
+  }, [event]);
+
   if (loading) {
     return <Loader />;
   }
   return (
     <>
-      <NavBar />
+      <NavBar showIcon={true} />
 
       <View style={{ gap: '12px', backgroundColor: '#fff', padding: '2rem' }}>
         <EventContainer>
           <ImageContainer>
             <Img
-              src={images.game}
+              src={src}
               style={{ width: '100%', height: '800px', borderRadius: '12px' }}
             />
           </ImageContainer>

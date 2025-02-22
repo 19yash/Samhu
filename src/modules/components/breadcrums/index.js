@@ -19,7 +19,7 @@ const BreadcrumbsComponent = () => {
   return (
     <Breadcrumbs aria-label="breadcrumb" sx={{ padding: 2, width: '100%' }}>
       {/* Home Link */}
-      <Link component={RouterLink} to="/app" color="inherit">
+      <Link component={RouterLink} to="/home" color="inherit">
         Home
       </Link>
 

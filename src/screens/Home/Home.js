@@ -7,8 +7,10 @@ import {
   HeroContent,
   HeroSection,
   HeroSection2,
+  HeroSection2Content,
+  HeroSection2Image,
   heroStyle,
-  Promotion,
+  Overlay,
   PromotionContainer,
   PromotionHeading,
   Section,
@@ -25,16 +27,16 @@ import images from '../../images';
 import HomeEvents from './HomeEvents';
 import { setGlobalClearAuth } from '../GlobalFunction';
 import { AuthContext } from '../../context/auth/AuthContext';
-import { Grid2, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import config from '../../config';
 
 export const Home = () => {
   const navigate = useNavigate();
   const { clearAuth } = useContext(AuthContext);
   const handleWhatsAppRedirect = () => {
-    const phoneNumber = '7015429121'; // Replace with your phone number (without + or spaces)
+    const phoneNumber = config.phoneNumber; // Replace with your phone number (without + or spaces)
     const message = 'Hello! I need a referee.'; // Replace with your message
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
     window.open(whatsappUrl, '_blank');
   };
 
@@ -48,8 +50,8 @@ export const Home = () => {
         <HeroContent>
           <h1 style={heroStyle.title}>Discover Your Sport</h1>
           <p style={heroStyle.description}>
-            Whether it football, basketball, tennis, or cricket —dive into a
-            diverse selection of sports and find the perfect fit for you.
+            Empowering athletes, academies, and referees to connect, compete,
+            and thrive.
           </p>
           <Button
             onClick={() => {
@@ -61,32 +63,35 @@ export const Home = () => {
           />
         </HeroContent>
       </HeroSection>
-      <Grid2 container spacing={2} style={{ height: '100vh' }}>
-        {/* Left Side - Image */}
-        <Grid2 item size={6} style={{ background: '#f0f0f0' }}>
+      <HeroSection2>
+        <HeroSection2Image>
           <img
             src={images.refree}
             alt="Placeholder"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{
+              width: '80%',
+              maxWidth: '400px',
+              height: 'auto',
+              objectFit: 'cover',
+              borderRadius: '12px',
+            }}
           />
-        </Grid2>
-
-        {/* Right Side - Text */}
-        <Grid2
-          item
-          size={6}
-          container
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          style={{ padding: '2rem' }}
-        >
-          <Typography variant="h3" gutterBottom>
-            Find a Referee Near You!
+        </HeroSection2Image>
+        <HeroSection2Content>
+          <Typography
+            variant="h3"
+            gutterBottom
+            sx={{
+              fontSize: { xs: '1.8rem', sm: '2.2rem', md: '3rem' },
+              textAlign: { xs: 'center' },
+              fontWeight: 'bold',
+            }}
+          >
+            Find a Referee Near You!!
           </Typography>
           <Typography variant="body1" color="textSecondary">
             Need a certified referee for your match? Click below to connect with
-            us on WhatsApp and book referee instantly!
+            us on WhatsApp and book a referee instantly!
           </Typography>
           <Button
             onClick={() => {
@@ -94,17 +99,10 @@ export const Home = () => {
             }}
             text={'Message Us on WhatsApp'}
             type={ButtonType.backgroundWithBorder}
-            style={{ width: 'fit-content' }}
+            style={{ width: 'fit-content', borderRadius: '10px' }}
           />
-        </Grid2>
-      </Grid2>
-      {/* <Grid2 container spacing={2}>
-        <Grid2 size={6}>
-          <img src={images.refree} />
-        </Grid2>
-        <Grid2 size={6}></Grid2>
-      </Grid2> */}
-      {/* section 1 */}
+        </HeroSection2Content>
+      </HeroSection2>
       <SectionContainer>
         <Heading>Featured Events</Heading>
         <SectionSubHeading>
@@ -125,7 +123,7 @@ export const Home = () => {
         <SectionSubHeading>
           Explore Our Upcoming Sports: Where Passion Meets Performance!
         </SectionSubHeading>
-        <HomeEvents />
+        <HomeEvents upcoming={true} />
         <Button
           onClick={() => {
             navigate('/events');
@@ -161,16 +159,18 @@ export const Home = () => {
       </div>
       {/* Promotion */}
       <PromotionContainer>
-        <PromotionHeading>
-          Become a Valued Sponsor and Showcase Your Brand to a Wider Audience
-        </PromotionHeading>
-        <Button
-          onClick={() => {
-            navigate('/contactUs');
-          }}
-          type={ButtonType.backgroundWithBorder}
-          text={'Get In Touch'}
-        />
+        <Overlay>
+          <PromotionHeading>
+            Become a Valued Sponsor and Showcase Your Brand to a Wider Audience
+          </PromotionHeading>
+          <Button
+            onClick={() => {
+              navigate('/contactUs');
+            }}
+            type={ButtonType.backgroundWithBorder}
+            text={'Get In Touch'}
+          />
+        </Overlay>
       </PromotionContainer>
       <Footer></Footer>
     </div>

@@ -1,4 +1,4 @@
-import { cilSpeedometer, cilPuzzle, cilSettings, cilUser } from '@coreui/icons';
+import { cilSpeedometer, cilPuzzle, cilSettings } from '@coreui/icons';
 import Sidenav from './Sidenav';
 import checkAuthorization from '../../../services/checkAuthorization';
 import { useAuth } from '../../auth/hooks/useAuth';
@@ -31,17 +31,7 @@ function AppSideBar() {
   });
   return (
     <Container>
-      <Sidenav
-        navItems={[
-          ...navItemsToShow,
-          {
-            name: 'Home',
-            icon: cilUser,
-            path: '/home',
-          },
-        ]}
-        brandName="Samuh"
-      />
+      <Sidenav navItems={[...navItemsToShow]} brandName="Samuh" />
     </Container>
   );
 }

@@ -6,6 +6,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { modes } from '../../constants/formConstants';
 import { toast } from 'react-toastify';
 import { useAuth } from '../auth/hooks/useAuth';
+import moment from 'moment';
 
 const EventForm = () => {
   const { eventId } = useParams();
@@ -161,8 +162,6 @@ const EventForm = () => {
                 _sections.fields = _fields;
                 processedLayout.push(_sections);
               });
-              console.log('### processedLayout', processedLayout);
-
               const { sports_id } = formData || {};
               if (!sports_id) {
                 console.error('Sport ID is missing.');
@@ -171,7 +170,6 @@ const EventForm = () => {
 
               // Fetch categories for the selected sport
               const categories = await fetchCategories(sports_id);
-              console.log('🚀 ~ compute: ~ categories:', categories);
 
               if (!categories || !Array.isArray(categories)) {
                 console.error('Invalid categories data.');
@@ -214,7 +212,30 @@ const EventForm = () => {
         navigate(-1);
       }}
       beforeSubmit={(formData) => {
-        console.log('🚀 ~ EventForm ~ formData:', formData);
+        const {
+          registration_end_date,
+          registration_start_date,
+          start_date,
+          end_date,
+        } = formData;
+        if (
+          moment(registration_end_date).isBefore(
+            moment(registration_start_date)
+          )
+        ) {
+          throw new Error(
+            'Registration end date cannot be before the start date'
+          );
+        }
+        if (moment(start_date).isBefore(moment(registration_end_date))) {
+          throw new Error(
+            'Registration end date cannot be after the start date'
+          );
+        }
+        if (moment(end_date).isBefore(moment(start_date))) {
+          throw new Error('Event end date cannot be before the start date');
+        }
+
         const processedFormData = { ...formData, categories: [] };
         Object.keys(formData).forEach((key) => {
           if (key.startsWith('categories_') && formData[key].selected) {

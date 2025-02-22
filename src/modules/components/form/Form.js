@@ -192,13 +192,11 @@ const GenericForm = ({
   };
 
   const onSubmit = async (formData) => {
-    console.log('🚀 ~ onSubmit ~ formData:', formData);
     setLoading(true);
     if (_onSubmit) {
       try {
         _onSubmit(formData);
       } catch (err) {
-        console.log('🚀 ~ onSubmit ~ err:', err);
       } finally {
         setLoading(false);
       }
@@ -207,10 +205,13 @@ const GenericForm = ({
 
     try {
       // Process formData before submission, if applicable
-      const processedFormData = beforeSubmit
-        ? await handleBeforeSubmit(formData)
-        : formData;
+      let processedFormData = formData;
+      if (beforeSubmit) {
+        processedFormData = await handleBeforeSubmit(formData);
+      }
 
+      // Handle the processed formData
+      console.log('successfully completed implementing before submit ');
       // Submit the processed formData
       const response = await submitFormData(processedFormData);
 
@@ -218,7 +219,9 @@ const GenericForm = ({
       await handleAfterSubmit(response);
     } catch (error) {
       console.error('Submission error:', error);
-      toast.error('An error occurred. Please try again later.');
+      toast.error(
+        error.message || 'An error occurred. Please try again later.'
+      );
     } finally {
       setLoading(false);
     }
@@ -234,12 +237,7 @@ const GenericForm = ({
         throw new Error('Invalid data returned from beforeSubmit.');
       }
     } catch (error) {
-      console.error('Error in beforeSubmit:', error);
-      toast.error(
-        error.message ||
-          'Failed to process form data. Please check your inputs.'
-      );
-      // throw error; // Propagate error to be caught in onSubmit
+      throw error;
     }
   };
 
@@ -270,17 +268,13 @@ const GenericForm = ({
       try {
         await afterSubmit(response);
       } catch (error) {
-        console.error('Error in afterSubmit:', error);
-        // Optionally, display a toast or handle the error as needed
+        throw error;
       }
     }
   };
 
   const handleSubmit = (e) => {
-    console.log('called');
     e.preventDefault();
-    console.log('called 2');
-
     const requiredErrors = {};
     formLayout?.forEach((section) => {
       section?.fields?.forEach((field) => {
@@ -372,7 +366,6 @@ const GenericForm = ({
             <TextField
               fullWidth
               type={type}
-              // label={label}
               placeholder={label}
               value={value || getNestedValue(formData, fieldName) || ''}
               required={required}
@@ -392,7 +385,6 @@ const GenericForm = ({
             <TextField
               fullWidth
               type={type}
-              // label={label}
               placeholder={label}
               value={value || getNestedValue(formData, fieldName) || ''}
               required={required}
@@ -567,9 +559,7 @@ const GenericForm = ({
               required={required}
               // onChange={(e) => handleInputChange(fieldName, e.target.value)}
               onChange={(e) => {
-                console.log('🚀 ~ called ~ e:', e);
                 const value = e.target.value;
-                console.log('🚀 ~ renderField ~ pattern:', pattern);
 
                 // Adjust pattern to work with RegExp
                 const regexPattern = new RegExp(pattern);

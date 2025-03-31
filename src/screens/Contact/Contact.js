@@ -94,7 +94,6 @@ const ContactUs = () => {
           <SectionContainer>
             <GenericForm
               _onSubmit={(formData) => {
-                console.log('🚀 ~ ContactUs ~ formData:', formData);
                 handleSubmit(formData);
               }}
               layout={layoutFields}

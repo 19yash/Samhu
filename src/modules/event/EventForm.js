@@ -207,6 +207,31 @@ const EventForm = () => {
             }
           },
         },
+        {
+          fields: ['sports_id'],
+          condition: (formData) => {
+            return !formData?.sports_id;
+          },
+          compute: async ({ formData, formLayout, setFormLayout }) => {
+            try {
+              const processedLayout = [];
+              formLayout.forEach((section) => {
+                const _sections = {
+                  ...section,
+                };
+                const _fields = section.fields.filter((input) => {
+                  return !input.field.includes('categories_');
+                });
+                _sections.fields = _fields;
+                processedLayout.push(_sections);
+              });
+              // Update the state
+              setFormLayout(processedLayout);
+            } catch (error) {
+              console.error('Error in compute function:', error);
+            }
+          },
+        },
       ]}
       afterSubmit={() => {
         navigate(-1);

@@ -60,8 +60,8 @@ export const Card = styled.div`
 `;
 
 export const AddressIconWrapper = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
 `;
 export const Icon = styled.img`
   width: 40px;

@@ -3,6 +3,8 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import GenericForm from '../components/form/Form';
 import { modes } from '../../constants/formConstants';
 import { useAuth } from '../auth/hooks/useAuth';
+import loadRazorpayScript from '../../utility/rzorpay';
+import config from '../../config.js';
 
 const ParticipantForm = () => {
   const navigate = useNavigate();
@@ -128,7 +130,6 @@ const ParticipantForm = () => {
       }
       setFormLayout(processedLayout);
       // setFormData(newFormData);
-      console.log('🚀 ~ ParticipantForm ~ newFormData:', newFormData);
       return newFormData;
     } catch (error) {
       console.error('Error in compute function:', error);
@@ -150,14 +151,51 @@ const ParticipantForm = () => {
     },
   ];
 
+  const handlePayment = async (response) => {
+    const isScriptLoaded = await loadRazorpayScript();
+
+    if (!isScriptLoaded) {
+      alert('Something Went Wrong Please Try Again Later.');
+      return;
+    }
+
+    try {
+      const { order_id, amount_paid, currency } = response.data;
+      const options = {
+        key: config.rzpKey,
+        amount: amount_paid,
+        currency,
+        order_id,
+        name: 'Udaan sport',
+        description: 'Payment for event registration',
+        handler: function (response) {
+          // Handle payment success
+          navigate('/app/paymentSuccess', {
+            state: {
+              orderId: response.razorpay_order_id,
+              event: event,
+            },
+          });
+        },
+        prefill: {
+          name: user.user_name,
+          email: user.email,
+          contact: user.PhoneNumber,
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <GenericForm
-      afterSubmit={() => {
-        navigate(-1);
-      }}
+      afterSubmit={(response) => handlePayment(response)}
       mode={mode}
       beforeSubmit={(formData) => {
-        console.log('🚀 ~ ParticipantForm ~ formData:', formData);
         const newFormData = {
           ...formData,
           members: [],
@@ -186,14 +224,16 @@ const ParticipantForm = () => {
             phone: formData[`members_${i}_phone`],
             role: formData[`members_${i}_role`],
           });
+          delete newFormData[`members_${i}_name`];
+          delete newFormData[`members_${i}_email`];
+          delete newFormData[`members_${i}_phone`];
+          delete newFormData[`members_${i}_role`];
         }
         if (mode === modes.create) {
-          console.log('mode id create');
           newFormData['category_id'] = formData['category_id'].id;
           newFormData['event_id'] = event?.id;
           newFormData['participant_id'] = user?.id;
         }
-        console.log('🚀 ~ ParticipantForm ~ formData:', newFormData);
 
         return newFormData;
       }}

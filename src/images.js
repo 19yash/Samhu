@@ -58,6 +58,8 @@ const eventsHero = '/assets/EventsHero.jpeg';
 const contactHero = '/assets/ContactHero.jpeg';
 const refree = '/assets/refree.jpeg';
 
+const paymentSuccess = '/assets/paymentSuccess.svg';
+
 const images = {
   trash: trash,
   edit: edit,
@@ -115,6 +117,7 @@ const images = {
   contactHero: contactHero,
   refree: refree,
   logo: logo,
+  paymentSuccess: paymentSuccess,
 };
 
 export default images;

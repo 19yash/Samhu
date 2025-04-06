@@ -4,6 +4,7 @@ import React from 'react';
 import Dashboard from '../Dashboard';
 import Settings from '../Settings';
 import SportsForm from '../../sports/screens/SportsForm';
+import PaymentSuccess from '../../../screens/PaymentSuccess';
 
 const DasboardRoutes = [
   {
@@ -32,6 +33,11 @@ const DasboardRoutes = [
     name: 'Settings',
     path: '/settings',
     element: <Settings />,
+  },
+  {
+    name: 'payment',
+    path: '/paymentSuccess',
+    element: <PaymentSuccess />,
   },
 ];
 

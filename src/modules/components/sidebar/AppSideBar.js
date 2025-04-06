@@ -31,7 +31,7 @@ function AppSideBar() {
   });
   return (
     <Container>
-      <Sidenav navItems={[...navItemsToShow]} brandName="Samuh" />
+      <Sidenav navItems={[...navItemsToShow]} brandName="Udaansport" />
     </Container>
   );
 }

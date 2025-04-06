@@ -45,7 +45,7 @@ const LoginForm = () => {
     <div style={styles.container}>
       <form style={styles.form}>
         <div style={styles.imageContainer}>
-          <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
+          <img src={images.fullBrandLogo} alt={'logo'} width={'300px'} />
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="email" style={styles.label}>

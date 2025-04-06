@@ -113,10 +113,11 @@ const SignUpForm = () => {
     <>
       <Container>
         {/* Dummy Logo - This will always stay visible */}
-        <div style={styles.logoContainer}>
-          <Logo src={images.fullBrandLogo} alt="Logo" />
-        </div>
         <div style={styles.form}>
+          <div style={styles.logoContainer}>
+            <Logo src={images.fullBrandLogo} alt="Logo" />
+          </div>
+
           <GenericForm
             beforeSubmit={(formData) => {
               return {

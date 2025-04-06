@@ -118,7 +118,7 @@ const ContactUs = () => {
               <Icon src={images.mail} />
               <CardContent>
                 <h3>MAIL TO US</h3>
-                <p>support@smuh.in</p>
+                <p>udaansport@gmail.com</p>
               </CardContent>
             </Card>
 

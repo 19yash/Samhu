@@ -20,19 +20,19 @@ const objective = [
     image: images.booking,
     title: 'Ease of Booking',
     description:
-      "SMUH provided collaborative platform that's meet the requirements of both sports person and sports tournament organizers.",
+      "Udaan Sport provided collaborative platform that's meet the requirements of both sports person and sports tournament organizers.",
   },
   {
     image: images.smoothProcess,
     title: 'Smooth Process',
     description:
-      'SMUH offers simple user registration for sports and also provided dashboard for users to keep eyes over their previous and upcoming participations in sports.',
+      'Udaan Sport offers simple user registration for sports and also provided dashboard for users to keep eyes over their previous and upcoming participations in sports.',
   },
   {
     image: images.interface,
     title: 'Interective Interface',
     description:
-      'SMUH bring simplified platform to list sports event by different event organizers with simple Verification process and easy to use interface.',
+      'Udaan Sport bring simplified platform to list sports event by different event organizers with simple Verification process and easy to use interface.',
   },
 ];
 
@@ -72,7 +72,7 @@ const Introduction = [
   {
     title: 'Support service',
     description:
-      'For any questions or concerns regarding issues smuh team is available for 24*7 for their users.',
+      'For any questions or concerns regarding issues Udaan Sport team is available for 24*7 for their users.',
     icon: images.support,
   },
 ];
@@ -85,7 +85,7 @@ const About = () => {
 
       <SectionContainerLight>
         <div style={Section.subHeading}>Introduction</div>
-        <div style={Section.heading}>About SMUH Tech Pvt. Ltd.</div>
+        <div style={Section.heading}>About Udaan Sport Tech Pvt. Ltd.</div>
         <div
           style={{
             ...Section.content.container,
@@ -139,7 +139,7 @@ const About = () => {
         <div style={Section.circleLayerTwo}></div>
         <div style={Section.circleLayerThree}></div>
         <div style={Section.subHeading}>KNOW OUR</div>
-        <div style={Section.heading}>Smhu Objective</div>
+        <div style={Section.heading}>Udaan Sport Objective</div>
         <ContentContainer>
           {objective.map((item, index) => {
             return (

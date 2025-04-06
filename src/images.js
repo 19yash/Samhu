@@ -1,8 +1,9 @@
 const edit = '/assets/edit.svg';
 const editLight = '/assets/editlight.svg';
 const trash = '/assets/trash.svg';
-const fullBrandLogo = '/assets/FullLogo.PNG';
-const fullLogotransparent = '/assets/fullLogotransparent.png';
+const fullBrandLogo = '/assets/fullTransperentLogo.png';
+const fullLogotransparent = '/assets/fullTransperentLogo.png';
+const logo = '/assets/logo.png';
 const calender = '/assets/calender.svg';
 const clock = '/assets/clock.svg';
 const game = '/assets/game.webp';
@@ -113,6 +114,7 @@ const images = {
   eventsHero: eventsHero,
   contactHero: contactHero,
   refree: refree,
+  logo: logo,
 };
 
 export default images;

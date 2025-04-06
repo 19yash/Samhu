@@ -47,7 +47,7 @@ const ForgotPassword = () => {
     <div style={styles.container}>
       <form style={styles.form}>
         <div style={styles.imageContainer}>
-          <img src={images.fullBrandLogo} alt={'logo'} width={'200px'} />
+          <img src={images.fullBrandLogo} alt={'logo'} width={'300px'} />
         </div>
         <div style={styles.title}>Forgot Password</div>
         <div style={styles.formGroup}>

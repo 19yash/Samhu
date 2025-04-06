@@ -27,7 +27,7 @@ const Footer = () => {
       <FooterContainer>
         {/* Left Section */}
         <Section>
-          <Logo src={images.transparentLogo}></Logo>
+          <Logo src={images.fullLogotransparent}></Logo>
           <Description>
             We aim to bridge the gap between sports players and organizers by
             providing an online platform for them to connect and fulfill their
@@ -87,7 +87,7 @@ const Footer = () => {
         <Section>
           <h3>Information</h3>
           <InfoItem>📞 +91 9671875065</InfoItem>
-          <InfoItem>📧 support@smuh.in</InfoItem>
+          <InfoItem>📧 udaansport@gmail.com</InfoItem>
           <InfoItem>
             📍 648, Gali Kailash Pandit Wali, Chattar Garh Patti, Sirsa.
           </InfoItem>
@@ -105,7 +105,7 @@ const Footer = () => {
           </SocialIcons>
         </Section>
       </FooterContainer>
-      <div style={copyright}>© Copyright 2025 SMHU Pvt. Ltd.</div>
+      <div style={copyright}>© Copyright 2025 Udaan sport Pvt. Ltd.</div>
     </Container>
   );
 };

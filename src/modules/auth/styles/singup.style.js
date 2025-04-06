@@ -8,14 +8,14 @@ const themeColors = {
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  min-width: 100vw;
   background-color: white;
   padding: 1rem;
   box-sizing: border-box;
-
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -23,9 +23,8 @@ export const Container = styled.div`
 
 export const Logo = styled.img`
   width: 400px;
-
   @media (max-width: 768px) {
-    width: 200px;
+    width: 250px;
   }
 `;
 
@@ -45,7 +44,6 @@ export const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '1.5rem',
   },
   logo: {},
   form: {

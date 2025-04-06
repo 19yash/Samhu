@@ -15,11 +15,20 @@ const Sidenav = ({ navItems, brandName }) => {
 
   return (
     <CSidebar style={SideBarNav.container} narrow={!isOpen}>
-      {isOpen && (
-        <CSidebarBrand className="d-none d-md-flex" to="/">
-          {<Img src={images.fullLogotransparent} alt={brandName} />}
+      {
+        <CSidebarBrand
+          className="d-none d-md-flex justify-content-md-center"
+          to="/"
+        >
+          {
+            <Img
+              src={isOpen ? images.fullLogotransparent : images.logo}
+              alt={brandName}
+              isOpen={isOpen}
+            />
+          }
         </CSidebarBrand>
-      )}
+      }
       <CSidebarNav style={{ gap: '8px' }}>
         {navItems.map((item, index) => (
           <SidenavItem

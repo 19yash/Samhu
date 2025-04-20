@@ -59,9 +59,7 @@ const NavBar = (props) => {
 
   const { pathname } = useLocation();
   const elementPathName = pathname.split('/');
-  console.log('🚀 ~ NavBar ~ elemtPathName:', elementPathName[1]);
   if (elementPathName?.[1] === 'app') {
-    console.log('setting to empty');
     items = [];
   }
   const navigate = useNavigate();

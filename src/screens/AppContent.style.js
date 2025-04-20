@@ -9,4 +9,5 @@ export const AppContentStyle = styled.div`
   @media (max-width: 768px) {
     padding: 0px;
   }
+    
 `;

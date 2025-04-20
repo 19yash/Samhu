@@ -14,6 +14,7 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [upcomingEvent, setUpcomingEvent] = useState([]);
   const [otherEvents, setOtherEvents] = useState([]);
+  const [paymentPending, setPaymentPending] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const filter = {};
@@ -24,6 +25,7 @@ const Dashboard = () => {
   const fetchData = async () => {
     const upcomingEvents = [];
     const otherEvents = [];
+    const paymentPending = [];
     try {
       let response;
       if (user.role === userRole.participant) {
@@ -33,8 +35,13 @@ const Dashboard = () => {
 
         if (response.data) {
           response.data.forEach((event) => {
-            if (moment(event?.event_details?.start_date) > moment()) {
+            if (
+              moment(event?.event_details?.start_date) > moment() &&
+              event.payment_status !== 'created'
+            ) {
               upcomingEvents.push(event.event_details);
+            } else if (event?.payment_status === 'created') {
+              paymentPending.push(event.event_details);
             } else {
               otherEvents.push(event.event_details);
             }
@@ -56,6 +63,7 @@ const Dashboard = () => {
       }
       setUpcomingEvent(upcomingEvents);
       setOtherEvents(otherEvents);
+      setPaymentPending(paymentPending);
     } catch (err) {
       console.log(err);
     } finally {
@@ -113,6 +121,43 @@ const Dashboard = () => {
               })}
           </div>
         </div>
+        {paymentPending.length > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <h1 style={{ color: theme.palette.primary.main }}>
+              Payment Pending
+            </h1>
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                gap: '2rem',
+                flexWrap: 'wrap',
+                padding: '1rem',
+                justifyContent: 'center',
+              }}
+            >
+              {paymentPending.map((event) => {
+                return (
+                  <EventCard2
+                    dashboard={true}
+                    event={event}
+                    onPress={() => {
+                      navigate(`/app/events/event-details/${event.id}`, {});
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
         <div
           style={{
             display: 'flex',

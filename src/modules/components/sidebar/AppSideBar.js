@@ -1,4 +1,4 @@
-import { cilSpeedometer, cilPuzzle, cilSettings } from '@coreui/icons';
+import { cilSpeedometer, cilPuzzle, cilSettings, cilUser } from '@coreui/icons';
 import Sidenav from './Sidenav';
 import checkAuthorization from '../../../services/checkAuthorization';
 import { useAuth } from '../../auth/hooks/useAuth';
@@ -21,6 +21,11 @@ const navItems = [
     name: 'Sports',
     icon: cilPuzzle,
     path: '/app/sports',
+  },
+  {
+    name: 'Users',
+    icon: cilUser,
+    path: '/app/users',
   },
 ];
 

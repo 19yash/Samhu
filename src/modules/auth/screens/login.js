@@ -16,14 +16,11 @@ const LoginForm = () => {
   } = useForm();
   const navigate = useNavigate();
   const { user, login } = useAuth();
-  console.log('🚀 ~ LoginForm ~ user:', user);
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
     setLoading(true);
-    console.log('🚀 ~ onSubmit ~ data:', data);
     try {
       const response = await login(data);
-      console.log('🚀 ~ onSubmit ~ response:', response);
       if (response.message === 'success') {
         navigate('/app/dashboard');
         toast.success('Login Successfully');

@@ -148,6 +148,7 @@ const NavBar = () => {
     { name: 'Dashboard', path: '/app/dashboard' },
     { name: 'Events', path: '/app/events' },
     { name: 'Sports', path: '/app/sports' },
+    { name: 'Users', path: '/app/users' },
   ];
 
   const actions = [
@@ -176,7 +177,6 @@ const NavBar = () => {
   });
   navItemsToShow.push({ name: 'Home', path: '/home' });
   if (windowSize.width > 768) {
-    console.log('setting to empty');
     navItemsToShow = [];
   }
   const navigate = useNavigate();

@@ -16,27 +16,22 @@ const ConfirmOtp = () => {
     setError,
   } = useForm();
   const { email } = useParams();
-  console.log('🚀 ~ ConfirmOtp ~ email:', email);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     try {
       setLoading(true);
       const response = await httpService.post(routeLink.confirmOtp, {
         otp: data.otp,
         email: email,
       });
-      console.log('🚀 ~ onSubmit ~ response:', response);
       if (response && response?.message !== 'error') {
-        console.log();
         toast.success(
           'OTP Confirmed Successfully Please check your email for password reset link'
         );
         navigate('/login');
         setLoading(false);
       }
-      console.log('Setting loading to false');
       setLoading(false);
     } catch (error) {
       console.error('Error logging in:', error);

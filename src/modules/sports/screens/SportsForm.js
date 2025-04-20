@@ -3,7 +3,8 @@ import GenericForm from '../../components/form/Form';
 import routeLink from '../../../constants/routeLink';
 import { modes } from '../../../constants/formConstants';
 import Modal from '../../components/modal';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { sportsTableStyle } from '../sports.style';
 
 const fields = [
   {
@@ -22,27 +23,30 @@ const fields = [
 
 const SportsForm = () => {
   const navigate = useNavigate();
-  const handleSubmit = (formData) => {
-    console.log('Form submitted:', formData);
-  };
+  const { state } = useLocation();
+  console.log('🚀 ~ SportsForm ~ state:', state);
+  const { sportsId } = useParams();
+
+  const { mode = modes.create, sport } = state || {};
+  console.log('🚀 ~ SportsForm ~ mode:', mode);
+
   return (
     <Modal>
       <GenericForm
         afterSubmit={() => {
           navigate(-1);
         }}
-        mode={modes.create}
-        apiPath={routeLink.sports}
+        defaultValues={
+          mode === modes.edit ? { sports_name: sport?.sports_name } : {}
+        }
+        mode={mode}
+        apiPath={
+          mode === modes.create
+            ? routeLink.sports
+            : `${routeLink.sports}${sportsId}`
+        }
         layout={fields}
-        onSubmit={handleSubmit}
-        styles={{
-          container: {
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-          },
-        }}
+        styles={sportsTableStyle}
       />
     </Modal>
   );

@@ -24,14 +24,6 @@ export default class httpService {
     } else {
       toast.error(error?.response?.data?.error);
     }
-    // if (error.response) {
-    //   console.error('Error Response:', error.response.data);
-    // } else if (error.request) {
-    //   console.error('No Response:', error.request);
-    // } else {
-    //   console.error('Error', error.message);
-    // }
-    // toast;
     return { message: 'error' };
   }
   static async get(endpoint, params = {}) {
@@ -58,7 +50,6 @@ export default class httpService {
       const response = await axiosInstance.post(endpoint, body, updatedConfig);
       return response.data;
     } catch (error) {
-      console.log('🚀 ~ post: ~ error:', error);
       this.handleError(error);
     }
   }

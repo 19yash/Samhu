@@ -88,7 +88,6 @@ const CategoryForm = () => {
         navigate(-1);
       }}
       beforeSubmit={(formData) => {
-        console.log('🚀 ~ CategoryForm ~ formData:', formData);
         const newObject = {
           ...formData,
           is_team_sport: Number(formData?.participants_in_team) > 1,

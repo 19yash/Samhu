@@ -15,6 +15,8 @@ export const Container = styled.div`
 `;
 
 export const EventContainer = styled.div`
+  width: 100%;
+  max-width: 95vw;
   overflow-x: hidden;
   display: flex;
   justify-content: space-around;

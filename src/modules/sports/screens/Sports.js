@@ -7,9 +7,9 @@ import images from '../../../images';
 import checkAuthorization from '../../../services/checkAuthorization';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { action, entity } from '../../../constants/authorization';
+import { Img } from '../../event/styles/EventCard.style';
 
 const Sports = () => {
-  console.log('hello logging');
   const { user } = useAuth();
   const navigate = useNavigate();
   const columns = [
@@ -19,6 +19,34 @@ const Sports = () => {
         return `${row.sports_name}`;
       },
     },
+    ...(user.role === 'Admin'
+      ? [
+          {
+            render: (row) => {
+              console.log('🚀 ~ Sports ~ row:', row);
+              return (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    gap: '1rem',
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('edit');
+                    navigate(`${row.id}/edit`, {
+                      state: { mode: 'edit', sport: row },
+                    });
+                  }}
+                >
+                  <Img src={images.edit} />
+                </div>
+              );
+            },
+          },
+        ]
+      : []),
     // {
     //   header: 'Number Of Categories',
     //   field: 'categories',

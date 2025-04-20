@@ -16,7 +16,6 @@ export const DefaultLayout = (props) => {
     setGlobalClearAuth(clearAuth);
   }, []);
   if (!user) {
-    console.log('returning');
     return <Navigate to="/login" />;
   }
   return (

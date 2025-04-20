@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 const Settings = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  console.log('🚀 ~ Settings ~ user:', user);
   const layoutFields = [
     {
       label: 'Profile Details',
@@ -66,6 +65,39 @@ const Settings = () => {
             ]
           : []),
       ],
+
+      ...(user.role === userRole.host
+        ? [
+            {
+              type: 'text',
+              label: 'Account Number',
+              field: 'account_number',
+              required: true,
+              size: 'medium',
+            },
+            {
+              type: 'text',
+              label: 'Bank Name',
+              field: 'bank_name',
+              required: true,
+              size: 'medium',
+            },
+            {
+              type: 'text',
+              label: 'IFSC Code',
+              field: 'ifsc_code',
+              required: true,
+              size: 'medium',
+            },
+            {
+              type: 'text',
+              label: 'Account Holder Name',
+              field: 'account_holder_name',
+              required: true,
+              size: 'medium',
+            },
+          ]
+        : []),
     },
   ];
   return (
@@ -75,7 +107,8 @@ const Settings = () => {
       }}
       layout={layoutFields}
       mode={modes.edit}
-      apiPath={routeLink.user}
+      apiPath={`${routeLink.user}${user.id}`}
+      submitApiPath={`${routeLink.user}`}
     />
   );
 };

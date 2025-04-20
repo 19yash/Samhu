@@ -8,11 +8,9 @@ import Button from '../../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { modes } from '../../../constants/formConstants';
 const ParticaipantsTable = ({ category, event }) => {
-  console.log('🚀 ~ ParticaipantsTable ~ category:', category);
   const navigate = useNavigate();
   let columns = [];
   if (!category?.is_team_sport) {
-    console.log('not a tema sport');
     columns = [
       {
         header: 'Name',
@@ -92,7 +90,6 @@ const ParticaipantsTable = ({ category, event }) => {
             style={{ padding: '0.2rem', fontSize: '12px' }}
             text={'Edit'}
             onClick={(e) => {
-              console.log('edit');
               e.stopPropagation();
               navigate(`edit-participant/${row.id}`, {
                 state: {
@@ -113,8 +110,8 @@ const ParticaipantsTable = ({ category, event }) => {
   return (
     <Table
       key={`${category.id}`}
-      api={`/event/participate`}
-      filter={{ category_id: category.id }}
+      api={`/event/participants`}
+      filter={{ category_id: category.id, event_id: event?.id }}
       styles={{
         container: {
           border: 'none',

@@ -47,15 +47,6 @@ const SignUpForm = () => {
             return data.role === 'Host';
           },
         },
-        {
-          label: 'Academic Institute Name',
-          type: 'text',
-          field: 'school_or_college',
-          size: 'medium',
-          visible: (data) => {
-            return data.role === 'Participant';
-          },
-        },
 
         {
           label: 'Phone Number',
@@ -68,16 +59,29 @@ const SignUpForm = () => {
           label: 'Age',
           type: 'text',
           field: 'age',
-          required: true,
           size: 'medium',
+          visible: (data) => data.role === 'Participant',
         },
         {
           label: 'Height',
           type: 'text',
           field: 'height',
           size: 'medium',
+          visible: (data) => data.role === 'Participant',
+        },
+        {
+          label: 'Gender',
+          type: 'text',
+          field: 'gender',
+          size: 'medium',
+          visible: (data) => data.role === 'Participant',
+        },
+        {
+          label: 'Academic Institute Name',
+          type: 'text',
+          field: 'school_or_college',
+          size: 'large',
           visible: (data) => {
-            console.log('🚀 ~ SignUpForm ~ data:', data);
             return data.role === 'Participant';
           },
         },
@@ -86,7 +90,48 @@ const SignUpForm = () => {
           type: 'text',
           field: 'address',
           required: true,
+          size: 'large',
+        },
+        {
+          label: 'Account Number',
+          type: 'text',
+          field: 'account_number',
+          required: true,
+          size: 'large',
+          visible: (data) => {
+            return data.role === 'Host';
+          },
+          pattern: '^[0-9]{9,18}$',
+        },
+        {
+          label: 'IFSC Code',
+          type: 'text',
+          field: 'ifsc_code',
+          required: true,
           size: 'medium',
+          visible: (data) => {
+            return data.role === 'Host';
+          },
+        },
+        {
+          label: 'Bank Name',
+          type: 'text',
+          field: 'bank_name',
+          required: true,
+          size: 'medium',
+          visible: (data) => {
+            return data.role === 'Host';
+          },
+        },
+        {
+          label: 'Account Holder Name',
+          type: 'text',
+          field: 'account_holder_name',
+          required: true,
+          size: 'large',
+          visible: (data) => {
+            return data.role === 'Host';
+          },
         },
         {
           label: 'Password',
@@ -119,6 +164,9 @@ const SignUpForm = () => {
           </div>
 
           <GenericForm
+            defaultValues={{
+              role: 'Host',
+            }}
             beforeSubmit={(formData) => {
               return {
                 ...formData,

@@ -8,6 +8,7 @@ const calender = '/assets/calender.svg';
 const clock = '/assets/clock.svg';
 const game = '/assets/game.webp';
 const user = '/assets/user.svg';
+const usersBlack = '/assets/usersBlack.svg';
 const arrowDown = '/assets/arrowDown.svg';
 const logout = '/assets/logout.svg';
 const doubleLeft = '/assets/doubleLeft.svg';
@@ -118,6 +119,7 @@ const images = {
   refree: refree,
   logo: logo,
   paymentSuccess: paymentSuccess,
+  usersBlack: usersBlack,
 };
 
 export default images;

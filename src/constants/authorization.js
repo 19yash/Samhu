@@ -4,6 +4,7 @@ export const entity = {
   Category: 'Category',
   Participants: 'Participants',
   Dashboard: 'Dashboard',
+  Users: 'Users',
 };
 
 export const action = {
@@ -20,6 +21,7 @@ export const authorization = {
     Category: [action.view, action.create, action.edit, action.delete],
     Events: [action.view, action.create, action.edit, action.delete],
     Participants: [action.view, action.edit, action.delete],
+    Users: [action.view, action.create, action.edit, action.delete],
   },
   Host: {
     Dashboard: [action.view],

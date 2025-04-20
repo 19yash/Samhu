@@ -19,13 +19,11 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     setLoading(true);
     try {
       const response = await httpService.post(routeLink.forgotPassword, {
         email: data.email,
       });
-      console.log('🚀 ~ onSubmit ~ response:', response);
       if (response.message === 'OTP sent to your email') {
         toast.success('Email Send Successfully');
         navigate(`/confirm-otp/${data?.email}`);

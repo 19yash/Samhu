@@ -24,7 +24,6 @@ export const authReducer = (state, action) => {
         loading: false,
       };
     case CLEAR_AUTH:
-      console.log('Clearing local storage');
       localStorage.removeItem('auth');
       return {
         ...initialState,

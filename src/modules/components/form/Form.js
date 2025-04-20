@@ -30,6 +30,7 @@ const GenericForm = ({
   defaultValues = {},
   beforeSubmit,
   afterSubmit,
+  submitApiPath,
   _onSubmit,
   buttonContainerStyles = {},
   computations = [],
@@ -110,6 +111,7 @@ const GenericForm = ({
         if (shouldCompute) {
           try {
             // Call the compute function with the updated form data
+            setLoading(true);
             computeFormData = await computation.compute({
               formData: formData,
               setFormData,
@@ -121,6 +123,8 @@ const GenericForm = ({
               `Error during computation for field ${computation.field}:`,
               error
             );
+          } finally {
+            setLoading(false);
           }
         }
       }
@@ -141,6 +145,7 @@ const GenericForm = ({
           if (shouldCompute) {
             try {
               // Call the compute function with the updated form data
+              setLoading(true);
               await computation.compute({
                 formData: newFormData,
                 setFormData,
@@ -152,6 +157,8 @@ const GenericForm = ({
                 `Error during computation for field ${field}:`,
                 error
               );
+            } finally {
+              setLoading(false);
             }
           }
         }
@@ -210,8 +217,6 @@ const GenericForm = ({
         processedFormData = await handleBeforeSubmit(formData);
       }
 
-      // Handle the processed formData
-      console.log('successfully completed implementing before submit ');
       // Submit the processed formData
       const response = await submitFormData(processedFormData);
 
@@ -246,8 +251,8 @@ const GenericForm = ({
     try {
       const response =
         mode === 'create'
-          ? await httpService.post(apiPath, formData)
-          : await httpService.put(apiPath, formData);
+          ? await httpService.post(submitApiPath || apiPath, formData)
+          : await httpService.put(submitApiPath || apiPath, formData);
 
       if (response && response.message !== 'error') {
         toast.success('Successful');
@@ -278,6 +283,12 @@ const GenericForm = ({
     const requiredErrors = {};
     formLayout?.forEach((section) => {
       section?.fields?.forEach((field) => {
+        // Skip field if visible is a function and returns false
+        if (typeof field.visible === 'function' && !field.visible(formData)) {
+          return;
+        }
+
+        // If the field is marked required and value is missing, add error
         if (field.required && !formData[field.field]) {
           requiredErrors[field.field] = `${field.label} is required`;
         }
@@ -324,7 +335,6 @@ const GenericForm = ({
       value,
       pattern,
     } = field;
-
     // Visibility logic
     if (visible && typeof visible === 'function' && !visible(formData)) {
       return null;
@@ -566,7 +576,6 @@ const GenericForm = ({
 
                 // Validate against pattern if provided
                 if (pattern && !regexPattern.test(value)) {
-                  console.log('Validation failed:', regexPattern.test(value));
                   const requiredErrors = { ...errors };
                   requiredErrors[fieldName] =
                     'Password must contain at least one letter, one uppercase letter, and one special character';
@@ -634,6 +643,7 @@ const GenericForm = ({
         <Button
           text={saveButtonText}
           onClick={(e) => {
+            console.log('🚀 ~ e:', e);
             handleSubmit(e);
           }}
           loading={loading}

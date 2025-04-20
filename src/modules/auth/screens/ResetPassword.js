@@ -19,7 +19,6 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     if (data.new_password !== data.confirm_password) {
       toast.error("Password doesn't match");
       return;

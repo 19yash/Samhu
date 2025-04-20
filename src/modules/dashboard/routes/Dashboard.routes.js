@@ -5,6 +5,8 @@ import Dashboard from '../Dashboard';
 import Settings from '../Settings';
 import SportsForm from '../../sports/screens/SportsForm';
 import PaymentSuccess from '../../../screens/PaymentSuccess';
+import Users from '../../../screens/Users';
+import UserDetails from '../../../screens/UserDetails';
 
 const DasboardRoutes = [
   {
@@ -27,6 +29,11 @@ const DasboardRoutes = [
         path: 'add-sports',
         element: <SportsForm />,
       },
+      {
+        name: 'Edit Sports',
+        path: '/sports/:sportsId/edit',
+        element: <SportsForm />,
+      },
     ],
   },
   {
@@ -38,6 +45,18 @@ const DasboardRoutes = [
     name: 'payment',
     path: '/paymentSuccess',
     element: <PaymentSuccess />,
+  },
+  {
+    name: 'Users',
+    path: '/users',
+    element: <Users />,
+    children: [
+      {
+        name: 'User Details',
+        path: 'users-details/:userId',
+        element: <UserDetails />,
+      },
+    ],
   },
 ];
 

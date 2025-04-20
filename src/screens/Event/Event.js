@@ -23,7 +23,6 @@ const EventPage = () => {
     try {
       setLoading(true);
       const response = await httpService.get(`${routeLink.events}/`, {});
-      console.log('Event Page🚀 ~ fetchData ~ response:', response);
       if (response.data) {
         setEvents(response.data);
       }

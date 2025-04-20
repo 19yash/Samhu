@@ -14,7 +14,6 @@ const Category = () => {
   const { sportsId } = useParams();
   const { state } = useLocation();
   const { sport } = state || {};
-  console.log('🚀 ~ Category ~ sport:', sport);
   const navigate = useNavigate();
   const renderActions = (row) => {
     if (checkAuthorization(user, entity.Category, action.edit)) {

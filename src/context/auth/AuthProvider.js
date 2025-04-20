@@ -14,7 +14,6 @@ export const AuthProvider = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const setAuth = (payload) => {
-    console.log('payload', payload);
     localStorage.setItem(
       'auth',
       JSON.stringify({ ...payload, isAuthenticated: true })

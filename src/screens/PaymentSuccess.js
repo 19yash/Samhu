@@ -3,7 +3,6 @@ import images from '../images';
 import React from 'react';
 import Button from '../modules/components/button/Button';
 const PaymentSuccess = () => {
-  console.log('hell uncle namate chalo ');
   const { state } = useLocation();
   const orderId = state?.orderId;
   const event = state?.event;

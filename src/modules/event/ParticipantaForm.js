@@ -5,11 +5,14 @@ import { modes } from '../../constants/formConstants';
 import { useAuth } from '../auth/hooks/useAuth';
 import loadRazorpayScript from '../../utility/rzorpay';
 import config from '../../config.js';
+import { toast } from 'react-toastify';
+import httpService from '../../services/httpService.js';
 
 const ParticipantForm = () => {
   const navigate = useNavigate();
   const { participantId } = useParams();
   const { state } = useLocation();
+  console.log('🚀 ~ ParticipantForm ~ state:', state);
   const {
     mode = modes.create,
     event,
@@ -29,7 +32,36 @@ const ParticipantForm = () => {
     setFormLayout,
     setFormData,
   }) => {
-    console.log('called');
+    const response = await httpService.get(
+      `/event/participate/event-category-participant`,
+      {
+        category_id: formData.category_id?.id,
+        event_id: event?.id,
+        participant_id: user?.id,
+      }
+    );
+    if (response?.data && response.data?.payment_status === 'captured') {
+      toast.error('You have already participated in this event');
+      navigate(`/app/events/event-details/${event.id}`, {
+        state: {
+          reason: 'Already Participated',
+          orderId: response.data.order_id,
+          event: event,
+        },
+      });
+      return;
+    }
+    if (response?.data && response.data?.payment_status === 'created') {
+      const _response = await httpService.post(`/event/participate`, {
+        ...response?.data,
+      });
+      toast.info(
+        'You have already participated in this event and payment is pending redirecting to payment page'
+      );
+      await handlePayment(_response);
+      return;
+    }
+
     const newFormData = { ...formData };
     const { category_id, category_details } = formData;
 
@@ -182,9 +214,32 @@ const ParticipantForm = () => {
           email: user.email,
           contact: user.PhoneNumber,
         },
+        modal: {
+          ondismiss: function () {
+            toast.info('Payment was cancelled.');
+            navigate(`/app/events/event-details/${event.id}`, {
+              state: {
+                reason: 'User dismissed Razorpay modal',
+                orderId: order_id,
+                event: event,
+              },
+            });
+          },
+        },
       };
 
       const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (response) {
+        console.error('Payment failed:', response.error);
+        toast.error('Payment failed. Please try again.');
+        navigate(`/app/events/event-details/${event.id}`, {
+          state: {
+            reason: response.error.description,
+            orderId: options.order_id,
+            event: event,
+          },
+        });
+      });
       rzp.open();
     } catch (error) {
       console.error('Error:', error);

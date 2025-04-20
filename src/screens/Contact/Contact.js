@@ -6,11 +6,9 @@ import {
   Card,
   CardContent,
   ContactSection,
-  contactSection,
   heading,
   heroSection,
   Icon,
-  IconWrapper,
   SectionContainer,
   subHeading,
 } from './Contact.style';

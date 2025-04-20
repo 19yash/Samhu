@@ -1,9 +1,7 @@
 import React from 'react';
 import Table from '../../components/table/Table';
-import routeLink from '../../../constants/routeLink';
 import images from '../../../images';
 import { Img } from '../styles/participantTable.style';
-import { borderBottom, fontSize, padding } from '@mui/system';
 import Button from '../../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { modes } from '../../../constants/formConstants';

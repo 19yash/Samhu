@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import httpService from '../services/httpService';
-import { set } from 'react-hook-form';
 import Loader from '../modules/components/Loader';
 import Modal from '../modules/components/modal';
 import { Container } from './UserDetails.style';

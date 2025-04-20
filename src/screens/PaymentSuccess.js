@@ -17,7 +17,7 @@ const PaymentSuccess = () => {
         height: '100%',
       }}
     >
-      <img width={150} src={images.paymentSuccess} />
+      <img width={150} src={images.paymentSuccess} alt="payment success" />
       <p style={{ textAlign: 'center', marginTop: '1rem' }}>
         Payment is Successfull for event {event?.name} and your order id is{' '}
         {orderId}

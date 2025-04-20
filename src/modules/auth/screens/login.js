@@ -15,7 +15,7 @@ const LoginForm = () => {
     setError,
   } = useForm();
   const navigate = useNavigate();
-  const { user, login } = useAuth();
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
     setLoading(true);

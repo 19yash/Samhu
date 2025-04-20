@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CNavGroup, CIcon } from '@coreui/react';
+import { CNavGroup } from '@coreui/react';
 import SidenavItem from './SidenavItem';
 
 const SidenavGroup = ({ item, level }) => {

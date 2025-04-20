@@ -1,4 +1,3 @@
-import zIndex from '@mui/material/styles/zIndex';
 import theme from '../theme/Theme';
 import styled from 'styled-components';
 import images from '../images';
@@ -121,19 +120,6 @@ export const Section = styled.div`
 export const Logo = styled.img`
   width: 250px;
 `;
-// export const Logo = styled.h1`
-//   font-size: 2.2rem;
-//   color: #f68534;
-//   display: flex;
-//   align-items: center;
-
-//   span {
-//     color: white;
-//     margin-left: 8px;
-//     font-weight: 700;
-//   }
-// `;
-
 export const Description = styled.p`
   font-size: 1rem;
   max-width: 300px;

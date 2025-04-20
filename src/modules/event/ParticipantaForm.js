@@ -12,12 +12,11 @@ const ParticipantForm = () => {
   const navigate = useNavigate();
   const { participantId } = useParams();
   const { state } = useLocation();
-  console.log('🚀 ~ ParticipantForm ~ state:', state);
   const {
     mode = modes.create,
     event,
-    is_team_sport,
-    participants_in_team,
+    // is_team_sport,
+    // participants_in_team,
   } = state || {};
   const { user } = useAuth();
   const categoryOptions = event?.categories?.map((category) => {

@@ -61,6 +61,7 @@ const Dashboard = () => {
           });
         }
       }
+      otherEvents.reverse();
       setUpcomingEvent(upcomingEvents);
       setOtherEvents(otherEvents);
       setPaymentPending(paymentPending);

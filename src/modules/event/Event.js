@@ -36,8 +36,10 @@ const Event = () => {
       const response = await httpService.get(`${routeLink.events}/`, {
         ...filterValues,
       });
-      if (response.data) {
-        setEvents(response.data);
+      const data = response?.data || [];
+      data.reverse();
+      if (data) {
+        setEvents(data);
       }
     } catch (err) {
       console.log(err);

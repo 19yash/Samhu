@@ -17,7 +17,7 @@ const Participants = ({ event }) => {
     });
   });
   if (!tabs.length) {
-    return <div>No Paticipants Data</div>;
+    return null;
   }
   return <TabNavigation tabs={tabs} />;
 };

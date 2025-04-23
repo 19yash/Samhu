@@ -148,7 +148,7 @@ export const Home = () => {
           <TestimonalItemBorder>
             <img src={images.microphone} alt="" style={Testimonoials.icon} />
             <div style={Testimonoials.number}>3</div>
-            <div style={Testimonoials.text}>Organizaers</div>
+            <div style={Testimonoials.text}>Organizers</div>
           </TestimonalItemBorder>
           <div style={Testimonoials.item}>
             <img src={images.training} alt="" style={Testimonoials.icon} />
